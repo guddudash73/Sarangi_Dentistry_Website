@@ -1,0 +1,285 @@
+"use client";
+
+import { useRef } from "react";
+import {
+  motion,
+  useScroll,
+  useTransform,
+  useReducedMotion,
+} from "framer-motion";
+import Link from "next/link";
+import SectionReveal from "@/components/ui/SectionReveal";
+
+function DotFigure({ animated = true }: { animated?: boolean }) {
+  const dots = [
+    [3, 0],
+    [2, 1],
+    [3, 1],
+    [4, 1],
+    [1, 2],
+    [2, 2],
+    [3, 2],
+    [4, 2],
+    [5, 2],
+    [0, 3],
+    [1, 3],
+    [2, 3],
+    [3, 3],
+    [4, 3],
+    [5, 3],
+    [6, 3],
+    [1, 4],
+    [2, 4],
+    [3, 4],
+    [4, 4],
+    [5, 4],
+    [2, 5],
+    [3, 5],
+    [4, 5],
+    [3, 6],
+  ];
+
+  const size = 10;
+  const gap = 18;
+
+  return (
+    <svg viewBox="0 0 140 140" className="h-full w-full" aria-hidden="true">
+      {dots.map(([x, y], i) => {
+        const delay = y * 0.16 + x * 0.03;
+
+        return animated ? (
+          <motion.circle
+            key={i}
+            cx={20 + x * gap}
+            cy={16 + y * gap}
+            r={size / 2}
+            fill="#67a99b"
+            animate={{
+              scale: [1, 1.18, 1],
+              opacity: [0.16, 0.34, 0.16],
+            }}
+            transition={{
+              duration: 2.8,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay,
+            }}
+            style={{ transformOrigin: `${20 + x * gap}px ${16 + y * gap}px` }}
+          />
+        ) : (
+          <circle
+            key={i}
+            cx={20 + x * gap}
+            cy={16 + y * gap}
+            r={size / 2}
+            fill="#67a99b"
+            opacity="0.18"
+          />
+        );
+      })}
+    </svg>
+  );
+}
+
+export default function HomeAbout() {
+  const sectionRef = useRef<HTMLElement | null>(null);
+  const prefersReducedMotion = useReducedMotion();
+
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"],
+  });
+
+  const imageWrapY = useTransform(
+    scrollYProgress,
+    [0, 1],
+    [prefersReducedMotion ? 0 : 36, prefersReducedMotion ? 0 : -28],
+  );
+
+  const imageRotate = useTransform(
+    scrollYProgress,
+    [0, 1],
+    [prefersReducedMotion ? 0 : 1.2, prefersReducedMotion ? 0 : -1],
+  );
+
+  const mainImageY = useTransform(
+    scrollYProgress,
+    [0, 1],
+    [prefersReducedMotion ? 0 : -12, prefersReducedMotion ? 0 : 14],
+  );
+
+  const contentY = useTransform(
+    scrollYProgress,
+    [0, 1],
+    [prefersReducedMotion ? 0 : 18, prefersReducedMotion ? 0 : -10],
+  );
+
+  const dotsY = useTransform(
+    scrollYProgress,
+    [0, 1],
+    [prefersReducedMotion ? 0 : 10, prefersReducedMotion ? 0 : -12],
+  );
+
+  return (
+    <section
+      ref={sectionRef}
+      className="relative overflow-hidden py-16 sm:py-20 lg:py-24"
+    >
+      <div className="pointer-events-none absolute inset-0">
+        <div className="absolute right-0 top-0 h-full w-1/3 bg-linear-to-l from-[#eaf7f0] to-transparent opacity-70" />
+        <div className="absolute -left-24 bottom-0 h-56 w-56 rounded-full bg-[#bfe6d0]/40 blur-3xl" />
+        <div className="absolute left-[18%] top-[18%] h-24 w-24 rounded-full bg-[#d7f0e2]/50 blur-3xl" />
+      </div>
+
+      <div className="relative mx-auto grid max-w-7xl grid-cols-1 items-center gap-12 px-5 sm:px-8 lg:grid-cols-12 lg:gap-12 lg:px-10">
+        <motion.div
+          style={{ y: imageWrapY, rotate: imageRotate }}
+          className="lg:col-span-6"
+        >
+          <div className="relative mx-auto max-w-135">
+            <div className="absolute -left-8 top-10 hidden h-32 w-32 rounded-full bg-[#d8efe2]/60 blur-3xl md:block" />
+            <div className="absolute -right-10 bottom-6 hidden h-36 w-36 rounded-full bg-[#d6efe0]/55 blur-3xl md:block" />
+
+            <div className="relative isolate overflow-visible">
+              <div className="relative overflow-hidden rounded-4xl shadow-[0_24px_64px_rgba(20,40,34,0.12)] ring-1 ring-white/70">
+                <motion.div
+                  style={{ y: mainImageY }}
+                  className="aspect-[4/4.35] sm:aspect-4/3 lg:aspect-[4/3.95]"
+                >
+                  <img
+                    src="/assets/about-img.png"
+                    alt="Dr. Soumendra Sarangi"
+                    loading="lazy"
+                    className="h-full w-full object-cover"
+                  />
+                </motion.div>
+
+                <div className="absolute inset-0 bg-linear-to-t from-[#0c3e2f]/30 via-transparent to-white/5" />
+                <div className="pointer-events-none absolute inset-0 rounded-4xl ring-1 ring-inset ring-white/40" />
+              </div>
+
+              <motion.div
+                animate={
+                  prefersReducedMotion
+                    ? {}
+                    : { y: [0, -8, 0], rotate: [0, -1, 0] }
+                }
+                transition={{
+                  duration: 6,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
+                className="absolute -top-4 -left-3 hidden h-28 w-28 overflow-hidden rounded-3xl border-4 border-white bg-white shadow-[0_18px_34px_rgba(20,40,34,0.12)] md:block lg:h-32 lg:w-32"
+              >
+                <img
+                  src="/assets/DSC_0005-Copy-scaled.jpg"
+                  alt="Dental care"
+                  loading="lazy"
+                  className="h-full w-full object-cover"
+                />
+                <div className="absolute inset-0 bg-linear-to-t from-[#14382c]/18 to-transparent" />
+              </motion.div>
+
+              <motion.div
+                animate={
+                  prefersReducedMotion
+                    ? {}
+                    : { y: [0, -10, 0], rotate: [0, 1.2, 0] }
+                }
+                transition={{
+                  duration: 5.8,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                  delay: 0.2,
+                }}
+                className="absolute -bottom-5 -right-1 rounded-[26px] border border-[#dcebe3] bg-white/30 px-5 py-4 shadow-[0_18px_38px_rgba(20,40,34,0.12)] backdrop-blur md:-right-2.5 lg:-right-4 lg:px-5 lg:py-4"
+              >
+                <div className="text-4xl font-black tracking-[-0.04em] text-[#03966a] lg:text-5xl">
+                  36<span className="text-[#9bb6aa]">+</span>
+                </div>
+                <p className="mt-2 max-w-42.5 text-[11px] font-bold uppercase tracking-[0.22em] leading-5 text-[#9bb6aa]">
+                  Years Experience Overall
+                </p>
+              </motion.div>
+
+              <motion.div
+                animate={prefersReducedMotion ? {} : { y: [0, 10, 0] }}
+                transition={{
+                  duration: 7,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                  delay: 0.4,
+                }}
+                className="absolute left-[18%] top-[30%] hidden h-4 w-4 rounded-full bg-[#5fa38a] shadow-[0_0_0_8px_rgba(95,163,138,0.12)] md:block"
+              />
+            </div>
+          </div>
+        </motion.div>
+
+        <motion.div style={{ y: contentY }} className="relative lg:col-span-6">
+          <motion.div
+            style={{ y: dotsY }}
+            className="pointer-events-none absolute -right-2 bottom-10 hidden h-52.5 w-52.5 md:block"
+          >
+            <DotFigure animated={!prefersReducedMotion} />
+          </motion.div>
+
+          <motion.div
+            style={{ y: dotsY }}
+            className="pointer-events-none absolute right-0 bottom-2 h-33 w-33 md:hidden"
+          >
+            <DotFigure animated={!prefersReducedMotion} />
+          </motion.div>
+
+          <SectionReveal>
+            <div className="mb-4 inline-flex items-center gap-3 rounded-full border border-[#d6e8de] bg-white/75 px-4 py-2 text-[11px] font-bold uppercase tracking-[0.24em] text-[#2f6b58] backdrop-blur">
+              <span className="h-2 w-2 rounded-full bg-[#03966a]" />
+              About
+            </div>
+
+            <h2 className="text-[clamp(2.5rem,4.5vw,4.3rem)] font-bold leading-[0.95] tracking-[-0.04em] text-[#24443a]">
+              Dr. Soumendra Sarangi
+            </h2>
+
+            <div className="mt-5 space-y-5 text-[1rem] leading-8 text-[#4d6a61] sm:text-[1.02rem]">
+              <p>
+                After his graduation from Dental Wing of S.C.B Medical College,
+                Cuttack in year 1988, Dr. Sarangi completed his internship from
+                the same institute. He got selected in OPSC and served the
+                Government of Odisha, including the Chief Minister and Governor.
+              </p>
+              <p>
+                Besides his specialist expertise in Root Canal Treatment, Crown
+                & Bridge, Implantology, and Cosmetic Dentistry, Dr. Sarangi has
+                remained an active member of national and international dental
+                societies with strong community recognition.
+              </p>
+            </div>
+
+            <div className="mt-8">
+              <Link
+                href="/about"
+                className="inline-flex items-center gap-3 rounded-[22px] bg-[#03966a] px-8 py-4 text-sm font-bold uppercase tracking-[0.22em] text-white shadow-[0_16px_36px_rgba(3,150,106,0.24)] transition-all duration-300 hover:-translate-y-1 hover:bg-[#027e59]"
+              >
+                Know More
+                <svg
+                  className="h-5 w-5 transition-transform duration-300"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M17 8l4 4m0 0l-4 4m4-4H3"
+                  />
+                </svg>
+              </Link>
+            </div>
+          </SectionReveal>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
