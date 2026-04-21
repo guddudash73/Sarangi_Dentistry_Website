@@ -206,8 +206,8 @@ export default function ExpandableGallery({ items }: ExpandableGalleryProps) {
 
                   <div className="relative overflow-hidden bg-[linear-gradient(180deg,rgba(247,252,249,0.96),rgba(239,248,243,0.94))] p-6 sm:p-8 lg:col-span-4 lg:p-10">
                     <div className="pointer-events-none absolute inset-0">
-                      <div className="absolute -right-10 top-0 h-40 w-40 rounded-full bg-[#dff3e8] blur-3xl" />
-                      <div className="absolute -left-10 bottom-0 h-40 w-40 rounded-full bg-[#eaf7f0] blur-3xl" />
+                      <div className="absolute -right-10 top-0 h-40 w-40 rounded-full bg-accent-soft/40 blur-3xl" />
+                      <div className="absolute -left-10 bottom-0 h-40 w-40 rounded-full bg-accent-soft/40 blur-3xl" />
                     </div>
 
                     <div className="relative z-10 flex h-full flex-col">

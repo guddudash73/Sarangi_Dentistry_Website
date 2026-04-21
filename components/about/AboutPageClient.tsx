@@ -151,8 +151,8 @@ export default function AboutPageClient() {
   );
 
   return (
-    <main className="min-h-screen bg-[#f6fbf8] text-[#24443a]">
-      <section ref={sceneRef} className="relative h-[220vh] bg-[#f6fbf8]">
+    <main className="min-h-screen bg-background text-secondary">
+      <section ref={sceneRef} className="relative h-[220vh]">
         <div className="sticky top-0 h-screen overflow-hidden">
           <div className="absolute inset-0 z-0 overflow-hidden">
             <motion.div
@@ -166,10 +166,9 @@ export default function AboutPageClient() {
               />
             </motion.div>
           </div>
-
           <div className="pointer-events-none absolute inset-0 z-1">
-            <div className="absolute inset-0 bg-[#11241c]/72" />
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_20%,rgba(3,150,106,0.24),transparent_28%),radial-gradient(circle_at_82%_26%,rgba(255,255,255,0.12),transparent_26%),linear-gradient(to_bottom,rgba(255,255,255,0.04),rgba(8,18,14,0.24))]" />
+            <div className="absolute inset-0 " />
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_20%,rgba(var(--accent-soft-rgb),0.3),transparent_30%),radial-gradient(circle_at_82%_26%,rgba(255,255,255,0.12),transparent_28%),linear-gradient(to_bottom,rgba(255,255,255,0.05),rgba(8,18,14,0.22))]" />
           </div>
 
           <motion.div
@@ -215,18 +214,17 @@ export default function AboutPageClient() {
                 }}
               />
               <div className="absolute inset-0 bg-background" />
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_14%_18%,rgba(3,150,106,0.08),transparent_24%),radial-gradient(circle_at_86%_18%,rgba(36,68,58,0.04),transparent_24%),radial-gradient(circle_at_50%_82%,rgba(3,150,106,0.05),transparent_28%)]" />
+
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_14%_18%,rgba(var(--accent-soft-rgb),0.3),transparent_32%),radial-gradient(circle_at_86%_18%,rgba(var(--accent-soft-rgb),0.10),transparent_30%),radial-gradient(circle_at_50%_82%,rgba(36,68,58,0.05),transparent_34%)]" />
+
+              <div className="absolute inset-0 bg-linear-to-b from-[rgba(255,255,255,0.22)] via-[rgba(248,255,250,0.12)] to-[rgba(248,255,250,0.32)]" />
             </div>
 
             <motion.div
               style={{ y: floatYOne }}
-              className="pointer-events-none absolute left-[7%] top-[24%] hidden h-20 w-20 rounded-full bg-[#d9efe4] blur-3xl md:block"
+              className="pointer-events-none absolute left-[7%] top-[24%] hidden h-20 w-20 rounded-full blur-3xl md:block"
             />
-            <motion.div
-              style={{ y: floatYTwo }}
-              className="pointer-events-none absolute right-[8%] top-[18%] hidden h-24 w-24 rounded-full bg-[#eaf7f0] blur-3xl md:block"
-            />
-
+            
             <div className="relative px-5 pb-12 pt-28 sm:px-6 sm:pb-16 sm:pt-32 md:px-10 md:pb-20 lg:px-16 lg:pb-20 lg:pt-36">
               <div className="mx-auto max-w-7xl">
                 <div className="grid items-start gap-8 lg:grid-cols-12 lg:gap-10">
@@ -344,14 +342,11 @@ export default function AboutPageClient() {
         </div>
       </section>
 
-      <section className="relative z-30 overflow-hidden bg-background px-5 pb-24 pt-16 sm:px-6 sm:pt-20 md:px-10 md:pb-32 md:pt-24 lg:px-16">
+      <section className="relative z-30 overflow-hidden px-5 pb-24 pt-16">
         <div className="pointer-events-none absolute inset-0">
-          <div
-            className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-[0.05]"
-            style={{
-              backgroundImage: "url('/assets/sketch_it_sarangi.png')",
-            }}
-          />
+          <div className="absolute inset-0" />
+
+          <div className="absolute inset-0 bg-linear-to-b from-[rgba(255,255,255,0.22)] via-[rgba(248,255,250,0.12)] to-[rgba(248,255,250,0.30)]" />
         </div>
 
         <div className="relative mx-auto max-w-7xl space-y-28 md:space-y-36">

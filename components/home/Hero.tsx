@@ -182,7 +182,9 @@ export default function Hero() {
         />
 
         <div className="absolute inset-0 bg-[rgba(236,247,241,0.62)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_22%,rgba(3,150,106,0.10),transparent_28%),radial-gradient(circle_at_80%_30%,rgba(3,150,106,0.07),transparent_26%),radial-gradient(circle_at_50%_75%,rgba(36,68,58,0.04),transparent_30%)]" />
+
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_22%,rgba(var(--accent-soft-rgb),0.3),transparent_30%),radial-gradient(circle_at_80%_30%,rgba(var(--accent-soft-rgb),0.12),transparent_28%),radial-gradient(circle_at_50%_75%,rgba(36,68,58,0.04),transparent_32%)]" />
+
         <div className="absolute inset-0 bg-linear-to-b from-[rgba(255,255,255,0.18)] via-[rgba(248,255,250,0.10)] to-[rgba(248,255,250,0.26)]" />
       </motion.div>
 

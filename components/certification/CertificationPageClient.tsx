@@ -18,11 +18,11 @@ export default function CertificationPageClient({
   const prefersReducedMotion = useReducedMotion();
 
   return (
-    <main className="min-h-screen overflow-x-clip bg-background pt-28 text-secondary">
-      <section className="relative overflow-hidden border-b border-[#dcebe3] bg-[linear-gradient(180deg,rgba(249,253,251,1),rgba(240,248,243,0.96))]">
+    <main className="Soverflow-x-clip bg-background text-secondary">
+      <section className="relative overflow-hidden pt-28 ">
         <div className="pointer-events-none absolute inset-0">
-          <div className="absolute left-[8%] top-[12%] h-60 w-60 rounded-full bg-[#def2e8] blur-3xl" />
-          <div className="absolute right-[10%] top-[10%] h-64 w-64 rounded-full bg-[#edf8f3] blur-3xl" />
+          <div className="absolute left-[8%] top-[12%] h-60 w-60 rounded-full bg-accent-soft/30 blur-3xl" />
+          <div className="absolute right-[10%] top-[10%] h-64 w-64 rounded-full bg-accent-soft/30 blur-3xl" />
           <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(3,150,106,0.04)_1px,transparent_1px),linear-gradient(to_bottom,rgba(3,150,106,0.03)_1px,transparent_1px)] bg-[size:110px_110px] opacity-30" />
         </div>
 
@@ -33,52 +33,21 @@ export default function CertificationPageClient({
             transition={{ duration: 0.65, ease: EASE }}
             className="grid gap-10 lg:grid-cols-12 lg:items-end"
           >
-            <div className="lg:col-span-7">
-              <div className="mb-5 inline-flex items-center gap-3 rounded-full border border-[#d8e8df] bg-white/82 px-5 py-3 text-[10px] font-bold uppercase tracking-[0.24em] text-primary shadow-[0_10px_24px_rgba(20,40,34,0.05)] backdrop-blur sm:text-[11px]">
-                <span className="h-2.5 w-2.5 rounded-full bg-primary-hover" />
+            <div className="lg:col-span-full flex flex-col items-center justify-center"  >
+              <div className="mb-5 inline-flex items-center gap-3 rounded-full border border-[#d8e8df] bg-white/82 px-5 py-3 text-[10px] font-bold uppercase tracking-[0.24em] text-primary shadow-[0_10px_24px_rgba(20,40,34,0.05)] backdrop-blur sm:text-[11px] text-center">
+                <span className="h-2.5 w-2.5 rounded-full bg-primary-hover"  />
                 Certifications & Recognition
               </div>
 
-              <h1 className="max-w-[10ch] text-[clamp(3rem,6vw,6.4rem)] font-bold leading-[0.88] tracking-[-0.065em] text-secondary">
+              <h1 className="max-w-5xl text-[clamp(3rem,6vw,6.4rem)] font-bold leading-[0.88] tracking-[-0.055em] text-secondary text-center">
                 Credentials that reflect mastery and continued growth
               </h1>
 
-              <p className="mt-8 max-w-3xl text-[1rem] leading-7 text-secondary-light sm:text-[1.06rem] sm:leading-8">
+              <p className="mt-8 max-w-5xl leading-7 text-secondary-light sm:text-[1.06rem] sm:leading-8 text-center">
                 A curated presentation of recognitions, conference
                 participation, advanced learning programs, and certifications
                 that reflect sustained commitment to modern dentistry.
               </p>
-            </div>
-
-            <div className="lg:col-span-5">
-              <div className="grid gap-4 sm:grid-cols-3 lg:grid-cols-1">
-                <div className="rounded-[28px] border border-[#d9e8e0] bg-white/78 p-5 shadow-[0_14px_30px_rgba(20,40,34,0.04)]">
-                  <div className="text-[11px] font-bold uppercase tracking-[0.22em] text-primary">
-                    Archive
-                  </div>
-                  <div className="mt-3 text-lg font-semibold leading-7 text-primary-hover">
-                    20+ professional recognitions
-                  </div>
-                </div>
-
-                <div className="rounded-[28px] border border-[#d9e8e0] bg-secondary-light p-5 text-white shadow-[0_18px_40px_rgba(20,40,34,0.10)]">
-                  <div className="text-[11px] font-bold uppercase tracking-[0.22em] text-white/68">
-                    Character
-                  </div>
-                  <div className="mt-3 text-lg font-semibold leading-7">
-                    Refined, experienced, continuously evolving
-                  </div>
-                </div>
-
-                <div className="rounded-[28px] border border-[#d9e8e0] bg-white/78 p-5 shadow-[0_14px_30px_rgba(20,40,34,0.04)]">
-                  <div className="text-[11px] font-bold uppercase tracking-[0.22em] text-primary">
-                    Interaction
-                  </div>
-                  <div className="mt-3 text-lg font-semibold leading-7 text-primary-hover">
-                    Tap any certificate to expand
-                  </div>
-                </div>
-              </div>
             </div>
           </motion.div>
         </div>

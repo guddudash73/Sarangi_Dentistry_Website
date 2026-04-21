@@ -90,12 +90,12 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
   };
 
   return (
-    <main className="min-h-screen overflow-x-clip bg-[#f7fbf9] pt-28 text-[#24443a]">
-      <section className="relative overflow-hidden border-b border-[#dcebe3] bg-[linear-gradient(180deg,rgba(250,253,251,1),rgba(239,248,243,0.96))]">
+    <main className="min-h-screen overflow-x-clip   text-secondary">
+      <section className="relative overflow-hidden pt-20">
         <div className="pointer-events-none absolute inset-0">
-          <div className="absolute left-[-4rem] top-[-2rem] h-72 w-72 rounded-full bg-[#def2e8] blur-3xl" />
-          <div className="absolute right-[-5rem] top-[10%] h-80 w-80 rounded-full bg-[#edf8f3] blur-3xl" />
-          <div className="absolute bottom-[-6rem] left-[25%] h-72 w-72 rounded-full bg-[#e9f7f0] blur-3xl" />
+          <div className="absolute left-[-4rem] top-[-2rem] h-72 w-72 rounded-full bg-accent-soft/30 blur-3xl" />
+          <div className="absolute right-[-5rem] top-[10%] h-80 w-80 rounded-full bg-accent-soft/30 blur-3xl" />
+          
           <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(3,150,106,0.035)_1px,transparent_1px),linear-gradient(to_bottom,rgba(3,150,106,0.025)_1px,transparent_1px)] bg-[size:96px_96px] opacity-30" />
           <div
             className="absolute inset-0 opacity-[0.03]"

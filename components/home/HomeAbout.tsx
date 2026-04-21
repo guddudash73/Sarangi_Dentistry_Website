@@ -125,20 +125,23 @@ export default function HomeAbout() {
       ref={sectionRef}
       className="relative overflow-hidden py-16 sm:py-20 lg:py-24"
     >
+      {/* ✅ NEW HERO-LIKE BACKGROUND */}
       <div className="pointer-events-none absolute inset-0">
-        <div className="absolute right-0 top-0 h-full w-1/3 bg-linear-to-l from-[#eaf7f0] to-transparent opacity-70" />
-        <div className="absolute -left-24 bottom-0 h-56 w-56 rounded-full bg-[#bfe6d0]/40 blur-3xl" />
-        <div className="absolute left-[18%] top-[18%] h-24 w-24 rounded-full bg-[#d7f0e2]/50 blur-3xl" />
+        <div className="absolute inset-0 bg-[rgba(236,247,241,0.7)]" />
+      
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_22%,rgba(100,203,186,0.18),transparent_32%),radial-gradient(circle_at_80%_30%,rgba(100,203,186,0.3),transparent_30%),radial-gradient(circle_at_50%_75%,rgba(36,68,58,0.06),transparent_34%)]" />
+      
+        <div className="absolute inset-0 bg-linear-to-b from-[rgba(255,255,255,0.25)] via-[rgba(248,255,250,0.12)] to-[rgba(248,255,250,0.35)]" />
       </div>
-
+      
       <div className="relative mx-auto grid max-w-7xl grid-cols-1 items-center gap-12 px-5 sm:px-8 lg:grid-cols-12 lg:gap-12 lg:px-10">
         <motion.div
           style={{ y: imageWrapY, rotate: imageRotate }}
           className="lg:col-span-6"
         >
           <div className="relative mx-auto max-w-135">
-            <div className="absolute -left-8 top-10 hidden h-32 w-32 rounded-full bg-[#d8efe2]/60 blur-3xl md:block" />
-            <div className="absolute -right-10 bottom-6 hidden h-36 w-36 rounded-full bg-[#d6efe0]/55 blur-3xl md:block" />
+            <div className="absolute -left-8 top-10 hidden h-32 w-32 rounded-full bg-white/85 blur-3xl md:block" />
+            <div className="absolute -right-10 bottom-6 hidden h-36 w-36 rounded-full bg-white/85 blur-3xl md:block" />
 
             <div className="relative isolate overflow-visible">
               <div className="relative overflow-hidden rounded-4xl shadow-[0_24px_64px_rgba(20,40,34,0.12)] ring-1 ring-white/70">
@@ -210,7 +213,6 @@ export default function HomeAbout() {
                   ease: "easeInOut",
                   delay: 0.4,
                 }}
-                className="absolute left-[18%] top-[30%] hidden h-4 w-4 rounded-full bg-[#5fa38a] shadow-[0_0_0_8px_rgba(95,163,138,0.12)] md:block"
               />
             </div>
           </div>

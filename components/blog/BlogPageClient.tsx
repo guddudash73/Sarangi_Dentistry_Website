@@ -50,11 +50,11 @@ export default function BlogPageClient({
   };
 
   return (
-    <main className="min-h-screen overflow-x-clip bg-background pt-28 text-secondary">
-      <section className="relative overflow-hidden border-b border-[#dcebe3] bg-[linear-gradient(180deg,rgba(249,253,251,1),rgba(241,248,244,0.96))]">
+    <main className="min-h-screen overflow-x-clip text-secondary bg-background">
+      <section className="relative overflow-hidden pt-8">
         <div className="pointer-events-none absolute inset-0">
-          <div className="absolute left-[6%] top-[10%] h-56 w-56 rounded-full bg-[#def2e8] blur-3xl" />
-          <div className="absolute right-[8%] top-[16%] h-64 w-64 rounded-full bg-[#edf8f3] blur-3xl" />
+          <div className="absolute left-[6%] top-[10%] h-56 w-56 rounded-full bg-accent-soft/40 blur-3xl" />
+          <div className="absolute right-[8%] top-[16%] h-64 w-64 rounded-full bg-accent-soft/40 blur-3xl" />
           <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(3,150,106,0.04)_1px,transparent_1px)] bg-[size:120px_120px] opacity-30" />
           <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#d9e8e0] to-transparent" />
           <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-[#d9e8e0] to-transparent" />
@@ -66,31 +66,18 @@ export default function BlogPageClient({
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.65, ease: EASE }}
           >
-            <div className="flex flex-wrap items-center gap-4 border-b border-[#dcebe3] pb-6">
-              <div className="inline-flex items-center gap-3 rounded-full border border-[#d8e8df] bg-white/82 px-5 py-3 text-[10px] font-bold uppercase tracking-[0.24em] text-primary shadow-[0_10px_24px_rgba(20,40,34,0.05)] backdrop-blur sm:text-[11px]">
-                <span className="h-2.5 w-2.5 rounded-full bg-primary-hover" />
-                Journal & Insights
-              </div>
-
-              <div className="hidden h-px flex-1 bg-gradient-to-r from-[#dcebe3] to-transparent md:block" />
-
-              <div className="text-[11px] font-bold uppercase tracking-[0.24em] text-secondary">
-                Sarangi Dentistry Editorial
-              </div>
-            </div>
 
             <div className="grid gap-10 pt-10 lg:grid-cols-12 lg:gap-14 lg:pt-12">
-              <div className="lg:col-span-8">
-                <div className="max-w-5xl">
-                  <div className="mb-6 text-[11px] font-bold uppercase tracking-[0.28em] text-secondary-light">
+              <div className="lg:col-span-full flex justify-center items-center">
+                <div className="max-w-full">
+                  <div className=" text-center mb-6 text-[11px] font-bold uppercase tracking-[0.28em] text-secondary-light">
                     Modern patient education
                   </div>
-
-                  <h1 className="max-w-[10ch] text-[clamp(3.1rem,6vw,6.6rem)] font-bold leading-[0.86] tracking-[-0.07em] text-secondary">
+                  <h1 className="max-w-full text-[clamp(3.1rem,6vw,6.6rem)] font-bold leading-[0.86] tracking-[-0.07em] text-secondary text-center"  >
                     Thoughtful dental reading, with a sharper editorial feel
                   </h1>
 
-                  <p className="mt-8 max-w-3xl text-[1rem] leading-7 text-secondary-light sm:text-[1.06rem] sm:leading-8 md:text-[1.1rem]">
+                  <p className="mt-8 max-w-full text-[1rem] leading-7 text-secondary-light sm:text-[1.06rem] sm:leading-8 md:text-[1.1rem] text-center">
                     In-depth articles on oral health, smile restoration,
                     preventive care, and modern treatment guidance — presented
                     in a cleaner journal-style format that feels distinct from
@@ -99,49 +86,9 @@ export default function BlogPageClient({
                   </p>
                 </div>
               </div>
-
-              <div className="lg:col-span-4">
-                <div className="grid gap-4 sm:grid-cols-3 lg:grid-cols-1">
-                  <div className="rounded-[28px] border border-[#d9e8e0] bg-white/78 p-5 shadow-[0_14px_30px_rgba(20,40,34,0.04)]">
-                    <div className="text-[11px] font-bold uppercase tracking-[0.22em] text-primary">
-                      Focus
-                    </div>
-                    <div className="mt-3 text-lg font-semibold leading-7 text-primary">
-                      Clear patient guidance
-                    </div>
-                  </div>
-
-                  <div className="rounded-[28px] border border-[#d9e8e0] bg-secondary-light p-5 text-white shadow-[0_18px_40px_rgba(20,40,34,0.10)]">
-                    <div className="text-[11px] font-bold uppercase tracking-[0.22em] text-white/68">
-                      Tone
-                    </div>
-                    <div className="mt-3 text-lg font-semibold leading-7">
-                      Premium, calm, readable
-                    </div>
-                  </div>
-
-                  <div className="rounded-[28px] border border-[#d9e8e0] bg-white/78 p-5 shadow-[0_14px_30px_rgba(20,40,34,0.04)]">
-                    <div className="text-[11px] font-bold uppercase tracking-[0.22em] text-primary">
-                      Topics
-                    </div>
-                    <div className="mt-3 flex flex-wrap gap-2">
-                      {["Oral Health", "Orthodontics", "Restorative"].map(
-                        (tag) => (
-                          <span
-                            key={tag}
-                            className="rounded-full border border-[#d7e7de] bg-[#f8fcfa] px-3 py-2 text-[10px] font-bold uppercase tracking-[0.18em] text-primary"
-                          >
-                            {tag}
-                          </span>
-                        ),
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </div>
             </div>
 
-            <div className="mt-10 grid gap-4 border-t border-[#dcebe3] pt-6 sm:grid-cols-3 lg:max-w-3xl">
+            <div className="mt-10 grid gap-4 border-t border-[#dcebe3] pt-6 sm:grid-cols-3 lg:max-w-full text-center">
               {[
                 { value: "03+", label: "Published Articles" },
                 { value: "Patient", label: "First Writing" },
@@ -186,8 +133,8 @@ export default function BlogPageClient({
 
                 <div className="relative flex flex-col justify-between bg-[linear-gradient(180deg,rgba(249,253,251,1),rgba(241,248,244,0.96))] p-6 sm:p-8 lg:col-span-5 lg:p-10">
                   <div className="pointer-events-none absolute inset-0">
-                    <div className="absolute -right-10 top-0 h-40 w-40 rounded-full bg-[#dff3e8] blur-3xl" />
-                    <div className="absolute -left-10 bottom-0 h-40 w-40 rounded-full bg-[#eaf7f0] blur-3xl" />
+                    <div className="absolute -right-10 top-0 h-40 w-40 rounded-full bg-accent-soft/30 blur-3xl" />
+                    <div className="absolute -left-10 bottom-0 h-40 w-40 rounded-full bg-accent-soft/30 blur-3xl" />
                   </div>
 
                   <div className="relative z-10">

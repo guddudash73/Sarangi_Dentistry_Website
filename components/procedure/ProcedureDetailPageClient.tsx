@@ -24,11 +24,11 @@ export default function ProcedureDetailPageClient({
   );
 
   return (
-    <main className="min-h-screen overflow-x-clip bg-[#f6fbf8] pt-12 md:pt-24 text-[#24443a]">
+    <main className="min-h-screen overflow-x-clip bg-[#f6fbf8] pt-12 md:pt-24 text-secondary">
       <section className="relative min-h-screen border-b border-[#dcebe3] bg-[linear-gradient(180deg,rgba(246,251,248,1),rgba(238,248,243,0.97))]">
         <div className="pointer-events-none absolute inset-0">
-          <div className="absolute left-[8%] top-[16%] h-44 w-44 rounded-full bg-[#d9efe4] blur-3xl" />
-          <div className="absolute right-[10%] top-[10%] h-60 w-60 rounded-full bg-[#eaf7f0] blur-3xl" />
+          <div className="absolute left-[8%] top-[16%] h-44 w-44 rounded-full bg-accent-soft/40 blur-3xl" />
+          <div className="absolute right-[10%] top-[10%] h-60 w-60 rounded-full bg-accent-soft/40 blur-3xl" />
           <div
             className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-[0.045]"
             style={{ backgroundImage: "url('/assets/sketch_it_sarangi.png')" }}
@@ -36,19 +36,19 @@ export default function ProcedureDetailPageClient({
         </div>
 
         <div className="relative mx-auto max-w-7xl px-5 pb-16 pt-8 sm:px-6 md:px-10 lg:px-16 lg:pb-20">
-          <nav className="mb-8 flex flex-wrap items-center gap-2 text-sm font-medium text-[#5a746a]">
-            <Link href="/" className="transition-colors hover:text-[#03966a]">
+          <nav className="mb-8 flex flex-wrap items-center gap-2 text-sm font-medium text-secondary">
+            <Link href="/" className="transition-colors hover:text-primary-hover">
               Home
             </Link>
             <span>/</span>
             <Link
               href="/procedure"
-              className="transition-colors hover:text-[#03966a]"
+              className="transition-colors hover:text-primary-hover"
             >
               Procedures
             </Link>
             <span>/</span>
-            <span className="text-[#03966a]">{procedure.title}</span>
+            <span className="text-primary">{procedure.title}</span>
           </nav>
 
           <div className="grid items-center gap-10 lg:grid-cols-12 lg:gap-14">
@@ -86,25 +86,25 @@ export default function ProcedureDetailPageClient({
               transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
               className="lg:col-span-6"
             >
-              <h1 className="max-w-[12ch] text-[clamp(2.8rem,5.6vw,5.4rem)] font-bold leading-[0.92] tracking-[-0.05em] text-[#24443a]">
+              <h1 className="max-w-[12ch] text-[clamp(2.8rem,5.6vw,5.4rem)] font-bold leading-[0.92] tracking-[-0.05em] text-secondary">
                 {procedure.title}
               </h1>
 
-              <p className="mt-6 max-w-2xl text-[1rem] leading-7 text-[#4a635a] sm:text-[1.05rem] sm:leading-8">
+              <p className="mt-6 max-w-2xl text-[1rem] leading-7 text-secondary-light sm:text-[1.05rem] sm:leading-8">
                 {procedure.longDescription}
               </p>
 
               <div className="mt-8 flex flex-col gap-4 sm:flex-row">
                 <Link
                   href="/contact"
-                  className="inline-flex min-h-14 items-center justify-center rounded-[22px] bg-[#5aa876] px-8 py-4 text-sm font-bold uppercase tracking-[0.22em] text-white shadow-[0_16px_40px_rgba(62,161,111,0.22)] transition-all duration-300 hover:-translate-y-1 hover:bg-[#4a9766]"
+                  className="inline-flex min-h-14 items-center justify-center rounded-[22px] bg-primary px-8 py-4 text-sm font-bold uppercase tracking-[0.22em] text-white shadow-[0_16px_40px_rgba(62,161,111,0.22)] transition-all duration-300 hover:-translate-y-1 hover:bg-primary-hover"
                 >
                   Book Appointment
                 </Link>
 
                 <Link
                   href="/procedure"
-                  className="inline-flex min-h-14 items-center justify-center rounded-[22px] border border-[#cfdfd6] bg-white px-8 py-4 text-sm font-bold uppercase tracking-[0.22em] text-[#314d44] shadow-[0_10px_24px_rgba(20,40,34,0.05)] transition-all duration-300 hover:-translate-y-1"
+                  className="inline-flex min-h-14 items-center justify-center rounded-[22px] border border-[#cfdfd6] bg-white px-8 py-4 text-sm font-bold uppercase tracking-[0.22em] text-primary shadow-[0_10px_24px_rgba(20,40,34,0.05)] transition-all duration-300 hover:-translate-y-1"
                 >
                   View All Procedures
                 </Link>
@@ -123,12 +123,12 @@ export default function ProcedureDetailPageClient({
             transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           >
             <div className="mx-auto max-w-3xl text-center">
-              <div className="mb-5 inline-flex items-center gap-3 rounded-full border border-[#d8e8df] bg-white/80 px-4 py-2 text-[10px] font-bold uppercase tracking-[0.22em] text-[#2d6b58] shadow-[0_10px_20px_rgba(20,40,34,0.04)] backdrop-blur sm:text-[11px]">
-                <span className="h-2.5 w-2.5 rounded-full bg-[#03966a]" />
+              <div className="mb-5 inline-flex items-center gap-3 rounded-full border border-[#d8e8df] bg-white/80 px-4 py-2 text-[10px] font-bold uppercase tracking-[0.22em] text-primary shadow-[0_10px_20px_rgba(20,40,34,0.04)] backdrop-blur sm:text-[11px]">
+                <span className="h-2.5 w-2.5 rounded-full bg-primary-hover" />
                 Treatment Journey
               </div>
 
-              <h2 className="text-[clamp(2.2rem,4.8vw,4rem)] font-bold leading-[0.96] tracking-[-0.04em] text-[#24443a]">
+              <h2 className="text-[clamp(2.2rem,4.8vw,4rem)] font-bold leading-[0.96] tracking-[-0.04em] text-secondary">
                 What the procedure usually involves
               </h2>
             </div>
@@ -154,10 +154,10 @@ export default function ProcedureDetailPageClient({
                   <div className="mb-6 text-[2.8rem] font-black leading-none tracking-[-0.08em] text-transparent [-webkit-text-stroke:1px_#03966a]">
                     {(index + 1).toString().padStart(2, "0")}
                   </div>
-                  <h3 className="text-[1.25rem] font-semibold leading-tight text-[#24443a] group-hover:text-[#03966a]">
+                  <h3 className="text-[1.25rem] font-semibold leading-tight text-secondary group-hover:text-primary-hover">
                     {step.title}
                   </h3>
-                  <p className="mt-4 text-[0.98rem] leading-7 text-[#4a635a]">
+                  <p className="mt-4 text-[0.98rem] leading-7 text-secondary-light">
                     {step.description}
                   </p>
                 </motion.div>
@@ -173,12 +173,12 @@ export default function ProcedureDetailPageClient({
             className="mx-auto max-w-4xl"
           >
             <div className="mb-10 text-center">
-              <div className="mb-5 inline-flex items-center gap-3 rounded-full border border-[#d8e8df] bg-white/80 px-4 py-2 text-[10px] font-bold uppercase tracking-[0.22em] text-[#2d6b58] shadow-[0_10px_20px_rgba(20,40,34,0.04)] backdrop-blur sm:text-[11px]">
-                <span className="h-2.5 w-2.5 rounded-full bg-[#03966a]" />
+              <div className="mb-5 inline-flex items-center gap-3 rounded-full border border-[#d8e8df] bg-white/80 px-4 py-2 text-[10px] font-bold uppercase tracking-[0.22em] text-primary shadow-[0_10px_20px_rgba(20,40,34,0.04)] backdrop-blur sm:text-[11px]">
+                <span className="h-2.5 w-2.5 rounded-full bg-primary-hover" />
                 Frequently Asked Questions
               </div>
 
-              <h2 className="text-[clamp(2.1rem,4.5vw,3.8rem)] font-bold leading-[0.96] tracking-[-0.04em] text-[#24443a]">
+              <h2 className="text-[clamp(2.1rem,4.5vw,3.8rem)] font-bold leading-[0.96] tracking-[-0.04em] text-secondary">
                 Answers to common patient questions
               </h2>
             </div>
@@ -201,15 +201,15 @@ export default function ProcedureDetailPageClient({
                       onClick={() => setOpenFaq(isOpen ? null : index)}
                       className="flex w-full items-center justify-between gap-4 px-6 py-5 text-left transition-colors duration-300 hover:bg-[#f8fcfa]"
                     >
-                      <span className="text-base font-semibold leading-7 text-[#24443a] sm:text-lg">
+                      <span className="text-base font-semibold leading-7 text-secondary sm:text-lg">
                         {faq.question}
                       </span>
 
                       <span
                         className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full border transition-all duration-300 ${
                           isOpen
-                            ? "border-[#03966a] bg-[#03966a] text-white rotate-180"
-                            : "border-[#d6e7de] bg-[#edf8f2] text-[#03966a]"
+                            ? "border-[#03966a] bg-primary text-white rotate-180"
+                            : "border-[#d6e7de] bg-background text-[#03966a]"
                         }`}
                       >
                         <svg
@@ -238,7 +238,7 @@ export default function ProcedureDetailPageClient({
                           className="overflow-hidden"
                         >
                           <div className="border-t border-[#e6f0eb] bg-[#f8fcfa] px-6 py-5">
-                            <p className="text-[0.98rem] leading-7 text-[#4a635a]">
+                            <p className="text-[0.98rem] leading-7 text-secondary-light">
                               {faq.answer}
                             </p>
                           </div>
@@ -259,12 +259,12 @@ export default function ProcedureDetailPageClient({
               transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             >
               <div className="mb-10 text-center">
-                <div className="mb-5 inline-flex items-center gap-3 rounded-full border border-[#d8e8df] bg-white/80 px-4 py-2 text-[10px] font-bold uppercase tracking-[0.22em] text-[#2d6b58] shadow-[0_10px_20px_rgba(20,40,34,0.04)] backdrop-blur sm:text-[11px]">
-                  <span className="h-2.5 w-2.5 rounded-full bg-[#03966a]" />
+                <div className="mb-5 inline-flex items-center gap-3 rounded-full border border-[#d8e8df] bg-white/80 px-4 py-2 text-[10px] font-bold uppercase tracking-[0.22em] text-primary shadow-[0_10px_20px_rgba(20,40,34,0.04)] backdrop-blur sm:text-[11px]">
+                  <span className="h-2.5 w-2.5 rounded-full bg-primary-hover" />
                   Related Procedures
                 </div>
 
-                <h2 className="text-[clamp(2.1rem,4.5vw,3.6rem)] font-bold leading-[0.96] tracking-[-0.04em] text-[#24443a]">
+                <h2 className="text-[clamp(2.1rem,4.5vw,3.6rem)] font-bold leading-[0.96] tracking-[-0.04em] text-secondary">
                   Explore more treatments
                 </h2>
               </div>
@@ -281,16 +281,16 @@ export default function ProcedureDetailPageClient({
                       className="aspect-4/2.75 w-full object-cover"
                     />
                     <div className="p-6">
-                      <h3 className="text-[1.2rem] font-semibold text-[#24443a]">
+                      <h3 className="text-[1.2rem] font-semibold text-secondary">
                         {item.title}
                       </h3>
-                      <p className="mt-3 line-clamp-3 text-[0.96rem] leading-7 text-[#4a635a]">
+                      <p className="mt-3 line-clamp-3 text-[0.96rem] leading-7 text-secondary-light">
                         {item.shortText}
                       </p>
                       <div className="mt-5">
                         <Link
                           href={item.path}
-                          className="inline-flex items-center gap-2 rounded-full border border-[#cfe3d8] bg-[#f8fcfa] px-4 py-3 text-xs font-bold uppercase tracking-[0.18em] text-[#2f5548] transition-all duration-300 hover:border-[#b8d7c7] hover:text-[#03966a]"
+                          className="inline-flex items-center gap-2 rounded-full border border-[#cfe3d8] bg-[#f8fcfa] px-4 py-3 text-xs font-bold uppercase tracking-[0.18em] text-secondary transition-all duration-300 hover:border-[#b8d7c7] hover:text-primary-hover"
                         >
                           View Procedure
                           <svg
@@ -320,11 +320,11 @@ export default function ProcedureDetailPageClient({
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.14 }}
             transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
-            className="overflow-hidden rounded-[34px] border border-[#dce9e2] bg-[linear-gradient(135deg,rgba(75,152,105,1),rgba(3,150,106,1))] shadow-[0_30px_80px_rgba(20,40,34,0.10)]"
+            className="overflow-hidden rounded-[34px] border border-[#dce9e2] bg-primary shadow-[0_30px_80px_rgba(20,40,34,0.10)]"
           >
             <div className="relative px-6 py-10 sm:px-8 md:px-10 md:py-14 lg:px-14">
-              <div className="absolute -right-12 -top-12 h-48 w-48 rounded-full bg-white/10 blur-3xl" />
-              <div className="absolute -bottom-12 -left-12 h-48 w-48 rounded-full bg-[#eaf7f0]/15 blur-3xl" />
+              <div className="absolute -right-12 -top-12 h-48 w-48 rounded-full bg-white/50 blur-3xl" />
+              <div className="absolute -bottom-12 -left-12 h-48 w-48 rounded-full bg-white/50 blur-3xl" />
 
               <div className="relative z-10 mx-auto max-w-3xl text-center">
                 <h2 className="text-[clamp(2.2rem,4.8vw,4rem)] font-bold leading-[0.96] tracking-[-0.04em] text-white">

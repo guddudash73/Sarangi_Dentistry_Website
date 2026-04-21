@@ -14,7 +14,7 @@ export default function GalleryPageClient({ items }: GalleryPageClientProps) {
   const prefersReducedMotion = useReducedMotion();
 
   return (
-    <main className="min-h-screen overflow-x-clip bg-[#f6fbf8]  text-[#24443a]">
+    <main className="min-h-screen overflow-x-clip bg-background  text-secondary">
       <section className="relative overflow-hidden border-b border-[#dcebe3] bg-[linear-gradient(180deg,rgba(249,253,251,1),rgba(239,248,243,0.96))]">
         <div className="pointer-events-none absolute inset-0">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_22%,rgba(3,150,106,0.10),transparent_24%),radial-gradient(circle_at_80%_26%,rgba(36,68,58,0.05),transparent_24%),linear-gradient(to_bottom,rgba(255,255,255,0.32),rgba(255,255,255,0.08))]" />

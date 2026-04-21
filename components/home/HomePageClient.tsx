@@ -40,10 +40,10 @@ export default function HomePageClient() {
       <Hero />
 
       <section className="relative z-20 overflow-hidden border-y border-[#dbe9e1] bg-[#edf7f1] py-5 sm:py-6">
-        <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-16 bg-linear-to-r from-[#edf7f1] to-transparent sm:w-28" />
-        <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-16 bg-linear-to-l from-[#edf7f1] to-transparent sm:w-28" />
+        <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-16 sm:w-28" />
+        <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-16 sm:w-28" />
 
-        <ScrollVelocityContainer className="text-[28px] font-medium uppercase tracking-[0.03em] text-[#24443a] sm:text-5xl md:text-6xl lg:text-7xl">
+        <ScrollVelocityContainer className="text-[28px] font-medium uppercase tracking-[0.03em] text-secondary sm:text-5xl md:text-6xl lg:text-7xl">
           <ScrollVelocityRow baseVelocity={2}>
             Premium Dental Care • Gentle Treatment • Modern Technology •
           </ScrollVelocityRow>
