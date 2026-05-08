@@ -27,12 +27,17 @@ export default function GalleryPageClient({ items }: GalleryPageClientProps) {
             className="grid items-end gap-8 lg:grid-cols-12"
           >
             <div className="lg:col-span-7">
-              <div className="mb-5 inline-flex items-center gap-3 rounded-full border border-[#d8e8df] bg-white/82 px-5 py-3 text-[10px] font-bold uppercase tracking-[0.24em] text-primary shadow-[0_10px_24px_rgba(20,40,34,0.05)] backdrop-blur sm:text-[11px]">
-                <span className="h-2.5 w-2.5 rounded-full bg-primary-hover" />
-                Sarangi Dentistry Gallery
-              </div>
+              <div className="mb-6 flex items-center gap-4">
+  <div className="flex items-center">
+    <div className="h-1.5 w-1.5 rounded-full bg-primary" />
+    <div className="h-[1px] w-8 bg-primary/40 -ml-0.5" />
+  </div>
+  <span className="text-[10px] font-bold uppercase tracking-[0.24em] text-primary sm:text-[11px]">
+    Sarangi Dentistry Gallery
+  </span>
+</div>
 
-              <h1 className="max-w-[11ch] text-[clamp(3rem,6vw,6.2rem)] font-bold leading-[0.9] tracking-[-0.06em] text-secondary">
+              <h1 data-cursor="invert" className="max-w-[11ch] text-[clamp(3rem,6vw,6.2rem)] font-bold leading-[0.9] tracking-[-0.06em] text-secondary">
                 Moments, spaces, and the care experience
               </h1>
             </div>

@@ -177,12 +177,20 @@ export default function ServicesShowcaseSection() {
               transition={{ duration: 0.65 }}
               className="relative z-10 flex flex-col items-center xl:items-start"
             >
-              <div className="mb-4 inline-flex items-center gap-3 rounded-full border border-white/60 bg-white/60 px-4 py-2 text-[11px] font-bold uppercase tracking-[0.24em] text-primary backdrop-blur">
-                <span className="h-2 w-2 rounded-full bg-primary" />
-                Services
+              <div className="mb-6 flex items-center gap-4">
+                <div className="flex items-center">
+                  <div className="h-1.5 w-1.5 rounded-full bg-primary" />
+                  <div className="h-[1px] w-8 bg-primary/40 -ml-0.5" />
+                </div>
+                <span className="text-[10px] font-bold uppercase tracking-[0.24em] text-primary sm:text-[11px]">
+                  Services
+                </span>
               </div>
 
-              <h2 className="max-w-[10.5ch] text-[clamp(2.5rem,5vw,4.8rem)] font-bold leading-[0.9] tracking-[-0.04em] text-secondary">
+              <h2
+                data-cursor="invert"
+                className="max-w-[10.5ch] text-[clamp(2.5rem,5vw,4.8rem)] font-bold leading-[0.9] tracking-[-0.04em] text-secondary"
+              >
                 Modern Dental
                 <br />
                 Therapy

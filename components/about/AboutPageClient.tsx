@@ -1,8 +1,8 @@
 "use client";
 
+import Button from "@/components/ui/Button";
 import { useEffect, useRef } from "react";
 import Link from "next/link";
-import Lenis from "lenis";
 import {
   motion,
   useReducedMotion,
@@ -69,29 +69,6 @@ export default function AboutPageClient() {
   const prefersReducedMotion = useReducedMotion();
   const sceneRef = useRef<HTMLElement | null>(null);
 
-  useEffect(() => {
-    const lenis = new Lenis({
-      duration: 1.05,
-      smoothWheel: true,
-      syncTouch: false,
-      touchMultiplier: 1.2,
-    });
-
-    let frameId = 0;
-
-    const raf = (time: number) => {
-      lenis.raf(time);
-      frameId = requestAnimationFrame(raf);
-    };
-
-    frameId = requestAnimationFrame(raf);
-
-    return () => {
-      cancelAnimationFrame(frameId);
-      lenis.destroy();
-    };
-  }, []);
-
   const { scrollYProgress } = useScroll({
     target: sceneRef,
     offset: ["start start", "end end"],
@@ -118,13 +95,13 @@ export default function AboutPageClient() {
   const aboutScale = useTransform(
     scrollYProgress,
     [0, 0.18, 1],
-    [0.94, 0.975, 1],
+    [0.85, 0.95, 1],
   );
 
   const aboutRadius = useTransform(
     scrollYProgress,
     [0, 0.48, 0.68],
-    [34, 34, 0],
+    [80, 40, 0],
   );
 
   const aboutInset = useTransform(
@@ -153,7 +130,7 @@ export default function AboutPageClient() {
 
   return (
     <main className="min-h-screen overflow-x-clip bg-background text-secondary">
-      <section ref={sceneRef} className="relative w-full">
+      <section ref={sceneRef} style={{ position: "relative" }} className="relative w-full">
         {/* Sticky background layer */}
         <div className="sticky top-0 h-screen w-full overflow-hidden">
           <div className="absolute inset-0 z-0 overflow-hidden">
@@ -178,7 +155,10 @@ export default function AboutPageClient() {
             className="absolute inset-0 z-10 flex items-center justify-center"
           >
             <div className="mx-auto max-w-6xl px-5 text-center sm:px-6 md:px-10">
-              <h1 className="mx-auto max-w-[16ch] text-7xl leading-[0.9] tracking-normal text-white drop-shadow-[0_18px_50px_rgba(0,0,0,0.28)]">
+              <h1
+                data-cursor="invert"
+                className="mx-auto max-w-[16ch] text-7xl leading-[0.9] tracking-normal text-white drop-shadow-[0_18px_50px_rgba(0,0,0,0.28)]"
+              >
                 Dentistry shaped by trust, precision, and care
               </h1>
 
@@ -206,7 +186,7 @@ export default function AboutPageClient() {
               borderTopLeftRadius: aboutRadius,
               borderTopRightRadius: aboutRadius,
             }}
-            className="relative w-full origin-top bg-background will-change-transform"
+            className="relative w-full origin-top overflow-hidden bg-background will-change-transform"
           >
             <PageBackground />
 
@@ -214,7 +194,7 @@ export default function AboutPageClient() {
               style={{ y: floatYOne }}
               className="pointer-events-none absolute left-[7%] top-[24%] hidden h-20 w-20 rounded-full blur-3xl md:block"
             />
-            
+
             <div className="relative px-5 pb-12 pt-28 sm:px-6 sm:pb-16 sm:pt-32 md:px-10 md:pb-20 lg:px-16 lg:pb-20 lg:pt-36">
               <div className="mx-auto max-w-7xl">
                 <div className="grid items-start gap-8 lg:grid-cols-12 lg:gap-10">
@@ -225,13 +205,21 @@ export default function AboutPageClient() {
                     transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
                     className="lg:col-span-7"
                   >
-                    <div className="mb-5 inline-flex items-center gap-3 rounded-full border border-[#d6e7de] bg-white/82 px-4 py-2 text-[10px] font-bold uppercase tracking-[0.22em] text-secondary-light shadow-[0_10px_20px_rgba(20,40,34,0.04)] backdrop-blur sm:text-[11px]">
-                      <span className="h-2.5 w-2.5 rounded-full bg-primary-hover" />
-                      Who We Are
+                    <div className="mb-6 flex items-center gap-4">
+                      <div className="flex items-center">
+                        <div className="h-1.5 w-1.5 rounded-full bg-primary" />
+                        <div className="h-[1px] w-8 bg-primary/40 -ml-0.5" />
+                      </div>
+                      <span className="text-[10px] font-bold uppercase tracking-[0.24em] text-primary sm:text-[11px]">
+                        Who We Are
+                      </span>
                     </div>
 
                     <div className="max-w-4xl border-l border-[#d8e8df] pl-0 lg:pl-8">
-                      <h2 className="max-w-[10ch] text-[clamp(2.8rem,7vw,5.2rem)] font-bold leading-[0.92] tracking-[-0.05em] text-secondary">
+                      <h2
+                        data-cursor="invert"
+                        className="max-w-[10ch] text-[clamp(2.8rem,7vw,5.2rem)] font-bold leading-[0.92] tracking-[-0.05em] text-secondary"
+                      >
                         About Sarangi Dentistry
                       </h2>
 
@@ -264,19 +252,11 @@ export default function AboutPageClient() {
                     </div>
 
                     <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center">
-                      <Link
-                        href="/book-appointment"
-                        className="inline-flex min-h-13.5 items-center justify-center rounded-[22px] bg-primary px-8 py-4 text-sm font-bold uppercase tracking-[0.22em] text-white shadow-[0_16px_40px_rgba(62,161,111,0.22)] transition-all duration-300 hover:-translate-y-1 hover:bg-primary-hover"
-                      >
-                        Book Appointment
-                      </Link>
+                      <Button href="/book-appointment">Book Appointment</Button>
 
-                      <Link
-                        href="/procedure"
-                        className="inline-flex min-h-13.5 items-center justify-center rounded-[22px] border border-[#cfdfd6] bg-white px-8 py-4 text-sm font-bold uppercase tracking-[0.22em] text-primary-hover shadow-[0_10px_24px_rgba(20,40,34,0.05)] transition-all duration-300 hover:-translate-y-1"
-                      >
+                      <Button href="/procedure" variant="outline">
                         Explore Procedures
-                      </Link>
+                      </Button>
                     </div>
                   </motion.div>
 
@@ -347,12 +327,20 @@ export default function AboutPageClient() {
             transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
           >
             <div className="mx-auto max-w-3xl text-center">
-              <div className="mb-5 inline-flex items-center gap-3 rounded-full border border-[#d8e8df] bg-white/80 px-4 py-2 text-[10px] font-bold uppercase tracking-[0.22em] text-secondary-light shadow-[0_10px_20px_rgba(20,40,34,0.04)] backdrop-blur sm:text-[11px]">
-                <span className="h-2.5 w-2.5 rounded-full bg-primary-hover" />
-                Why Patients Choose Us
+              <div className="mb-6 flex items-center gap-4">
+                <div className="flex items-center">
+                  <div className="h-1.5 w-1.5 rounded-full bg-primary" />
+                  <div className="h-[1px] w-8 bg-primary/40 -ml-0.5" />
+                </div>
+                <span className="text-[10px] font-bold uppercase tracking-[0.24em] text-primary sm:text-[11px]">
+                  Why Patients Choose Us
+                </span>
               </div>
 
-              <h2 className="text-[clamp(2.3rem,5vw,4.8rem)] font-bold leading-[0.96] tracking-normal text-secondary">
+              <h2
+                data-cursor="invert"
+                className="text-[clamp(2.3rem,5vw,4.8rem)] font-bold leading-[0.96] tracking-normal text-secondary"
+              >
                 Thoughtful dentistry built around trust and excellence
               </h2>
 
@@ -397,9 +385,14 @@ export default function AboutPageClient() {
             className="grid gap-8 lg:grid-cols-2"
           >
             <div className="rounded-[30px] border border-[#d9e8e0] bg-[linear-gradient(180deg,rgba(255,255,255,0.92),rgba(244,250,246,0.95))] p-8 shadow-[0_24px_60px_rgba(20,40,34,0.05)] sm:p-10 md:p-12">
-              <div className="mb-5 inline-flex items-center gap-3 rounded-full border border-[#d8e8df] bg-background px-4 py-2 text-[10px] font-bold uppercase tracking-[0.22em] text-primary sm:text-[11px]">
-                <span className="h-2.5 w-2.5 rounded-full bg-primary-hover" />
-                Our Mission
+              <div className="mb-6 flex items-center gap-4">
+                <div className="flex items-center">
+                  <div className="h-1.5 w-1.5 rounded-full bg-primary" />
+                  <div className="h-[1px] w-8 bg-primary/40 -ml-0.5" />
+                </div>
+                <span className="text-[10px] font-bold uppercase tracking-[0.24em] text-primary sm:text-[11px]">
+                  Our Mission
+                </span>
               </div>
 
               <h3 className="max-w-[14ch] text-[clamp(2rem,4vw,3.4rem)] font-bold leading-[0.97] tracking-[-0.04em] text-secondary">
@@ -415,9 +408,14 @@ export default function AboutPageClient() {
             </div>
 
             <div className="rounded-[30px] border border-[#dbe9e1] bg-[linear-gradient(135deg,rgba(235,247,240,0.96),rgba(255,255,255,0.92))] p-8 shadow-[0_24px_60px_rgba(20,40,34,0.05)] sm:p-10 md:p-12">
-              <div className="mb-5 inline-flex items-center gap-3 rounded-full border border-[#d8e8df] bg-white/85 px-4 py-2 text-[10px] font-bold uppercase tracking-[0.22em] text-primary sm:text-[11px]">
-                <span className="h-2.5 w-2.5 rounded-full bg-primary-hover" />
-                Our Vision
+              <div className="mb-6 flex items-center gap-4">
+                <div className="flex items-center">
+                  <div className="h-1.5 w-1.5 rounded-full bg-primary" />
+                  <div className="h-[1px] w-8 bg-primary/40 -ml-0.5" />
+                </div>
+                <span className="text-[10px] font-bold uppercase tracking-[0.24em] text-primary sm:text-[11px]">
+                  Our Vision
+                </span>
               </div>
 
               <h3 className="max-w-[13ch] text-[clamp(2rem,4vw,3.4rem)] font-bold leading-[0.97] tracking-[-0.04em] text-secondary">
@@ -440,12 +438,20 @@ export default function AboutPageClient() {
             transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
           >
             <div className="mx-auto max-w-3xl text-center">
-              <div className="mb-5 inline-flex items-center gap-3 rounded-full border border-[#d8e8df] bg-white/80 px-4 py-2 text-[10px] font-bold uppercase tracking-[0.22em] text-primary shadow-[0_10px_20px_rgba(20,40,34,0.04)] backdrop-blur sm:text-[11px]">
-                <span className="h-2.5 w-2.5 rounded-full bg-primary-hover" />
-                Our Core Values
+              <div className="mb-6 flex items-center gap-4">
+                <div className="flex items-center">
+                  <div className="h-1.5 w-1.5 rounded-full bg-primary" />
+                  <div className="h-[1px] w-8 bg-primary/40 -ml-0.5" />
+                </div>
+                <span className="text-[10px] font-bold uppercase tracking-[0.24em] text-primary sm:text-[11px]">
+                  Our Core Values
+                </span>
               </div>
 
-              <h2 className="text-[clamp(2.3rem,5vw,4.6rem)] font-bold leading-[0.96] tracking-[-0.045em] text-secondary">
+              <h2
+                data-cursor="invert"
+                className="text-[clamp(2.3rem,5vw,4.6rem)] font-bold leading-[0.96] tracking-[-0.045em] text-secondary"
+              >
                 Principles that shape every patient experience
               </h2>
             </div>
@@ -487,12 +493,20 @@ export default function AboutPageClient() {
           >
             <div className="grid items-center gap-10 px-6 py-10 sm:px-8 md:px-10 md:py-12 lg:grid-cols-12 lg:px-14">
               <div className="lg:col-span-7">
-                <div className="mb-5 inline-flex items-center gap-3 rounded-full border border-[#d8e8df] bg-white/80 px-4 py-2 text-[10px] font-bold uppercase tracking-[0.22em] text-primary-hover sm:text-[11px]">
-                  <span className="h-2.5 w-2.5 rounded-full bg-primary-hover" />
-                  Begin Your Smile Journey
+                <div className="mb-6 flex items-center gap-4">
+                  <div className="flex items-center">
+                    <div className="h-1.5 w-1.5 rounded-full bg-primary" />
+                    <div className="h-[1px] w-8 bg-primary/40 -ml-0.5" />
+                  </div>
+                  <span className="text-[10px] font-bold uppercase tracking-[0.24em] text-primary sm:text-[11px]">
+                    Begin Your Smile Journey
+                  </span>
                 </div>
 
-                <h2 className="max-w-[12ch] text-[clamp(2.2rem,4.8vw,4rem)] font-bold leading-[0.96] tracking-[-0.04em] text-secondary">
+                <h2
+                  data-cursor="invert"
+                  className="max-w-[12ch] text-[clamp(2.2rem,4.8vw,4rem)] font-bold leading-[0.96] tracking-[-0.04em] text-secondary"
+                >
                   Experience dental care that feels calm, modern, and personal
                 </h2>
 
@@ -504,19 +518,11 @@ export default function AboutPageClient() {
                 </p>
 
                 <div className="mt-8 flex flex-col gap-4 sm:flex-row">
-                  <Link
-                    href="/book-appointment"
-                    className="inline-flex min-h-14 items-center justify-center rounded-[22px] bg-primary px-8 py-4 text-sm font-bold uppercase tracking-[0.22em] text-white shadow-[0_16px_40px_rgba(62,161,111,0.22)] transition-all duration-300 hover:-translate-y-1 hover:bg-primary-hover"
-                  >
-                    Schedule a Visit
-                  </Link>
+                  <Button href="/book-appointment">Schedule a Visit</Button>
 
-                  <Link
-                    href="/gallery"
-                    className="inline-flex min-h-14 items-center justify-center rounded-[22px] border border-[#cfdfd6] bg-white/88 px-8 py-4 text-sm font-bold uppercase tracking-[0.22em] text-primary-hover shadow-[0_10px_24px_rgba(20,40,34,0.05)] transition-all duration-300 hover:-translate-y-1"
-                  >
+                  <Button href="/gallery" variant="outline">
                     Explore Clinic
-                  </Link>
+                  </Button>
                 </div>
               </div>
 

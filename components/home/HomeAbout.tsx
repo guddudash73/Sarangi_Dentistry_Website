@@ -1,5 +1,6 @@
 "use client";
 
+import Button from "@/components/ui/Button";
 import { useRef } from "react";
 import {
   motion,
@@ -128,13 +129,13 @@ export default function HomeAbout() {
     >
       {/* ✅ NEW HERO-LIKE BACKGROUND */}
       <div className="pointer-events-none absolute inset-0">
-        <div className="absolute inset-0 bg-[rgba(236,247,241,0.7)]" />
-      
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_22%,rgba(100,203,186,0.18),transparent_32%),radial-gradient(circle_at_80%_30%,rgba(100,203,186,0.3),transparent_30%),radial-gradient(circle_at_50%_75%,rgba(36,68,58,0.06),transparent_34%)]" />
-      
-        <div className="absolute inset-0 bg-linear-to-b from-[rgba(255,255,255,0.25)] via-[rgba(248,255,250,0.12)] to-[rgba(248,255,250,0.35)]" />
+        {/* <div className="absolute inset-0 bg-[rgba(236,247,241,0.7)]" /> */}
+
+        {/* <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_22%,rgba(100,203,186,0),transparent_32%),radial-gradient(circle_at_80%_30%,rgba(100,203,186,0.3),transparent_30%),radial-gradient(circle_at_50%_75%,rgba(36,68,58,0.06),transparent_34%)]" /> */}
+
+        {/* <div className="absolute inset-0 bg-linear-to-b from-[rgba(255,255,255,0.25)] via-[rgba(248,255,250,0.12)] to-[rgba(248,255,250,0.35)]" /> */}
       </div>
-      
+
       <div className="relative mx-auto grid max-w-7xl grid-cols-1 items-center gap-12 px-5 sm:px-8 lg:grid-cols-12 lg:gap-12 lg:px-10">
         <motion.div
           style={{ y: imageWrapY, rotate: imageRotate }}
@@ -235,12 +236,20 @@ export default function HomeAbout() {
           </motion.div>
 
           <SectionReveal>
-            <div className="mb-4 inline-flex items-center gap-3 rounded-full border border-[#d6e8de] bg-white/75 px-4 py-2 text-[11px] font-bold uppercase tracking-[0.24em] text-secondary backdrop-blur">
-              <span className="h-2 w-2 rounded-full bg-primary" />
-              About
+            <div className="mb-6 flex items-center gap-4">
+              <div className="flex items-center">
+                <div className="h-1.5 w-1.5 rounded-full bg-primary" />
+                <div className="h-[1px] w-8 bg-primary/40 -ml-0.5" />
+              </div>
+              <span className="text-[10px] font-bold uppercase tracking-[0.24em] text-primary sm:text-[11px]">
+                About
+              </span>
             </div>
 
-            <h2 className="text-[clamp(2.5rem,4.5vw,4.3rem)] font-bold leading-[0.95] tracking-[-0.04em] text-secondary">
+            <h2
+              data-cursor="invert"
+              className="text-[clamp(2.5rem,4.5vw,4.3rem)] font-bold leading-[0.95] tracking-[-0.04em] text-secondary"
+            >
               Dr. Soumendra Sarangi
             </h2>
 
@@ -260,10 +269,7 @@ export default function HomeAbout() {
             </div>
 
             <div className="mt-8">
-              <Link
-                href="/about"
-                className="inline-flex items-center gap-3 rounded-[22px] bg-primary px-8 py-4 text-sm font-bold uppercase tracking-[0.22em] text-white shadow-[0_16px_36px_rgba(3,150,106,0.24)] transition-all duration-300 hover:-translate-y-1 hover:bg-primary-hover"
-              >
+              <Button href="/about">
                 Know More
                 <svg
                   className="h-5 w-5 transition-transform duration-300"
@@ -278,7 +284,7 @@ export default function HomeAbout() {
                     d="M17 8l4 4m0 0l-4 4m4-4H3"
                   />
                 </svg>
-              </Link>
+              </Button>
             </div>
           </SectionReveal>
         </motion.div>

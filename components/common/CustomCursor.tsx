@@ -131,6 +131,16 @@ export default function CustomCursor() {
     };
 
     const detectState = () => {
+      // Prevent cursor inversion when hovering over the header section
+      const header = document.querySelector("nav");
+      if (header) {
+        const headerRect = header.getBoundingClientRect();
+        if (mouse.y <= headerRect.bottom) {
+          animateState("default");
+          return;
+        }
+      }
+
       const invertTargets = document.querySelectorAll('[data-cursor="invert"]');
       let isInvert = false;
 

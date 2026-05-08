@@ -1,5 +1,6 @@
 "use client";
 
+import Button from "@/components/ui/Button";
 import { motion, useScroll, useTransform } from "framer-motion";
 import Link from "next/link";
 import { useRef } from "react";
@@ -38,27 +39,24 @@ export default function WhyChooseUsSection() {
     <section
       ref={sectionRef}
       style={{ position: "relative" }}
-      className="relative overflow-hidden bg-background py-20 sm:py-24 lg:py-28"
+      className="relative pt-20 sm:pt-24 lg:pt-28 pb-12 sm:pb-16"
     >
-      <div className="pointer-events-none absolute inset-0">
-        {/* Base soft wash */}
-        <div className="absolute inset-0 bg-[rgba(236,247,241,0.7)]" />
-
-        {/* Radial gradient layers (main depth) */}
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(var(--accent-soft-rgb),0.3),transparent_32%),radial-gradient(circle_at_80%_25%,rgba(var(--accent-soft-rgb),0.12),transparent_30%),radial-gradient(circle_at_50%_80%,rgba(36,68,58,0.05),transparent_34%)]" />
-
-        {/* Light top wash */}
-        <div className="absolute inset-0 bg-linear-to-b from-[rgba(255,255,255,0.22)] via-[rgba(248,255,250,0.12)] to-[rgba(248,255,250,0.32)]" />
-      </div>
-
       <div className="relative mx-auto max-w-7xl px-5 sm:px-8 lg:px-10">
         <SectionReveal className="mb-12 text-center">
-          <div className="mx-auto inline-flex items-center gap-3 rounded-full border border-[#d6e8de] bg-white/80 px-4 py-2 text-[11px] font-bold uppercase tracking-[0.24em] text-secondary">
-            <span className="h-2 w-2 rounded-full bg-primary" />
-            Why Choose Us
+          <div className="mb-6 flex items-center gap-4">
+            <div className="flex items-center">
+              <div className="h-1.5 w-1.5 rounded-full bg-primary" />
+              <div className="h-[1px] w-8 bg-primary/40 -ml-0.5" />
+            </div>
+            <span className="text-[10px] font-bold uppercase tracking-[0.24em] text-primary sm:text-[11px]">
+              Why Choose Us
+            </span>
           </div>
 
-          <h2 className="mx-auto mt-5 max-w-4xl font-['Cormorant_Garamond','Georgia',serif] text-[clamp(2.8rem,5vw,4.8rem)] font-bold leading-[0.95] tracking-[-0.04em] text-secondary">
+          <h2
+            data-cursor="invert"
+            className="mx-auto mt-5 max-w-4xl font-['Cormorant_Garamond','Georgia',serif] text-[clamp(2.8rem,5vw,4.8rem)] font-bold leading-[0.95] tracking-[-0.04em] text-secondary"
+          >
             A Dental Care Experience Designed Around Your Needs
           </h2>
 
@@ -116,12 +114,7 @@ export default function WhyChooseUsSection() {
                 </h3>
               </div>
 
-              <Link
-                href="/book-appointment"
-                className="inline-flex shrink-0 items-center justify-center rounded-[22px] bg-primary px-8 py-4 text-sm font-bold uppercase tracking-[0.22em] text-white shadow-[0_16px_36px_rgba(3,150,106,0.24)] transition-all duration-300 hover:-translate-y-1 hover:bg-primary-hover"
-              >
-                Schedule Visit
-              </Link>
+              <Button href="/book-appointment">Schedule Visit</Button>
             </div>
           </div>
         </SectionReveal>

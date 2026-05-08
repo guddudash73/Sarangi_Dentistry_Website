@@ -1,22 +1,36 @@
+// components/contact/ContactPageClient.tsx
 "use client";
 
-import Link from "next/link";
+import Button from "@/components/ui/Button";
 import PageBackground from "@/components/ui/PageBackground";
-import {
-  motion,
-  useReducedMotion,
-  type Transition,
-  type Variants,
-} from "framer-motion";
+import SectionReveal from "@/components/ui/SectionReveal";
+import ContactNoticeBar from "@/components/contact/ContactNoticeBar";
+import { motion, useReducedMotion, type Variants } from "framer-motion";
 import type { ContactInfo } from "@/types/contact";
 
 type ContactPageClientProps = {
   data: ContactInfo;
 };
 
-const EASE: Transition["ease"] = [0.22, 1, 0.36, 1];
+function EyebrowLabel({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="mb-6 flex items-center gap-4">
+      <div className="flex items-center">
+        <div className="h-1.5 w-1.5 rounded-full bg-primary" />
+        <div className="-ml-0.5 h-[1px] w-8 bg-primary/40" />
+      </div>
+      <span className="text-[10px] font-bold uppercase tracking-[0.24em] text-primary sm:text-[11px]">
+        {children}
+      </span>
+    </div>
+  );
+}
 
-function DetailIcon({ type }: { type: "location" | "phone" | "email" }) {
+function DetailIcon({
+  type,
+}: {
+  type: "location" | "phone" | "email" | "clock";
+}) {
   if (type === "location") {
     return (
       <svg
@@ -58,6 +72,24 @@ function DetailIcon({ type }: { type: "location" | "phone" | "email" }) {
     );
   }
 
+  if (type === "clock") {
+    return (
+      <svg
+        className="h-5 w-5"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+        strokeWidth={2}
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+        />
+      </svg>
+    );
+  }
+
   return (
     <svg
       className="h-5 w-5"
@@ -69,7 +101,7 @@ function DetailIcon({ type }: { type: "location" | "phone" | "email" }) {
       <path
         strokeLinecap="round"
         strokeLinejoin="round"
-        d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+        d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 012 2v10a2 2 0 002 2z"
       />
     </svg>
   );
@@ -78,165 +110,196 @@ function DetailIcon({ type }: { type: "location" | "phone" | "email" }) {
 export default function ContactPageClient({ data }: ContactPageClientProps) {
   const prefersReducedMotion = useReducedMotion();
 
-  const sectionVariants: Variants = {
+  const heroVariants: Variants = {
     hidden: { opacity: 0, y: prefersReducedMotion ? 0 : 22 },
     show: {
       opacity: 1,
       y: 0,
-      transition: {
-        duration: 0.65,
-        ease: EASE,
-      },
+      transition: { duration: 0.65, ease: [0.22, 1, 0.36, 1] },
     },
   };
 
   return (
-    <main className="min-h-screen overflow-x-clip   text-secondary">
-      <section className="relative pt-20">
+    <main className="min-h-screen overflow-x-clip bg-background text-secondary">
+      <section className="relative pb-24 pt-20 md:pt-28">
         <PageBackground />
+        <ContactNoticeBar contactInfo={data} />
 
-        <div className="relative mx-auto max-w-7xl px-5 pb-14 pt-8 sm:px-6 md:px-10 md:pb-18 lg:px-16 lg:pb-20">
+        <div className="relative mx-auto max-w-7xl px-5 pt-8 sm:px-6 md:px-10 lg:px-16">
           <motion.div
-            variants={sectionVariants}
+            variants={heroVariants}
             initial="hidden"
             animate="show"
-            className="grid gap-10 lg:grid-cols-12 lg:items-end"
+            className="grid gap-12 lg:grid-cols-12 lg:items-start"
           >
-            <div className="lg:col-span-7">
-              <div className="mb-6 inline-flex items-center gap-3 rounded-full border border-[#d8e8df] bg-white/84 px-5 py-3 text-[10px] font-bold uppercase tracking-[0.24em] text-primary-hover shadow-[0_10px_24px_rgba(20,40,34,0.05)] backdrop-blur sm:text-[11px]">
-                <span className="h-2.5 w-2.5 rounded-full bg-primary-hover" />
-                Contact & Appointments
+            <div className="lg:sticky lg:top-32 lg:col-span-6">
+              <EyebrowLabel>Contact &amp; Appointments</EyebrowLabel>
+
+              <h1
+                data-cursor="invert"
+                className="max-w-[12ch] text-[clamp(2.8rem,5vw,5.5rem)] font-bold leading-[0.9] tracking-[-0.06em] text-secondary"
+              >
+                Contact designed to feel as calm as the clinic
+              </h1>
+
+              <p className="mt-8 max-w-lg text-[1rem] leading-7 text-secondary-light sm:text-[1.06rem] sm:leading-8">
+                Reach out for appointments, directions, and treatment guidance
+                through a cleaner, more refined experience — designed to feel
+                reassuring before you even step inside.
+              </p>
+
+              <div className="mt-10 space-y-6">
+                <div className="flex items-start gap-4">
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-[#d9e8e0] bg-white text-primary">
+                    <DetailIcon type="phone" />
+                  </div>
+                  <div>
+                    <div className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary-hover">
+                      Phone
+                    </div>
+                    <a
+                      href={`tel:${data.phone}`}
+                      className="mt-1 block text-lg font-semibold text-secondary transition-colors hover:text-primary"
+                    >
+                      {data.phone}
+                    </a>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4">
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-[#d9e8e0] bg-white text-primary">
+                    <DetailIcon type="email" />
+                  </div>
+                  <div>
+                    <div className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary-hover">
+                      Email
+                    </div>
+                    <a
+                      href={`mailto:${data.email}`}
+                      className="mt-1 block break-all text-lg font-semibold text-secondary transition-colors hover:text-primary"
+                    >
+                      {data.email}
+                    </a>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4">
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-[#d9e8e0] bg-white text-primary">
+                    <DetailIcon type="clock" />
+                  </div>
+                  <div>
+                    <div className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary-hover">
+                      Clinic Hours
+                    </div>
+                    <div className="mt-1 space-y-0.5">
+                      {data.hours.map((h) => (
+                        <div
+                          key={`${h.label}-${h.value}`}
+                          className="flex gap-2 text-sm font-medium text-secondary-light"
+                        >
+                          <span className="font-semibold text-secondary">
+                            {h.label}:
+                          </span>
+                          <span>{h.value}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
               </div>
 
-              <div className="max-w-5xl">
-                <div className="mb-4 text-[11px] font-bold uppercase tracking-[0.28em] text-secondary-light">
-                  Sarangi Dentistry · Bhubaneswar
-                </div>
-
-                <h1 className="max-w-[9ch] text-[clamp(3.2rem,6vw,6.8rem)] font-bold leading-[0.84] tracking-[-0.075em] text-secondary">
-                  Contact designed to feel as calm as the clinic itself
-                </h1>
-
-                <p className="mt-8 max-w-3xl text-[1rem] leading-7 text-secondary-light sm:text-[1.06rem] sm:leading-8 md:text-[1.12rem]">
-                  Reach out for appointments, directions, and treatment guidance
-                  through a cleaner, more refined contact experience — designed
-                  to feel reassuring before you even step into the clinic.
-                </p>
-
-                <div className="mt-10 grid gap-4 sm:grid-cols-3 lg:max-w-3xl">
-                  {[
-                    { value: "Direct", label: "Phone & Email Access" },
-                    { value: "Easy", label: "Location Guidance" },
-                    { value: "Calm", label: "Patient-First Experience" },
-                  ].map((item) => (
-                    <div
-                      key={item.label}
-                      className="rounded-[24px] border border-[#d9e8e0] bg-white/76 p-5 shadow-[0_12px_26px_rgba(20,40,34,0.04)]"
-                    >
-                      <div className="text-[1.95rem] font-black tracking-[-0.05em] text-primary-hover">
-                        {item.value}
-                      </div>
-                      <div className="mt-2 text-[11px] font-bold uppercase tracking-[0.2em] text-primary">
-                        {item.label}
-                      </div>
-                    </div>
-                  ))}
-                </div>
+              <div className="mt-10 flex flex-col gap-4 sm:flex-row">
+                <Button href={`tel:${data.phone}`}>Call Clinic</Button>
+                <Button href={`mailto:${data.email}`} variant="outline">
+                  Write Email
+                </Button>
               </div>
             </div>
 
-            <div className="lg:col-span-5">
-              <div className="relative">
-                <div className="absolute -left-6 -top-6 hidden h-24 w-24 rounded-full border border-[#cfe3d8] bg-white/40 backdrop-blur md:block" />
-                <div className="absolute -bottom-8 right-8 hidden h-16 w-16 rounded-full bg-[#03966a]/12 blur-2xl md:block" />
-
-                <div className="relative overflow-hidden rounded-[34px] border border-[#dcebe3] bg-[linear-gradient(180deg,rgba(255,255,255,0.84),rgba(243,249,245,0.95))] p-6 shadow-[0_24px_60px_rgba(20,40,34,0.07)] backdrop-blur sm:p-7">
-                  <div className="mb-6 flex items-center justify-between border-b border-[#dcebe3] pb-5">
-                    <div>
-                      <div className="text-[11px] font-bold uppercase tracking-[0.22em] text-primary-hover">
-                        Quick Contact
-                      </div>
-                      <div className="mt-2 text-[1.35rem] font-semibold tracking-[-0.03em] text-secondary-light">
-                        Start with what feels easiest
-                      </div>
-                    </div>
-
-                    <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#edf8f2] text-primary-hover">
-                      <svg
-                        className="h-5 w-5"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        strokeWidth={2}
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M8 12h8m-4-4v8"
-                        />
-                      </svg>
-                    </div>
+            <div className="lg:col-span-6">
+              <div className="overflow-hidden rounded-[28px] border border-[#dcebe3] bg-[linear-gradient(180deg,rgba(255,255,255,0.92),rgba(244,250,246,0.98))] shadow-[0_24px_60px_rgba(20,40,34,0.06)]">
+                <div className="border-b border-[#dcebe3] px-6 py-6 sm:px-8">
+                  <div className="text-[11px] font-bold uppercase tracking-[0.22em] text-primary">
+                    Quick Access
                   </div>
+                  <h2 className="mt-3 text-[clamp(1.7rem,3vw,2.4rem)] font-bold leading-[0.95] tracking-[-0.04em] text-secondary">
+                    Start with what feels easiest
+                  </h2>
+                </div>
 
-                  <div className="space-y-4">
-                    <div className="rounded-[24px] border border-[#d9e8e0] bg-white/80 p-4 shadow-[0_10px_22px_rgba(20,40,34,0.04)]">
-                      <div className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary-hover">
-                        Phone
+                <div className="space-y-5 px-6 py-7 sm:px-8 sm:py-8">
+                  <div className="rounded-[22px] border border-[#d9e8e0] bg-white/90 p-5 shadow-[0_14px_28px_rgba(20,40,34,0.04)]">
+                    <div className="flex items-start gap-4">
+                      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-[#d9e8e0] bg-background text-primary">
+                        <DetailIcon type="location" />
                       </div>
-                      <a
-                        href={`tel:${data.phone}`}
-                        className="mt-2 block text-[1.05rem] font-semibold text-secondary transition-colors duration-300 hover:text-primary"
-                      >
-                        {data.phone}
-                      </a>
-                    </div>
-
-                    <div className="rounded-[24px] border border-[#d9e8e0] bg-white/80 p-4 shadow-[0_10px_22px_rgba(20,40,34,0.04)]">
-                      <div className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary-hover">
-                        Email
-                      </div>
-                      <a
-                        href={`mailto:${data.email}`}
-                        className="mt-2 block break-all text-[1.05rem] font-semibold text-secondary transition-colors duration-300 hover:text-primary-hover"
-                      >
-                        {data.email}
-                      </a>
-                    </div>
-
-                    <div className="rounded-[24px] border border-[#d9e8e0] bg-secondary-light p-4 text-white shadow-[0_14px_30px_rgba(20,40,34,0.10)]">
-                      <div className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/68">
-                        Visit Window
-                      </div>
-                      <div className="mt-3 space-y-2">
-                        {data.hours.map((item) => (
-                          <div
-                            key={item.label}
-                            className="flex items-center justify-between gap-3 text-sm"
-                          >
-                            <span className="font-bold uppercase tracking-[0.18em] text-white/72">
-                              {item.label}
-                            </span>
-                            <span className="text-white">{item.value}</span>
-                          </div>
-                        ))}
+                      <div>
+                        <div className="text-[10px] font-bold uppercase tracking-[0.2em] text-secondary-light">
+                          Address
+                        </div>
+                        <div className="mt-2 space-y-0.5 text-[0.97rem] leading-7 text-secondary">
+                          {data.addressLines.map((line) => (
+                            <div key={line}>{line}</div>
+                          ))}
+                        </div>
                       </div>
                     </div>
                   </div>
 
-                  <div className="mt-6 flex flex-col gap-4 sm:flex-row">
-                    <Link
-                      href={`tel:${data.phone}`}
-                      className="inline-flex min-h-[56px] flex-1 items-center justify-center rounded-[22px] bg-primary px-8 py-4 text-sm font-bold uppercase tracking-[0.22em] text-white shadow-[0_16px_40px_rgba(62,161,111,0.22)] transition-all duration-300 hover:-translate-y-1 hover:bg-primary-hover"
-                    >
-                      Call Clinic
-                    </Link>
+                  <div className="rounded-[22px] border border-[#d9e8e0] bg-white/90 p-5 shadow-[0_14px_28px_rgba(20,40,34,0.04)]">
+                    <div className="flex items-start gap-4">
+                      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-[#d9e8e0] bg-background text-primary">
+                        <DetailIcon type="phone" />
+                      </div>
+                      <div>
+                        <div className="text-[10px] font-bold uppercase tracking-[0.2em] text-secondary-light">
+                          Phone
+                        </div>
+                        <a
+                          href={`tel:${data.phone}`}
+                          className="mt-2 block text-[1.05rem] font-semibold text-secondary transition-colors hover:text-primary"
+                        >
+                          {data.phone}
+                        </a>
+                      </div>
+                    </div>
+                  </div>
 
-                    <a
-                      href={`mailto:${data.email}`}
-                      className="inline-flex min-h-[56px] flex-1 items-center justify-center rounded-[22px] border border-[#cfdfd6] bg-white px-8 py-4 text-sm font-bold uppercase tracking-[0.22em] text-primary-hover shadow-[0_10px_24px_rgba(20,40,34,0.05)] transition-all duration-300 hover:-translate-y-1"
-                    >
-                      Write Email
-                    </a>
+                  <div className="rounded-[22px] bg-secondary p-5 text-white shadow-[0_14px_30px_rgba(20,40,34,0.12)]">
+                    <div className="text-[10px] font-bold uppercase tracking-[0.22em] text-white/60">
+                      Visit Window
+                    </div>
+                    <div className="mt-4 space-y-2">
+                      {data.hours.map((h) => (
+                        <div
+                          key={`${h.label}-${h.value}`}
+                          className="flex items-center justify-between gap-3 text-sm"
+                        >
+                          <span className="font-bold uppercase tracking-[0.16em] text-white/65">
+                            {h.label}
+                          </span>
+                          <span className="font-medium text-white">
+                            {h.value}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="rounded-[22px] border border-[#d9e8e0] bg-white/90 px-5 py-4 shadow-[0_14px_28px_rgba(20,40,34,0.04)]">
+                    <div className="mb-3 text-[10px] font-bold uppercase tracking-[0.2em] text-secondary-light">
+                      Appointment Focus
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {data.quickHighlights.map((item) => (
+                        <span
+                          key={item}
+                          className="rounded-full border border-[#d9e8e0] bg-background px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-primary-hover"
+                        >
+                          {item}
+                        </span>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -245,135 +308,36 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
         </div>
       </section>
 
-      <section className="relative px-5 pb-24 pt-10 sm:px-6 md:px-10 md:pb-32 lg:px-16">
-        <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-12">
-          <motion.div
-            variants={sectionVariants}
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true, amount: 0.12 }}
-            className="lg:col-span-5"
-          >
-            <div className="overflow-hidden rounded-[34px] border border-[#dcebe3] bg-[linear-gradient(180deg,rgba(255,255,255,0.96),rgba(244,250,246,0.98))] shadow-[0_24px_60px_rgba(20,40,34,0.05)]">
-              <div className="border-b border-[#dcebe3] px-6 py-6 sm:px-8">
-                <div className="text-[11px] font-bold uppercase tracking-[0.22em] text-primary">
-                  Contact Details
-                </div>
-                <h2 className="mt-3 text-[clamp(1.9rem,3vw,2.8rem)] font-bold leading-[0.95] tracking-[-0.04em] text-secondary">
-                  Visit, call, or write to us
-                </h2>
-              </div>
+      <section className="relative z-10 overflow-hidden px-5 pb-24 pt-0 sm:px-6 md:px-10 lg:px-16">
+        <div className="pointer-events-none absolute inset-0">
+          <div className="absolute inset-0 bg-linear-to-b from-[rgba(255,255,255,0.22)] via-[rgba(248,255,250,0.12)] to-[rgba(248,255,250,0.30)]" />
+        </div>
 
-              <div className="space-y-6 px-6 py-7 sm:px-8 sm:py-8">
-                <div className="rounded-[26px] border border-[#d9e8e0] bg-white/78 p-5 shadow-[0_14px_28px_rgba(20,40,34,0.04)]">
-                  <div className="flex items-start gap-4">
-                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#edf8f2] text-primary-hover">
-                      <DetailIcon type="location" />
-                    </div>
-                    <div>
-                      <div className="text-[11px] font-bold uppercase tracking-[0.22em] text-primary">
-                        Address
-                      </div>
-                      <div className="mt-3 space-y-1 text-[1rem] leading-7 text-secondary">
-                        {data.addressLines.map((line) => (
-                          <div key={line}>{line}</div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="rounded-[26px] border border-[#d9e8e0] bg-white/78 p-5 shadow-[0_14px_28px_rgba(20,40,34,0.04)]">
-                  <div className="flex items-start gap-4">
-                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#edf8f2] text-primary-hover">
-                      <DetailIcon type="phone" />
-                    </div>
-                    <div>
-                      <div className="text-[11px] font-bold uppercase tracking-[0.22em] text-primary">
-                        Phone
-                      </div>
-                      <a
-                        href={`tel:${data.phone}`}
-                        className="mt-3 inline-block text-[1.05rem] font-semibold text-secondary transition-colors duration-300 hover:text-primary"
-                      >
-                        {data.phone}
-                      </a>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="rounded-[26px] border border-[#d9e8e0] bg-white/78 p-5 shadow-[0_14px_28px_rgba(20,40,34,0.04)]">
-                  <div className="flex items-start gap-4">
-                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#edf8f2] text-primary-hover">
-                      <DetailIcon type="email" />
-                    </div>
-                    <div>
-                      <div className="text-[11px] font-bold uppercase tracking-[0.22em] text-primary">
-                        Email
-                      </div>
-                      <a
-                        href={`mailto:${data.email}`}
-                        className="mt-3 inline-block break-all text-[1.05rem] font-semibold text-secondary transition-colors duration-300 hover:text-primary"
-                      >
-                        {data.email}
-                      </a>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="rounded-[26px] border border-[#d9e8e0] bg-white/78 p-5 shadow-[0_14px_28px_rgba(20,40,34,0.04)]">
-                  <div className="text-[11px] font-bold uppercase tracking-[0.22em] text-secondary">
-                    Appointment Focus
-                  </div>
-                  <div className="mt-4 flex flex-wrap gap-2">
-                    {data.quickHighlights.map((item) => (
-                      <span
-                        key={item}
-                        className="rounded-full border border-[#d7e7de] bg-[#f8fcfa] px-3 py-2 text-[10px] font-bold uppercase tracking-[0.18em] text-primary-hover"
-                      >
-                        {item}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-
-          <motion.div
-            variants={sectionVariants}
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true, amount: 0.12 }}
-            className="lg:col-span-7"
-          >
-            <div className="overflow-hidden rounded-[34px] border border-[#dcebe3] bg-white shadow-[0_24px_60px_rgba(20,40,34,0.05)]">
-              <div className="flex flex-col gap-4 border-b border-[#dcebe3] px-6 py-6 sm:flex-row sm:items-end sm:justify-between sm:px-8">
+        <div className="relative mx-auto max-w-7xl">
+          <SectionReveal>
+            <div className="overflow-hidden rounded-[30px] border border-[#dce9e2] bg-[linear-gradient(135deg,rgba(255,255,255,0.95),rgba(239,248,243,0.94))] shadow-[0_30px_80px_rgba(20,40,34,0.07)]">
+              <div className="flex flex-col gap-4 border-b border-[#dcebe3] px-6 py-6 sm:flex-row sm:items-end sm:justify-between sm:px-8 md:px-10 md:py-8">
                 <div>
-                  <div className="text-[11px] font-bold uppercase tracking-[0.22em] text-primary-hover">
-                    Clinic Map
-                  </div>
-                  <h2 className="mt-3 text-[clamp(1.9rem,3vw,2.8rem)] font-bold leading-[0.95] tracking-[-0.04em] text-secondary">
+                  <EyebrowLabel>Clinic Map</EyebrowLabel>
+                  <h2
+                    data-cursor="invert"
+                    className="max-w-[14ch] text-[clamp(2rem,4vw,3.4rem)] font-bold leading-[0.97] tracking-[-0.04em] text-secondary"
+                  >
                     Find us with ease
                   </h2>
                 </div>
-
-                <p className="max-w-md text-sm leading-6 text-primary-hover">
+                <p className="max-w-md text-sm leading-6 text-secondary-light">
                   Use the live map for directions before your visit to Sarangi
                   Dentistry.
                 </p>
               </div>
 
-              <div className="relative min-h-[420px] bg-[#edf6f1] sm:min-h-[540px]">
+              <div className="relative min-h-[420px] bg-background sm:min-h-[560px]">
                 <iframe
                   src={data.mapEmbedUrl}
                   width="100%"
                   height="100%"
-                  style={{
-                    border: 0,
-                    position: "absolute",
-                    inset: 0,
-                  }}
+                  style={{ border: 0, position: "absolute", inset: 0 }}
                   allowFullScreen
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
@@ -381,7 +345,63 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
                 />
               </div>
             </div>
-          </motion.div>
+          </SectionReveal>
+        </div>
+      </section>
+
+      <section className="relative z-10 overflow-hidden px-5 pb-28 sm:px-6 md:px-10 lg:px-16">
+        <div className="relative mx-auto max-w-7xl">
+          <SectionReveal>
+            <div className="overflow-hidden rounded-[30px] border border-[#dce9e2] bg-[linear-gradient(135deg,rgba(255,255,255,0.95),rgba(239,248,243,0.94))] shadow-[0_30px_80px_rgba(20,40,34,0.07)]">
+              <div className="grid items-center gap-10 px-6 py-10 sm:px-8 md:px-10 md:py-12 lg:grid-cols-12 lg:px-14">
+                <div className="lg:col-span-7">
+                  <EyebrowLabel>Book a Visit</EyebrowLabel>
+
+                  <h2
+                    data-cursor="invert"
+                    className="max-w-[12ch] text-[clamp(2.2rem,4.8vw,4rem)] font-bold leading-[0.96] tracking-[-0.04em] text-secondary"
+                  >
+                    Ready to experience calm, modern dentistry?
+                  </h2>
+
+                  <p className="mt-5 max-w-2xl text-[1rem] leading-7 text-secondary-light sm:text-[1.05rem] sm:leading-8">
+                    Whether you are planning a routine check-up, a smile
+                    enhancement, or a more advanced procedure, we are here to
+                    guide you with expert care and a patient experience designed
+                    around comfort and confidence.
+                  </p>
+
+                  <div className="mt-8 flex flex-col gap-4 sm:flex-row">
+                    <Button href="/book-appointment">Book Appointment</Button>
+                    <Button href="/procedure" variant="outline">
+                      Explore Procedures
+                    </Button>
+                  </div>
+                </div>
+
+                <div className="lg:col-span-5">
+                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                    {data.quickHighlights.slice(0, 4).map((item, i) => (
+                      <motion.div
+                        key={item}
+                        initial={{ opacity: 0, y: 18 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true, amount: 0.4 }}
+                        transition={{
+                          duration: 0.48,
+                          delay: i * 0.06,
+                          ease: [0.22, 1, 0.36, 1],
+                        }}
+                        className="rounded-[22px] border border-[#d9e8e0] bg-white/92 p-5 text-sm font-semibold uppercase tracking-[0.18em] text-secondary-light shadow-[0_12px_28px_rgba(20,40,34,0.04)]"
+                      >
+                        {item}
+                      </motion.div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </SectionReveal>
         </div>
       </section>
     </main>

@@ -1,9 +1,11 @@
+// components/blog/BlogPostPageClient.tsx
 "use client";
 
 import Link from "next/link";
 import { motion, useReducedMotion, type Transition } from "framer-motion";
 import type { BlogPost } from "@/types/blog";
 import PageBackground from "@/components/ui/PageBackground";
+import Button from "@/components/ui/Button";
 
 type BlogPostPageClientProps = {
   blog: BlogPost;
@@ -12,64 +14,31 @@ type BlogPostPageClientProps = {
 
 const EASE: Transition["ease"] = [0.22, 1, 0.36, 1];
 
-function ContentRenderer({ content }: { content: BlogPost["content"] }) {
+function getBlogHeroImage(blog: BlogPost): string {
+  return blog.fullUrl ?? blog.cardUrl ?? blog.image;
+}
+
+function getBlogCardImage(blog: BlogPost): string {
+  return blog.cardUrl ?? blog.thumbnailUrl ?? blog.fullUrl ?? blog.image;
+}
+
+function FadeUp(props: {
+  children: React.ReactNode;
+  delay?: number;
+  className?: string;
+}) {
+  const prefersReducedMotion = useReducedMotion();
+
   return (
-    <div className="space-y-6">
-      {content.map((block, index) => {
-        if (block.type === "heading") {
-          return (
-            <h2
-              key={index}
-              className="pt-6 text-[1.6rem] font-bold leading-tight tracking-[-0.03em] text-[#24443a] sm:text-[1.9rem]"
-            >
-              {block.text}
-            </h2>
-          );
-        }
-
-        if (block.type === "paragraph") {
-          return (
-            <p
-              key={index}
-              className="text-[1rem] leading-8 text-[#3f5b51] sm:text-[1.05rem]"
-            >
-              {block.text}
-            </p>
-          );
-        }
-
-        if (block.type === "quote") {
-          return (
-            <div
-              key={index}
-              className="rounded-[28px] border border-[#d9e8e0] bg-[linear-gradient(180deg,rgba(255,255,255,0.92),rgba(241,248,244,0.92))] px-6 py-6 shadow-[0_16px_36px_rgba(20,40,34,0.04)]"
-            >
-              <p className="text-[1.1rem] font-medium leading-8 tracking-[-0.01em] text-[#24443a] sm:text-[1.2rem]">
-                “{block.text}”
-              </p>
-            </div>
-          );
-        }
-
-        if (block.type === "list") {
-          return (
-            <ul key={index} className="space-y-3">
-              {block.items.map((item, itemIndex) => (
-                <li
-                  key={itemIndex}
-                  className="flex gap-3 text-[1rem] leading-7 text-[#3f5b51]"
-                >
-                  <span className="mt-2 h-2.5 w-2.5 rounded-full bg-[#03966a] shrink-0" />
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-          );
-        }
-
-        return null;
-      })}
-    </div>
+    <motion.div
+      initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 26 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.14 }}
+      transition={{ duration: 0.68, delay: props.delay ?? 0, ease: EASE }}
+      className={props.className}
+    >
+      {props.children}
+    </motion.div>
   );
 }
 
@@ -80,165 +49,221 @@ export default function BlogPostPageClient({
   const prefersReducedMotion = useReducedMotion();
 
   return (
-    <main className="min-h-screen overflow-x-clip bg-background pt-28 text-[#24443a]">
-      <section className="relative">
+    <main className="min-h-screen overflow-x-clip bg-background text-secondary">
+      <section className="relative pt-20">
         <PageBackground />
 
-        <div className="relative mx-auto max-w-7xl px-5 pb-12 pt-8 sm:px-6 md:px-10 lg:px-16">
-          <nav className="mb-8 flex flex-wrap items-center gap-2 text-sm font-medium text-[#5a746a]">
-            <Link href="/" className="transition-colors hover:text-[#03966a]">
-              Home
-            </Link>
-            <span>/</span>
-            <Link
-              href="/blog"
-              className="transition-colors hover:text-[#03966a]"
+        <div className="relative mx-auto max-w-7xl px-5 pb-14 pt-8 sm:px-6 md:px-10 lg:px-16 lg:pb-20">
+          <FadeUp>
+            <nav className="mb-10 flex flex-wrap items-center gap-2 text-sm font-medium text-secondary-light">
+              <Link
+                href="/"
+                className="transition-colors hover:text-primary-hover"
+              >
+                Home
+              </Link>
+              <span>/</span>
+              <Link
+                href="/blog"
+                className="transition-colors hover:text-primary-hover"
+              >
+                Blog
+              </Link>
+              <span>/</span>
+              <span className="text-primary">{blog.title}</span>
+            </nav>
+          </FadeUp>
+
+          <div className="mx-auto max-w-5xl text-center">
+            <motion.div
+              initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.65, ease: EASE }}
+              className="mb-5 inline-flex items-center gap-3 rounded-full border border-[#d8e8df] bg-white/80 px-4 py-2 text-[10px] font-bold uppercase tracking-[0.22em] text-primary shadow-[0_10px_20px_rgba(20,40,34,0.04)] backdrop-blur sm:text-[11px]"
             >
-              Blog
-            </Link>
-            <span>/</span>
-            <span className="text-[#03966a]">{blog.title}</span>
-          </nav>
+              <span className="h-2.5 w-2.5 rounded-full bg-primary-hover" />
+              {blog.category}
+            </motion.div>
+
+            <motion.h1 data-cursor="invert"
+              initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.75, delay: 0.08, ease: EASE }}
+              className="mx-auto max-w-4xl text-[clamp(2.8rem,5.8vw,5.7rem)] font-bold leading-[0.92] tracking-[-0.055em] text-secondary"
+            >
+              {blog.title}
+            </motion.h1>
+
+            <motion.p
+              initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.75, delay: 0.16, ease: EASE }}
+              className="mx-auto mt-6 max-w-3xl text-[1rem] leading-8 text-secondary-light sm:text-[1.05rem]"
+            >
+              {blog.excerpt}
+            </motion.p>
+
+            <motion.div
+              initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.75, delay: 0.24, ease: EASE }}
+              className="mt-7 flex flex-wrap items-center justify-center gap-3 text-sm text-primary-hover"
+            >
+              <span>{blog.author}</span>
+              <span>•</span>
+              <span>{blog.date}</span>
+              <span>•</span>
+              <span>{blog.readTime}</span>
+            </motion.div>
+          </div>
 
           <motion.div
             initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 24 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.65, ease: EASE }}
-            className="grid gap-10 lg:grid-cols-12 lg:items-end"
-          >
-            <div className="lg:col-span-8">
-              <div className="mb-5 inline-flex items-center rounded-full border border-[#d8e8df] bg-white/82 px-4 py-2 text-[10px] font-bold uppercase tracking-[0.22em] text-[#2f6e5b] shadow-[0_10px_20px_rgba(20,40,34,0.04)]">
-                {blog.category}
-              </div>
-
-              <h1 className="max-w-[12ch] text-[clamp(2.7rem,5.4vw,5.6rem)] font-bold leading-[0.92] tracking-[-0.055em] text-[#21493d]">
-                {blog.title}
-              </h1>
-            </div>
-
-            <div className="lg:col-span-4">
-              <div className="rounded-[28px] border border-[#d9e8e0] bg-white/80 p-5 shadow-[0_14px_30px_rgba(20,40,34,0.04)]">
-                <div className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#6d877d]">
-                  Written by
-                </div>
-                <div className="mt-2 text-lg font-semibold text-[#24443a]">
-                  {blog.author}
-                </div>
-                <div className="mt-4 text-[11px] font-bold uppercase tracking-[0.2em] text-[#6d877d]">
-                  Published
-                </div>
-                <div className="mt-2 text-base text-[#4a635a]">{blog.date}</div>
-                <div className="mt-4 text-[11px] font-bold uppercase tracking-[0.2em] text-[#6d877d]">
-                  Reading time
-                </div>
-                <div className="mt-2 text-base text-[#4a635a]">
-                  {blog.readTime}
-                </div>
-              </div>
-            </div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, scale: prefersReducedMotion ? 1 : 0.98 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.75, delay: 0.08, ease: EASE }}
-            className="mt-10 overflow-hidden rounded-[34px] border border-white/80 shadow-[0_30px_80px_rgba(20,40,34,0.12)]"
+            transition={{ duration: 0.85, delay: 0.28, ease: EASE }}
+            className="mx-auto mt-12 max-w-6xl overflow-hidden rounded-[34px] border border-white/80 bg-white/60 p-3 shadow-[0_30px_80px_rgba(20,40,34,0.10)] backdrop-blur"
           >
             <img
-              src={blog.image}
+              src={getBlogHeroImage(blog)}
               alt={blog.title}
-              className="aspect-[16/8] w-full object-cover"
+              loading="eager"
+              decoding="async"
+              fetchPriority="high"
+              className="aspect-[16/9] w-full rounded-[28px] object-cover"
             />
           </motion.div>
         </div>
       </section>
 
-      <section className="relative px-5 py-14 sm:px-6 md:px-10 lg:px-16">
-        <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-12">
-          <aside className="hidden lg:block lg:col-span-3">
-            <div className="sticky top-28 rounded-[30px] border border-[#d9e8e0] bg-[linear-gradient(180deg,rgba(255,255,255,0.94),rgba(244,250,246,0.95))] p-6 shadow-[0_18px_40px_rgba(20,40,34,0.05)]">
-              <div className="text-[11px] font-bold uppercase tracking-[0.22em] text-[#6d877d]">
-                Article Navigation
-              </div>
+      <section className="relative px-5 py-10 sm:px-6 md:px-10 lg:px-16">
+        <div className="mx-auto max-w-4xl">
+          <FadeUp>
+            <div
+              className="max-w-none text-secondary-light
+                [&_p]:my-5 [&_p]:text-[1.02rem] [&_p]:leading-8
+                [&_h1]:pt-8 [&_h1]:text-[2rem] [&_h1]:font-bold [&_h1]:leading-tight [&_h1]:tracking-[-0.03em] [&_h1]:text-secondary
+                [&_h2]:pt-8 [&_h2]:text-[1.75rem] [&_h2]:font-bold [&_h2]:leading-tight [&_h2]:tracking-[-0.03em] [&_h2]:text-secondary
+                [&_h3]:pt-6 [&_h3]:text-[1.35rem] [&_h3]:font-bold [&_h3]:leading-tight [&_h3]:tracking-[-0.02em] [&_h3]:text-secondary
+                [&_blockquote]:my-8 [&_blockquote]:border-l-2 [&_blockquote]:border-primary [&_blockquote]:pl-6
+                [&_blockquote]:text-[1.12rem] [&_blockquote]:font-medium [&_blockquote]:leading-8 [&_blockquote]:text-secondary
+                [&_ul]:my-6 [&_ul]:space-y-3 [&_ul]:pl-6
+                [&_ol]:my-6 [&_ol]:space-y-3 [&_ol]:pl-6
+                [&_li]:text-[1.02rem] [&_li]:leading-8
+                [&_ul>li]:list-disc [&_ul>li]:marker:text-primary
+                [&_ol>li]:list-decimal [&_ol>li]:marker:text-primary
+                [&_a]:font-medium [&_a]:text-primary-hover [&_a]:underline-offset-4 hover:[&_a]:underline
+                [&_strong]:font-semibold [&_strong]:text-secondary
+                [&_em]:italic"
+              dangerouslySetInnerHTML={{ __html: blog.bodyHtml }}
+            />
+          </FadeUp>
+        </div>
+      </section>
 
-              <div className="mt-5 space-y-3">
-                <Link
-                  href="/blog"
-                  className="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-[0.18em] text-[#2f5548] transition-colors duration-300 hover:text-[#03966a]"
-                >
-                  <svg
-                    className="h-4 w-4 rotate-180"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M13 7l5 5m0 0l-5 5m5-5H6"
-                    />
-                  </svg>
-                  Back to Blog
-                </Link>
-              </div>
+      {relatedBlogs.length > 0 ? (
+        <section className="relative px-5 py-14 sm:px-6 md:px-10 md:py-18 lg:px-16">
+          <div className="mx-auto max-w-6xl">
+            <FadeUp>
+              <div className="mb-10 text-center">
+                <div className="mb-6 flex items-center gap-4">
+  <div className="flex items-center">
+    <div className="h-1.5 w-1.5 rounded-full bg-primary" />
+    <div className="h-[1px] w-8 bg-primary/40 -ml-0.5" />
+  </div>
+  <span className="text-[10px] font-bold uppercase tracking-[0.24em] text-primary sm:text-[11px]">
+    Related Articles
+  </span>
+</div>
 
-              <div className="mt-8 rounded-[24px] border border-[#dcebe3] bg-white/80 p-5">
-                <div className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#6d877d]">
-                  Designed for
-                </div>
-                <div className="mt-2 text-base font-semibold text-[#24443a]">
-                  Clear patient education
+                <h2 data-cursor="invert" className="text-[clamp(2.1rem,4.5vw,3.5rem)] font-bold leading-[0.96] tracking-[-0.04em] text-secondary">
+                  Continue reading
+                </h2>
+              </div>
+            </FadeUp>
+
+            <div className="grid gap-8 md:grid-cols-2">
+              {relatedBlogs.map((item, index) => (
+                <FadeUp key={item.id} delay={index * 0.06}>
+                  <article className="group">
+                    <Link href={`/blog/${item.id}`} className="block">
+                      <div className="overflow-hidden rounded-[28px] border border-[#dcebe3] bg-white/85 shadow-[0_16px_36px_rgba(20,40,34,0.05)] transition-all duration-500 group-hover:-translate-y-1 group-hover:shadow-[0_22px_48px_rgba(20,40,34,0.08)]">
+                        <img
+                          src={getBlogCardImage(item)}
+                          alt={item.title}
+                          loading="lazy"
+                          decoding="async"
+                          className="aspect-[4/2.75] w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+                        />
+
+                        <div className="p-6">
+                          <div className="mb-3 text-[10px] font-bold uppercase tracking-[0.2em] text-primary-hover">
+                            {item.category}
+                          </div>
+
+                          <h3 className="text-[1.2rem] font-semibold leading-tight text-secondary transition-colors duration-300 group-hover:text-primary-hover">
+                            {item.title}
+                          </h3>
+
+                          <p className="mt-3 line-clamp-3 text-[0.96rem] leading-7 text-secondary-light">
+                            {item.excerpt}
+                          </p>
+
+                          <div className="mt-5 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.18em] text-primary">
+                            Read Article
+                            <svg
+                              className="h-4 w-4"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M13 7l5 5m0 0l-5 5m5-5H6"
+                              />
+                            </svg>
+                          </div>
+                        </div>
+                      </div>
+                    </Link>
+                  </article>
+                </FadeUp>
+              ))}
+            </div>
+          </div>
+        </section>
+      ) : null}
+
+      <section className="relative px-5 py-16 sm:px-6 md:px-10 md:py-20 lg:px-16">
+        <div className="mx-auto max-w-6xl">
+          <FadeUp>
+            <div className="relative overflow-hidden rounded-[36px] border border-[#dce9e2] bg-primary shadow-[0_30px_80px_rgba(20,40,34,0.10)]">
+              <div className="absolute -right-12 -top-12 h-48 w-48 rounded-full bg-white/45 blur-3xl" />
+              <div className="absolute -bottom-12 -left-12 h-48 w-48 rounded-full bg-white/45 blur-3xl" />
+
+              <div className="relative z-10 mx-auto max-w-3xl px-6 py-12 text-center sm:px-8 md:px-10 md:py-14">
+                <h2 data-cursor="invert" className="text-[clamp(2.2rem,4.8vw,4rem)] font-bold leading-[0.96] tracking-[-0.04em] text-white">
+                  Need personalized dental guidance?
+                </h2>
+
+                <p className="mx-auto mt-5 max-w-2xl text-[1rem] leading-7 text-white/88 sm:text-[1.05rem] sm:leading-8">
+                  Schedule a consultation with Sarangi Dentistry for clear,
+                  patient-first advice.
+                </p>
+
+                <div className="mt-8 flex flex-col justify-center gap-4 sm:flex-row">
+                  <Button href="/contact" variant="white">
+                    Schedule a Visit
+                  </Button>
+
+                  <Button href="/blog" variant="ghost">
+                    Browse Articles
+                  </Button>
                 </div>
               </div>
             </div>
-          </aside>
-
-          <motion.article
-            initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.12 }}
-            transition={{ duration: 0.65, ease: EASE }}
-            className="lg:col-span-6"
-          >
-            <div className="rounded-[34px] border border-[#dcebe3] bg-white/88 p-6 shadow-[0_24px_60px_rgba(20,40,34,0.05)] sm:p-8 md:p-10">
-              <ContentRenderer content={blog.content} />
-            </div>
-          </motion.article>
-
-          <aside className="lg:col-span-3">
-            <motion.div
-              initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.15 }}
-              transition={{ duration: 0.6, ease: EASE }}
-              className="rounded-[30px] border border-[#d9e8e0] bg-[linear-gradient(180deg,rgba(255,255,255,0.94),rgba(244,250,246,0.95))] p-6 shadow-[0_18px_40px_rgba(20,40,34,0.05)]"
-            >
-              <div className="text-[11px] font-bold uppercase tracking-[0.22em] text-[#6d877d]">
-                More from the journal
-              </div>
-
-              <div className="mt-5 space-y-4">
-                {relatedBlogs.map((item) => (
-                  <Link
-                    key={item.id}
-                    href={`/blog/${item.id}`}
-                    className="group block rounded-[24px] border border-[#dcebe3] bg-white/76 p-4 transition-all duration-300 hover:-translate-y-0.5 hover:border-[#c8ddd2]"
-                  >
-                    <div className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#6d877d]">
-                      {item.category}
-                    </div>
-                    <div className="mt-2 text-base font-semibold leading-6 text-[#24443a] transition-colors duration-300 group-hover:text-[#03966a]">
-                      {item.title}
-                    </div>
-                    <div className="mt-3 text-sm text-[#557067]">
-                      {item.readTime}
-                    </div>
-                  </Link>
-                ))}
-              </div>
-            </motion.div>
-          </aside>
+          </FadeUp>
         </div>
       </section>
     </main>

@@ -1,5 +1,8 @@
+// app/gallery/page.tsx
 import GalleryPageClient from "@/components/gallery/GalleryPageClient";
 import { getGalleryImages } from "@/data/gallery";
+
+export const dynamic = "force-dynamic";
 
 export const metadata = {
   title: "Gallery | Sarangi Dentistry",

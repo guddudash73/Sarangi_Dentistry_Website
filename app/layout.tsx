@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import CustomCursor from "@/components/common/CustomCursor";
+import SmoothScrollProvider from "@/components/common/SmoothScrollProvider";
 
 const footlightMtPro = localFont({
   src: [
@@ -53,8 +54,15 @@ const footlightMtPro = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Sarangi Dentistry",
-  description: "Modern dental care website",
+  metadataBase: new URL('https://sarangidentistry.com'),
+  title: {
+    default: 'Sarangi Dentistry | Best Dentistry in Bhubaneswar',
+    template: '%s | Sarangi Dentistry',
+  },
+  description: 'Top rated dental clinic and best dentistry in Bhubaneswar providing advanced, personalized, and aesthetic dental treatments.',
+  keywords: ["dentist bhubaneswar", "best dentistry in bhubaneswar", "dental clinic bhubaneswar", "sarangi dentistry"],
+  authors: [{ name: 'Dr. Sarangi' }],
+  creator: 'Dr. Sarangi',
 };
 
 export default function RootLayout({
@@ -65,10 +73,12 @@ export default function RootLayout({
   return (
     <html lang="en" className={footlightMtPro.variable}>
       <body>
-        <CustomCursor />
-        <Navbar />
-        {children}
-        <Footer />
+        <SmoothScrollProvider>
+          <CustomCursor />
+          <Navbar />
+          {children}
+          <Footer />
+        </SmoothScrollProvider>
       </body>
     </html>
   );

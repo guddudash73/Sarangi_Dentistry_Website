@@ -1,11 +1,33 @@
+// next.config.ts
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
-};
+  allowedDevOrigins: ["172.26.240.1", "localhost", "127.0.0.1"],
 
-module.exports = {
-  allowedDevOrigins: ['192.168.1.78'],
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "**.amazonaws.com",
+      },
+      {
+        protocol: "https",
+        hostname: "**.cloudfront.net",
+      },
+      {
+        protocol: "https",
+        hostname: "sarangidentistry.in",
+      },
+      {
+        protocol: "https",
+        hostname: "www.sarangidentistry.in",
+      },
+      {
+        protocol: "https",
+        hostname: "web.stage.sarangidentistry.in",
+      },
+    ],
+  },
 };
 
 export default nextConfig;

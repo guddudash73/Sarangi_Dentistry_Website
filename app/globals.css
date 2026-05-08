@@ -2,7 +2,7 @@
 
 :root {
   /* Base */
-  --background: #f7f7f7;
+  --background: #ffffff;
   --foreground: #28284c;
 
   /* Brand Colors */
@@ -10,10 +10,10 @@
   --primary-hover: #288b79;
 
   --secondary: #28284c;
-  --secondary-light: #363666;  
+  --secondary-light: #363666;
 
   /* Effects */
-  --accent-soft: #64cbba;  
+  --accent-soft: #64cbba;
   --accent-soft-rgb: 100, 203, 186;
 }
 

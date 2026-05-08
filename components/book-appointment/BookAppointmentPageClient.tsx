@@ -1,32 +1,190 @@
+// website/components/book-appointment/BookAppointmentPageClient.tsx
 "use client";
 
 import PageBackground from "@/components/ui/PageBackground";
+import ContactNoticeBar from "@/components/contact/ContactNoticeBar";
+import AppointmentConfirmationModal from "@/components/book-appointment/AppointmentConfirmationModal";
 import { motion, useReducedMotion, type Variants } from "framer-motion";
 import type { ContactInfo } from "@/types/contact";
-import { useState } from "react";
+import type {
+  PublicAppointmentResponse,
+  PublicAppointmentSubmitResult,
+} from "@/types/appointment";
+import { useMemo, useState } from "react";
 
 type BookAppointmentPageClientProps = {
   data: ContactInfo;
 };
 
+type AgeMode = "AGE" | "DOB";
+
+type FormState = {
+  name: string;
+  phone: string;
+  appointmentDate: string;
+  reason: string;
+  address: string;
+  ageMode: AgeMode;
+  age: string;
+  dob: string;
+};
+
+const initialFormState: FormState = {
+  name: "",
+  phone: "",
+  appointmentDate: "",
+  reason: "",
+  address: "",
+  ageMode: "AGE",
+  age: "",
+  dob: "",
+};
+
+function todayIso(): string {
+  const date = new Date();
+  date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
+  return date.toISOString().slice(0, 10);
+}
+
+function getFieldError(
+  fieldErrors: Record<string, string[]> | undefined,
+  field: keyof FormState,
+): string | undefined {
+  return fieldErrors?.[field]?.[0];
+}
+
 export default function BookAppointmentPageClient({
   data,
 }: BookAppointmentPageClientProps) {
   const prefersReducedMotion = useReducedMotion();
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    // Simulate form submission
-    setTimeout(() => {
+  const [form, setForm] = useState<FormState>(initialFormState);
+  const [fieldErrors, setFieldErrors] = useState<
+    Record<string, string[]> | undefined
+  >();
+  const [generalError, setGeneralError] = useState("");
+  const [createdAppointment, setCreatedAppointment] =
+    useState<PublicAppointmentResponse | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const minDate = useMemo(() => todayIso(), []);
+
+  const updateField = (field: keyof FormState, value: string) => {
+    setForm((current) => ({
+      ...current,
+      [field]: value,
+      ...(field === "ageMode" && value === "AGE" ? { dob: "" } : {}),
+      ...(field === "ageMode" && value === "DOB" ? { age: "" } : {}),
+    }));
+
+    setFieldErrors((current) => {
+      if (!current?.[field]) return current;
+
+      const next = { ...current };
+      delete next[field];
+
+      return next;
+    });
+
+    setGeneralError("");
+  };
+
+  const validateClientSide = (): boolean => {
+    const errors: Record<string, string[]> = {};
+
+    if (!form.name.trim()) errors.name = ["Name is required."];
+
+    if (
+      !form.phone.trim() ||
+      form.phone.trim().replace(/\D/g, "").length < 10
+    ) {
+      errors.phone = ["Valid phone number is required."];
+    }
+
+    if (!form.appointmentDate) {
+      errors.appointmentDate = ["Appointment date is required."];
+    } else if (form.appointmentDate < minDate) {
+      errors.appointmentDate = ["Appointment date cannot be in the past."];
+    }
+
+    if (!form.reason.trim()) errors.reason = ["Reason is required."];
+    if (!form.address.trim()) errors.address = ["Address is required."];
+
+    if (form.ageMode === "AGE") {
+      const ageNumber = Number(form.age);
+
+      if (
+        !form.age.trim() ||
+        !Number.isInteger(ageNumber) ||
+        ageNumber < 0 ||
+        ageNumber > 130
+      ) {
+        errors.age = ["Valid age is required."];
+      }
+    }
+
+    if (form.ageMode === "DOB") {
+      if (!form.dob || !/^\d{4}-\d{2}-\d{2}$/.test(form.dob)) {
+        errors.dob = ["Valid date of birth is required."];
+      }
+    }
+
+    setFieldErrors(Object.keys(errors).length > 0 ? errors : undefined);
+
+    return Object.keys(errors).length === 0;
+  };
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    if (!validateClientSide()) return;
+
+    try {
+      setIsSubmitting(true);
+      setGeneralError("");
+      setCreatedAppointment(null);
+
+      const ageNumber = Number(form.age);
+
+      const res = await fetch("/api/appointments", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: form.name.trim(),
+          phone: form.phone.trim(),
+          appointmentDate: form.appointmentDate,
+          reason: form.reason.trim(),
+          address: form.address.trim(),
+          ...(form.ageMode === "AGE" ? { age: ageNumber } : {}),
+          ...(form.ageMode === "DOB" ? { dob: form.dob } : {}),
+        }),
+      });
+
+      const json = (await res
+        .json()
+        .catch(() => null)) as PublicAppointmentSubmitResult | null;
+
+      if (!res.ok || !json?.ok) {
+        setFieldErrors(json && !json.ok ? json.fieldErrors : undefined);
+        setGeneralError(
+          json && !json.ok
+            ? json.message
+            : "Unable to submit appointment request.",
+        );
+        return;
+      }
+
+      setCreatedAppointment(json.appointment);
+      setForm(initialFormState);
+      setFieldErrors(undefined);
+    } catch {
+      setGeneralError("Network error. Please try again or call the clinic.");
+    } finally {
       setIsSubmitting(false);
-      setIsSuccess(true);
-      // Reset after 4 seconds
-      setTimeout(() => setIsSuccess(false), 4000);
-      (e.target as HTMLFormElement).reset();
-    }, 1200);
+    }
   };
 
   const sectionVariants: Variants = {
@@ -43,25 +201,41 @@ export default function BookAppointmentPageClient({
 
   return (
     <main className="min-h-screen overflow-x-clip text-secondary">
-      <section className="relative pt-20 pb-24 md:pt-28">
-        <PageBackground />
+      {/* Full-screen confirmation modal */}
+      {createdAppointment && (
+        <AppointmentConfirmationModal
+          appointment={createdAppointment}
+          onClose={() => setCreatedAppointment(null)}
+        />
+      )}
 
-        <div className="relative mx-auto max-w-7xl px-5 sm:px-6 md:px-10 lg:px-16">
+      <section className="relative pb-24 pt-20 md:pt-28">
+        <PageBackground />
+        <ContactNoticeBar contactInfo={data} />
+
+        <div className="relative mx-auto max-w-7xl px-5 pt-8 sm:px-6 md:px-10 lg:px-16">
           <motion.div
             variants={sectionVariants}
             initial="hidden"
             animate="show"
             className="grid gap-12 lg:grid-cols-12 lg:items-start"
           >
-            {/* Left Content */}
-            <div className="lg:col-span-6 lg:sticky lg:top-32">
-              <div className="mb-6 inline-flex items-center gap-3 rounded-full border border-[#d8e8df] bg-white/84 px-5 py-3 text-[10px] font-bold uppercase tracking-[0.24em] text-primary-hover shadow-[0_10px_24px_rgba(20,40,34,0.05)] backdrop-blur sm:text-[11px]">
-                <span className="h-2.5 w-2.5 rounded-full bg-primary-hover" />
-                Schedule Visit
+            <div className="lg:sticky lg:top-32 lg:col-span-6">
+              <div className="mb-6 flex items-center gap-4">
+                <div className="flex items-center">
+                  <div className="h-1.5 w-1.5 rounded-full bg-primary" />
+                  <div className="-ml-0.5 h-[1px] w-8 bg-primary/40" />
+                </div>
+                <span className="text-[10px] font-bold uppercase tracking-[0.24em] text-primary sm:text-[11px]">
+                  Schedule Visit
+                </span>
               </div>
 
-              <h1 className="max-w-[12ch] text-[clamp(2.8rem,5vw,5.5rem)] font-bold leading-[0.9] tracking-[-0.06em] text-secondary">
-                Let's find time for your smile
+              <h1
+                data-cursor="invert"
+                className="max-w-[12ch] text-[clamp(2.8rem,5vw,5.5rem)] font-bold leading-[0.9] tracking-[-0.06em] text-secondary"
+              >
+                Let&apos;s find time for your smile
               </h1>
 
               <p className="mt-8 max-w-lg text-[1rem] leading-7 text-secondary-light sm:text-[1.06rem] sm:leading-8">
@@ -120,182 +294,247 @@ export default function BookAppointmentPageClient({
                     <div className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary-hover">
                       Clinic Hours
                     </div>
-                    <div className="mt-1 text-sm font-medium text-secondary-light">
-                      Mon-Sat: 10:00 AM - 8:30 PM
-                      <br />
-                      Sun: 10:00 AM - 2:00 PM
+
+                    <div className="mt-1 space-y-0.5 text-sm font-medium text-secondary-light">
+                      {data.hours.map((hour) => (
+                        <div key={`${hour.label}-${hour.value}`}>
+                          <span className="font-semibold text-secondary">
+                            {hour.label}:
+                          </span>{" "}
+                          <span>{hour.value}</span>
+                        </div>
+                      ))}
                     </div>
                   </div>
                 </div>
+
+                {data.addressLines.length > 0 ? (
+                  <div className="flex items-start gap-4">
+                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-[#d9e8e0] bg-white text-primary">
+                      <svg
+                        className="h-5 w-5"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        strokeWidth={2}
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M17.657 16.657L13.414 20.9a2 2 0 01-2.828 0l-4.243-4.243a8 8 0 1111.314 0z"
+                        />
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                        />
+                      </svg>
+                    </div>
+                    <div>
+                      <div className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary-hover">
+                        Clinic Location
+                      </div>
+                      <div className="mt-1 space-y-0.5 text-sm font-medium leading-6 text-secondary-light">
+                        {data.addressLines.map((line) => (
+                          <div key={line}>{line}</div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                ) : null}
               </div>
             </div>
 
-            {/* Right Form */}
             <div className="lg:col-span-6">
               <div className="relative overflow-hidden rounded-[28px] border border-[#dcebe3] bg-[linear-gradient(180deg,rgba(255,255,255,0.92),rgba(244,250,246,0.98))] p-5 shadow-[0_24px_60px_rgba(20,40,34,0.06)] backdrop-blur sm:p-6 md:p-7">
-                <form onSubmit={handleSubmit} className="space-y-3">
-                  <div className="grid gap-3 sm:grid-cols-2">
-                    <div>
-                      <label
-                        htmlFor="firstName"
-                        className="mb-1 block text-[9.5px] font-bold uppercase tracking-[0.15em] text-secondary-light"
-                      >
-                        First Name
-                      </label>
-                      <input
-                        type="text"
-                        id="firstName"
-                        required
-                        className="w-full rounded-[12px] border border-[#cfe3d8] bg-white px-3.5 py-2 text-sm text-secondary outline-none transition-all placeholder:text-[#a0c2af] focus:border-primary focus:ring-2 focus:ring-primary/20"
-                        placeholder="John"
-                      />
-                    </div>
-                    <div>
-                      <label
-                        htmlFor="lastName"
-                        className="mb-1 block text-[9.5px] font-bold uppercase tracking-[0.15em] text-secondary-light"
-                      >
-                        Last Name
-                      </label>
-                      <input
-                        type="text"
-                        id="lastName"
-                        required
-                        className="w-full rounded-[12px] border border-[#cfe3d8] bg-white px-3.5 py-2 text-sm text-secondary outline-none transition-all placeholder:text-[#a0c2af] focus:border-primary focus:ring-2 focus:ring-primary/20"
-                        placeholder="Doe"
-                      />
-                    </div>
-                  </div>
 
-                  <div className="grid gap-3 sm:grid-cols-2">
-                    <div>
-                      <label
-                        htmlFor="phone"
-                        className="mb-1 block text-[9.5px] font-bold uppercase tracking-[0.15em] text-secondary-light"
-                      >
-                        Phone Number
-                      </label>
-                      <input
-                        type="tel"
-                        id="phone"
-                        required
-                        className="w-full rounded-[12px] border border-[#cfe3d8] bg-white px-3.5 py-2 text-sm text-secondary outline-none transition-all placeholder:text-[#a0c2af] focus:border-primary focus:ring-2 focus:ring-primary/20"
-                        placeholder="+91 98765 43210"
-                      />
-                    </div>
-                    <div>
-                      <label
-                        htmlFor="email"
-                        className="mb-1 block text-[9.5px] font-bold uppercase tracking-[0.15em] text-secondary-light"
-                      >
-                        Email Address
-                      </label>
-                      <input
-                        type="email"
-                        id="email"
-                        required
-                        className="w-full rounded-[12px] border border-[#cfe3d8] bg-white px-3.5 py-2 text-sm text-secondary outline-none transition-all placeholder:text-[#a0c2af] focus:border-primary focus:ring-2 focus:ring-primary/20"
-                        placeholder="john@example.com"
-                      />
-                    </div>
-                  </div>
 
-                  <div className="grid gap-3 sm:grid-cols-2">
-                    <div>
-                      <label
-                        htmlFor="date"
-                        className="mb-1 block text-[9.5px] font-bold uppercase tracking-[0.15em] text-secondary-light"
-                      >
-                        Preferred Date
-                      </label>
-                      <input
-                        type="date"
-                        id="date"
-                        required
-                        className="w-full rounded-[12px] border border-[#cfe3d8] bg-white px-3.5 py-2 text-sm text-secondary outline-none transition-all placeholder:text-[#a0c2af] focus:border-primary focus:ring-2 focus:ring-primary/20"
-                      />
-                    </div>
-                    <div>
-                      <label
-                        htmlFor="service"
-                        className="mb-1 block text-[9.5px] font-bold uppercase tracking-[0.15em] text-secondary-light"
-                      >
-                        Service Required
-                      </label>
-                      <select
-                        id="service"
-                        required
-                        className="w-full rounded-[12px] border border-[#cfe3d8] bg-white px-3.5 py-2 text-sm text-secondary outline-none transition-all placeholder:text-[#a0c2af] focus:border-primary focus:ring-2 focus:ring-primary/20"
-                      >
-                        <option value="">Select a service...</option>
-                        <option value="general">General Consultation</option>
-                        <option value="cleaning">Teeth Cleaning & Scaling</option>
-                        <option value="orthodontic">Orthodontic Treatment</option>
-                        <option value="implant">Tooth Implants</option>
-                        <option value="root_canal">Root Canal Treatment</option>
-                        <option value="cosmetic">Cosmetic Dentistry</option>
-                        <option value="other">Other / Not Sure</option>
-                      </select>
-                    </div>
+                {generalError ? (
+                  <div className="mb-5 rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm font-medium text-rose-700">
+                    {generalError}
                   </div>
+                ) : null}
 
-                  <div>
-                    <label
-                      htmlFor="message"
-                      className="mb-1 block text-[9.5px] font-bold uppercase tracking-[0.15em] text-secondary-light"
-                    >
-                      Additional Notes (Optional)
-                    </label>
-                    <textarea
-                      id="message"
-                      rows={2}
-                      className="w-full resize-none rounded-[12px] border border-[#cfe3d8] bg-white px-3.5 py-2 text-sm text-secondary outline-none transition-all placeholder:text-[#a0c2af] focus:border-primary focus:ring-2 focus:ring-primary/20"
-                      placeholder="Share concerns or preferred timing..."
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  <FormField
+                    label="Full Name"
+                    error={getFieldError(fieldErrors, "name")}
+                  >
+                    <input
+                      type="text"
+                      name="name"
+                      value={form.name}
+                      onChange={(event) =>
+                        updateField("name", event.target.value)
+                      }
+                      required
+                      className="w-full rounded-[12px] border border-[#cfe3d8] bg-white px-3.5 py-2 text-sm text-secondary outline-none transition-all placeholder:text-[#a0c2af] focus:border-primary focus:ring-2 focus:ring-primary/20"
+                      placeholder="Your full name"
                     />
+                  </FormField>
+
+                  <FormField
+                    label="Phone Number"
+                    error={getFieldError(fieldErrors, "phone")}
+                  >
+                    <input
+                      type="tel"
+                      name="phone"
+                      value={form.phone}
+                      onChange={(event) =>
+                        updateField("phone", event.target.value)
+                      }
+                      required
+                      className="w-full rounded-[12px] border border-[#cfe3d8] bg-white px-3.5 py-2 text-sm text-secondary outline-none transition-all placeholder:text-[#a0c2af] focus:border-primary focus:ring-2 focus:ring-primary/20"
+                      placeholder="+91 7749064894"
+                    />
+                  </FormField>
+
+                  <div className="grid gap-4 sm:grid-cols-[150px_1fr]">
+                    <FormField label="Age/DOB" error={undefined}>
+                      <select
+                        value={form.ageMode}
+                        onChange={(event) =>
+                          updateField("ageMode", event.target.value)
+                        }
+                        className="w-full rounded-[12px] border border-[#cfe3d8] bg-white px-3.5 py-2 text-sm text-secondary outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary/20"
+                      >
+                        <option value="AGE">Age</option>
+                        <option value="DOB">DOB</option>
+                      </select>
+                    </FormField>
+
+                    {form.ageMode === "AGE" ? (
+                      <FormField
+                        label="Patient Age"
+                        error={getFieldError(fieldErrors, "age")}
+                      >
+                        <input
+                          type="number"
+                          min={0}
+                          max={130}
+                          value={form.age}
+                          onChange={(event) =>
+                            updateField("age", event.target.value)
+                          }
+                          required
+                          className="w-full rounded-[12px] border border-[#cfe3d8] bg-white px-3.5 py-2 text-sm text-secondary outline-none transition-all placeholder:text-[#a0c2af] focus:border-primary focus:ring-2 focus:ring-primary/20"
+                          placeholder="Example: 32"
+                        />
+                      </FormField>
+                    ) : (
+                      <FormField
+                        label="Date of Birth"
+                        error={getFieldError(fieldErrors, "dob")}
+                      >
+                        <input
+                          type="date"
+                          value={form.dob}
+                          onChange={(event) =>
+                            updateField("dob", event.target.value)
+                          }
+                          required
+                          className="w-full rounded-[12px] border border-[#cfe3d8] bg-white px-3.5 py-2 text-sm text-secondary outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary/20"
+                        />
+                      </FormField>
+                    )}
                   </div>
+
+                  <FormField
+                    label="Preferred Appointment Date"
+                    error={getFieldError(fieldErrors, "appointmentDate")}
+                  >
+                    <input
+                      type="date"
+                      name="appointmentDate"
+                      value={form.appointmentDate}
+                      min={minDate}
+                      onChange={(event) =>
+                        updateField("appointmentDate", event.target.value)
+                      }
+                      required
+                      className="w-full rounded-[12px] border border-[#cfe3d8] bg-white px-3.5 py-2 text-sm text-secondary outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary/20"
+                    />
+                  </FormField>
+
+                  <FormField
+                    label="Reason for Visit"
+                    error={getFieldError(fieldErrors, "reason")}
+                  >
+                    <textarea
+                      name="reason"
+                      value={form.reason}
+                      onChange={(event) =>
+                        updateField("reason", event.target.value)
+                      }
+                      required
+                      rows={4}
+                      maxLength={500}
+                      className="w-full resize-none rounded-[12px] border border-[#cfe3d8] bg-white px-3.5 py-2 text-sm text-secondary outline-none transition-all placeholder:text-[#a0c2af] focus:border-primary focus:ring-2 focus:ring-primary/20"
+                      placeholder="Tell us briefly about the concern or treatment you need..."
+                    />
+                  </FormField>
+
+                  <FormField
+                    label="Address"
+                    error={getFieldError(fieldErrors, "address")}
+                  >
+                    <textarea
+                      name="address"
+                      value={form.address}
+                      onChange={(event) =>
+                        updateField("address", event.target.value)
+                      }
+                      required
+                      rows={3}
+                      maxLength={500}
+                      className="w-full resize-none rounded-[12px] border border-[#cfe3d8] bg-white px-3.5 py-2 text-sm text-secondary outline-none transition-all placeholder:text-[#a0c2af] focus:border-primary focus:ring-2 focus:ring-primary/20"
+                      placeholder="Your address or locality"
+                    />
+                  </FormField>
 
                   <div className="pt-1">
                     <button
                       type="submit"
-                      disabled={isSubmitting || isSuccess}
+                      disabled={isSubmitting}
                       className="relative flex min-h-[44px] w-full items-center justify-center overflow-hidden rounded-[14px] bg-primary px-6 py-2.5 text-[12px] font-bold uppercase tracking-[0.2em] text-white shadow-[0_8px_20px_rgba(62,161,111,0.2)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-primary-hover disabled:pointer-events-none disabled:opacity-80"
                     >
-                      {isSubmitting ? (
-                        <span className="flex items-center gap-2">
-                          <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24">
-                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" fill="none" />
-                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
-                          </svg>
-                          Sending...
-                        </span>
-                      ) : isSuccess ? (
-                        <span className="flex items-center gap-2">
-                          <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                          </svg>
-                          Request Received
-                        </span>
-                      ) : (
-                        "Request Appointment"
-                      )}
+                      {isSubmitting
+                        ? "Sending Request..."
+                        : "Request Appointment"}
                     </button>
                   </div>
-
-                  {isSuccess && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 5 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      className="mt-2 text-center text-xs font-medium text-primary"
-                    >
-                      Thank you! We'll contact you soon.
-                    </motion.div>
-                  )}
                 </form>
+
+                <p className="mt-4 text-center text-xs leading-5 text-secondary-light">
+                  This creates an appointment request only. A clinic team member
+                  will confirm the final visit timing.
+                </p>
               </div>
             </div>
           </motion.div>
         </div>
       </section>
     </main>
+  );
+}
+
+function FormField(props: {
+  label: string;
+  error?: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <label className="block">
+      <span className="mb-1 block text-[9.5px] font-bold uppercase tracking-[0.15em] text-secondary-light">
+        {props.label}
+      </span>
+      {props.children}
+      {props.error ? (
+        <span className="mt-1 block text-xs font-medium text-rose-600">
+          {props.error}
+        </span>
+      ) : null}
+    </label>
   );
 }
