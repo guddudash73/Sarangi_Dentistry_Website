@@ -1,4 +1,3 @@
-// next.config.ts
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
@@ -8,11 +7,13 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "**.amazonaws.com",
+        hostname: "stage.sarangidentistry.in",
+        pathname: "/media/**",
       },
       {
         protocol: "https",
-        hostname: "**.cloudfront.net",
+        hostname: "app.sarangidentistry.in",
+        pathname: "/media/**",
       },
       {
         protocol: "https",
