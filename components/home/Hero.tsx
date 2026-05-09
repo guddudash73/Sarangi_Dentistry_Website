@@ -233,8 +233,8 @@ export default function Hero() {
             <div className="mt-10 hidden md:grid grid-cols-1 gap-4 sm:grid-cols-3">
               {[
                 { value: "36+", label: "Years Experience" },
+                { value: "", label: "Same Day Treatment Availability" },
                 { value: "15k+", label: "Happy Smiles" },
-                { value: "1:1", label: "Personalized Care" },
               ].map((item) => (
                 <div
                   key={item.label}

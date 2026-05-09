@@ -139,13 +139,14 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
                 data-cursor="invert"
                 className="max-w-[12ch] text-[clamp(2.8rem,5vw,5.5rem)] font-bold leading-[0.9] tracking-[-0.06em] text-secondary"
               >
-                Contact designed to feel as calm as the clinic
+                Trusted Care for Every Smile.
               </h1>
 
               <p className="mt-8 max-w-lg text-[1rem] leading-7 text-secondary-light sm:text-[1.06rem] sm:leading-8">
-                Reach out for appointments, directions, and treatment guidance
-                through a cleaner, more refined experience — designed to feel
-                reassuring before you even step inside.
+                Your perfect smile begins with a simple conversation. Reach out
+                with any questions, and our team will respond with clarity,
+                care, and guidance tailored to you. reassuring before you even
+                step inside.
               </p>
 
               <div className="mt-10 space-y-6">
@@ -361,14 +362,12 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
                     data-cursor="invert"
                     className="max-w-[12ch] text-[clamp(2.2rem,4.8vw,4rem)] font-bold leading-[0.96] tracking-[-0.04em] text-secondary"
                   >
-                    Ready to experience calm, modern dentistry?
+                    Crafted for Comfort. Defined by Excellence.
                   </h2>
 
                   <p className="mt-5 max-w-2xl text-[1rem] leading-7 text-secondary-light sm:text-[1.05rem] sm:leading-8">
-                    Whether you are planning a routine check-up, a smile
-                    enhancement, or a more advanced procedure, we are here to
-                    guide you with expert care and a patient experience designed
-                    around comfort and confidence.
+                    Experience personalized dental care designed around your
+                    comfort, confidence, and long-term oral health.
                   </p>
 
                   <div className="mt-8 flex flex-col gap-4 sm:flex-row">

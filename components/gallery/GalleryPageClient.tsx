@@ -16,37 +16,42 @@ export default function GalleryPageClient({ items }: GalleryPageClientProps) {
 
   return (
     <main className="min-h-screen overflow-x-clip bg-background  text-secondary">
-      <section className="relative">
+      <section className="relative pt-20 md:pt-28">
         <PageBackground />
 
-        <div className="relative mx-auto max-w-7xl px-5 pb-16 pt-24 sm:px-6 md:px-10 md:pb-20 lg:px-16 lg:pb-24">
+        <div className="relative mx-auto max-w-7xl px-5 pb-16 pt-8 sm:px-6 md:px-10 md:pb-20 lg:px-16 lg:pb-24">
           <motion.div
             initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 22 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.65, ease: EASE }}
-            className="grid items-end gap-8 lg:grid-cols-12"
+            className="flex flex-col items-center gap-8"
           >
-            <div className="lg:col-span-7">
+            <div className="">
               <div className="mb-6 flex items-center gap-4">
-  <div className="flex items-center">
-    <div className="h-1.5 w-1.5 rounded-full bg-primary" />
-    <div className="h-[1px] w-8 bg-primary/40 -ml-0.5" />
-  </div>
-  <span className="text-[10px] font-bold uppercase tracking-[0.24em] text-primary sm:text-[11px]">
-    Sarangi Dentistry Gallery
-  </span>
-</div>
+                <div className="flex items-center">
+                  <div className="h-1.5 w-1.5 rounded-full bg-primary" />
+                  <div className="h-[1px] w-8 bg-primary/40 -ml-0.5" />
+                </div>
+                <span className="text-[10px] font-bold uppercase tracking-[0.24em] text-primary sm:text-[11px]">
+                  Sarangi Dentistry Gallery
+                </span>
+              </div>
 
-              <h1 data-cursor="invert" className="max-w-[11ch] text-[clamp(3rem,6vw,6.2rem)] font-bold leading-[0.9] tracking-[-0.06em] text-secondary">
-                Moments, spaces, and the care experience
+              <h1
+                data-cursor="invert"
+                className="max-w-4xl text-center text-[clamp(3rem,6vw,6.2rem)] font-bold leading-[0.9] tracking-[-0.06em] text-secondary"
+              >
+                A visual journey of restored confidence and healthy smiles
               </h1>
             </div>
 
-            <div className="lg:col-span-5 lg:pb-3">
-              <p className="max-w-xl text-[1rem] leading-7 text-primary-hover sm:text-[1.05rem] sm:leading-8">
-                Explore our clinic through a more immersive visual experience.
-                Tap any image to expand it and move through the gallery with a
-                more dramatic, refined presentation.
+            <div className="">
+              <p className="max-w-5xl text-[1rem] leading-7 text-primary-hover sm:text-[1.05rem] sm:leading-8 text-center">
+                Explore meaningful transformations where dental expertise meets
+                patient-focused care to rebuild confidence and create lasting.A
+                collection of patient success stories demonstrating how expert
+                dental care can dramatically improve both smile aesthetics and
+                function.
               </p>
             </div>
           </motion.div>

@@ -19,34 +19,37 @@ export default function CertificationPageClient({
 
   return (
     <main className="min-h-screen overflow-x-clip bg-background text-secondary">
-      <section className="relative">
+      <section className="relative pt-20 md:pt-28">
         <PageBackground />
 
-        <div className="relative mx-auto max-w-7xl px-5 pb-16 pt-24 sm:px-6 md:px-10 md:pb-20 lg:px-16 lg:pb-24">
+        <div className="relative mx-auto max-w-7xl px-5 pb-16 pt-8 sm:px-6 md:px-10 md:pb-20 lg:px-16 lg:pb-24">
           <motion.div
             initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 22 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.65, ease: EASE }}
-            className="grid items-end gap-8 lg:grid-cols-12"
+            className="flex flex-col items-center gap-8 "
           >
-            <div className="lg:col-span-7">
+            <div className="">
               <div className="mb-6 flex items-center gap-4">
-  <div className="flex items-center">
-    <div className="h-1.5 w-1.5 rounded-full bg-primary" />
-    <div className="h-[1px] w-8 bg-primary/40 -ml-0.5" />
-  </div>
-  <span className="text-[10px] font-bold uppercase tracking-[0.24em] text-primary sm:text-[11px]">
-    Sarangi Dentistry Certifications
-  </span>
-</div>
+                <div className="flex items-center">
+                  <div className="h-1.5 w-1.5 rounded-full bg-primary" />
+                  <div className="h-[1px] w-8 bg-primary/40 -ml-0.5" />
+                </div>
+                <span className="text-[10px] font-bold uppercase tracking-[0.24em] text-primary sm:text-[11px]">
+                  Sarangi Dentistry Certifications
+                </span>
+              </div>
 
-              <h1 data-cursor="invert" className="max-w-[11ch] text-[clamp(3rem,6vw,6.2rem)] font-bold leading-[0.9] tracking-[-0.06em] text-secondary">
-                Recognition, learning, and clinical excellence
+              <h1
+                data-cursor="invert"
+                className="max-w-4xl text-[clamp(3rem,6vw,6.2rem)] font-bold leading-[0.9] tracking-[-0.06em] text-secondary text-center"
+              >
+                Excellence Verified Through Advanced Professional Standards
               </h1>
             </div>
 
-            <div className="lg:col-span-5 lg:pb-3">
-              <p className="max-w-xl text-[1rem] leading-7 text-primary-hover sm:text-[1.05rem] sm:leading-8">
+            <div className="">
+              <p className="max-w-5xl text-[1rem] leading-7 text-primary-hover sm:text-[1.05rem] sm:leading-8 text-center">
                 Explore professional certifications, awards, conference
                 participation, and continuous learning milestones from Sarangi
                 Dentistry.
@@ -64,7 +67,10 @@ export default function CertificationPageClient({
         <div className="relative mx-auto max-w-7xl">
           {items.length === 0 ? (
             <div className="rounded-[30px] border border-[#dcebe3] bg-white/80 px-6 py-14 text-center shadow-[0_18px_40px_rgba(20,40,34,0.06)] backdrop-blur">
-              <h2 data-cursor="invert" className="text-2xl font-bold tracking-[-0.03em] text-secondary">
+              <h2
+                data-cursor="invert"
+                className="text-2xl font-bold tracking-[-0.03em] text-secondary"
+              >
                 Certifications coming soon
               </h2>
               <p className="mx-auto mt-3 max-w-xl text-sm leading-6 text-secondary-light">

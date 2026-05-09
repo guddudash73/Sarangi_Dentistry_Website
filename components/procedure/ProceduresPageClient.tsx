@@ -55,21 +55,36 @@ export default function ProceduresPageClient({
 
   return (
     <main className="min-h-screen overflow-x-clip bg-background text-secondary">
-      <section className="relative max-h-[60vh]">
+      <section className="relative max-h-[60vh] pt-20 md:pt-28">
         <PageBackground />
 
-        <div className="relative mx-auto max-w-7xl px-5 pb-16 pt-38 sm:px-6 md:px-10 md:pb-20 lg:px-16 lg:pb-24">
+        <div className="relative mx-auto max-w-7xl px-5 pb-16 pt-8 sm:px-6 md:px-10 md:pb-20 lg:px-16 lg:pb-24">
           <motion.div
             initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.65, ease: EASE }}
-            className="mx-auto max-w-5xl text-center"
+            className="flex flex-col gap-8 items-center"
           >
-            <h1 data-cursor="invert" className="text-[clamp(3rem,6vw,6.25rem)] font-bold leading-[0.9] tracking-normal text-secondary">
-              Our Dental Procedures
-            </h1>
+            <div className="">
+              <div className="mb-6 flex items-center gap-4">
+                <div className="flex items-center">
+                  <div className="h-1.5 w-1.5 rounded-full bg-primary" />
+                  <div className="h-[1px] w-8 bg-primary/40 -ml-0.5" />
+                </div>
+                <span className="text-[10px] font-bold uppercase tracking-[0.24em] text-primary sm:text-[11px]">
+                  Sarangi Dentistry Procedures
+                </span>
+              </div>
 
-            <p className="mx-auto mt-6 max-w-4xl text-[1rem] leading-7 text-secondary-light sm:text-[1.05rem] sm:leading-8 md:text-[1.1rem]">
+              <h1
+                data-cursor="invert"
+                className="max-w-4xl text-[clamp(3rem,6vw,6.25rem)] font-bold leading-[0.9] tracking-normal text-secondary text-center"
+              >
+                Where Expertise Meets Seamless Care Process
+              </h1>
+            </div>
+
+            <p className="mx-auto mt-6 max-w-5xl text-center text-[1rem] leading-7 text-primary-hover sm:text-[1.05rem] sm:leading-8 md:text-[1.1rem]">
               Explore our specialized treatments designed to restore oral
               health, improve function, and enhance smile aesthetics with
               thoughtful care and modern dental expertise.
@@ -82,7 +97,10 @@ export default function ProceduresPageClient({
         <div className="mx-auto max-w-7xl">
           {procedures.length === 0 ? (
             <div className="rounded-[30px] border border-[#dcebe3] bg-white/80 px-6 py-14 text-center shadow-[0_18px_40px_rgba(20,40,34,0.06)] backdrop-blur">
-              <h2 data-cursor="invert" className="text-2xl font-bold tracking-[-0.03em] text-secondary">
+              <h2
+                data-cursor="invert"
+                className="text-2xl font-bold tracking-[-0.03em] text-secondary"
+              >
                 Procedures coming soon
               </h2>
               <p className="mx-auto mt-3 max-w-xl text-sm leading-6 text-secondary-light">
@@ -150,7 +168,10 @@ export default function ProceduresPageClient({
                         </span>
                       </div>
 
-                      <h2 data-cursor="invert" className="text-[1.55rem] font-bold leading-[1.02] tracking-[-0.04em] text-secondary sm:text-[1.75rem]">
+                      <h2
+                        data-cursor="invert"
+                        className="text-[1.55rem] font-bold leading-[1.02] tracking-[-0.04em] text-secondary sm:text-[1.75rem]"
+                      >
                         {procedure.title}
                       </h2>
 
