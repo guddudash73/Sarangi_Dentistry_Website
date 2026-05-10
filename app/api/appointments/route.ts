@@ -1,4 +1,3 @@
-// website/app/api/appointments/route.ts
 import { NextResponse } from "next/server";
 import { submitAppointmentRequest } from "@/data/appointment";
 import type { PublicCreateAppointmentInput } from "@/types/appointment";
@@ -6,6 +5,17 @@ import type { PublicCreateAppointmentInput } from "@/types/appointment";
 export const dynamic = "force-dynamic";
 
 type FieldErrors = Record<string, string[]>;
+
+function isValidGender(
+  value: unknown,
+): value is PublicCreateAppointmentInput["gender"] {
+  return (
+    value === "MALE" ||
+    value === "FEMALE" ||
+    value === "OTHER" ||
+    value === "UNKNOWN"
+  );
+}
 
 function jsonError(message: string, status: number, fieldErrors?: FieldErrors) {
   return NextResponse.json(
@@ -41,6 +51,7 @@ function isValidAppointmentBody(
     item.reason.trim().length > 0 &&
     typeof item.address === "string" &&
     item.address.trim().length > 0 &&
+    isValidGender(item.gender) &&
     ((hasDob && !hasAge) || (!hasDob && hasAge))
   );
 }
@@ -76,6 +87,7 @@ export async function POST(req: Request) {
       appointmentDate: body.appointmentDate,
       reason: body.reason.trim(),
       address: body.address.trim(),
+      gender: body.gender,
       ...(body.dob ? { dob: body.dob.trim() } : {}),
       ...(typeof body.age === "number" ? { age: body.age } : {}),
     });

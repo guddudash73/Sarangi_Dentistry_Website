@@ -1,4 +1,3 @@
-// website/components/book-appointment/BookAppointmentPageClient.tsx
 "use client";
 
 import PageBackground from "@/components/ui/PageBackground";
@@ -7,6 +6,7 @@ import AppointmentConfirmationModal from "@/components/book-appointment/Appointm
 import { motion, useReducedMotion, type Variants } from "framer-motion";
 import type { ContactInfo } from "@/types/contact";
 import type {
+  PublicAppointmentGender,
   PublicAppointmentResponse,
   PublicAppointmentSubmitResult,
 } from "@/types/appointment";
@@ -24,6 +24,7 @@ type FormState = {
   appointmentDate: string;
   reason: string;
   address: string;
+  gender: PublicAppointmentGender | "";
   ageMode: AgeMode;
   age: string;
   dob: string;
@@ -35,6 +36,7 @@ const initialFormState: FormState = {
   appointmentDate: "",
   reason: "",
   address: "",
+  gender: "",
   ageMode: "AGE",
   age: "",
   dob: "",
@@ -107,6 +109,7 @@ export default function BookAppointmentPageClient({
       errors.appointmentDate = ["Appointment date cannot be in the past."];
     }
 
+    if (!form.gender) errors.gender = ["Gender is required."];
     if (!form.reason.trim()) errors.reason = ["Reason is required."];
     if (!form.address.trim()) errors.address = ["Address is required."];
 
@@ -158,6 +161,7 @@ export default function BookAppointmentPageClient({
           appointmentDate: form.appointmentDate,
           reason: form.reason.trim(),
           address: form.address.trim(),
+          gender: form.gender,
           ...(form.ageMode === "AGE" ? { age: ageNumber } : {}),
           ...(form.ageMode === "DOB" ? { dob: form.dob } : {}),
         }),
@@ -347,8 +351,6 @@ export default function BookAppointmentPageClient({
 
             <div className="lg:col-span-6">
               <div className="relative overflow-hidden rounded-[28px] border border-[#dcebe3] bg-[linear-gradient(180deg,rgba(255,255,255,0.92),rgba(244,250,246,0.98))] p-5 shadow-[0_24px_60px_rgba(20,40,34,0.06)] backdrop-blur sm:p-6 md:p-7">
-
-
                 {generalError ? (
                   <div className="mb-5 rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm font-medium text-rose-700">
                     {generalError}
@@ -386,8 +388,32 @@ export default function BookAppointmentPageClient({
                       }
                       required
                       className="w-full rounded-[12px] border border-[#cfe3d8] bg-white px-3.5 py-2 text-sm text-secondary outline-none transition-all placeholder:text-[#a0c2af] focus:border-primary focus:ring-2 focus:ring-primary/20"
-                      placeholder="+91 7749064894"
+                      placeholder="+91 9999999999"
                     />
+                  </FormField>
+
+                  <FormField
+                    label="Gender"
+                    error={getFieldError(fieldErrors, "gender")}
+                  >
+                    <select
+                      name="gender"
+                      value={form.gender}
+                      onChange={(event) =>
+                        updateField(
+                          "gender",
+                          event.target.value as PublicAppointmentGender | "",
+                        )
+                      }
+                      required
+                      className="w-full rounded-[12px] border border-[#cfe3d8] bg-white px-3.5 py-2 text-sm text-secondary outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary/20"
+                    >
+                      <option value="">Select gender</option>
+                      <option value="MALE">Male</option>
+                      <option value="FEMALE">Female</option>
+                      <option value="OTHER">Other</option>
+                      <option value="UNKNOWN">Prefer not to say</option>
+                    </select>
                   </FormField>
 
                   <div className="grid gap-4 sm:grid-cols-[150px_1fr]">

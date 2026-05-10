@@ -1,10 +1,12 @@
-// website/types/appointment.ts
+export type PublicAppointmentGender = "MALE" | "FEMALE" | "OTHER" | "UNKNOWN";
+
 export type PublicCreateAppointmentInput = {
   name: string;
   phone: string;
   appointmentDate: string;
   reason: string;
   address: string;
+  gender: PublicAppointmentGender;
   dob?: string;
   age?: number;
 };
@@ -17,6 +19,7 @@ export type PublicAppointmentResponse = {
   appointmentDate: string;
   reason: string;
   address: string;
+  gender?: PublicAppointmentGender;
   dob?: string;
   age?: number;
   status:

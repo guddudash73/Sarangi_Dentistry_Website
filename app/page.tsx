@@ -6,11 +6,19 @@ import { getFeaturedPhoto } from "@/data/photography";
 
 export const metadata: Metadata = {
   title: "Best Dentistry in Bhubaneswar | Sarangi Dentistry",
-  description: "Experience the best dentistry in Bhubaneswar at Sarangi Dentistry. Dr. Sarangi offers advanced treatments, cosmetic dentistry, and personalized care for radiant smiles.",
-  keywords: ["best dentistry in bhubaneswar", "top dentist bhubaneswar", "dental clinic bhubaneswar", "sarangi dentistry", "cosmetic dentistry bhubaneswar"],
+  description:
+    "Experience the best dentistry in Bhubaneswar at Sarangi Dentistry. Dr. Sarangi offers advanced treatments, cosmetic dentistry, and personalized care for radiant smiles.",
+  keywords: [
+    "best dentistry in bhubaneswar",
+    "top dentist bhubaneswar",
+    "dental clinic bhubaneswar",
+    "sarangi dentistry",
+    "cosmetic dentistry bhubaneswar",
+  ],
   openGraph: {
     title: "Best Dentistry in Bhubaneswar | Sarangi Dentistry",
-    description: "Experience the best dentistry in Bhubaneswar at Sarangi Dentistry. We offer advanced dental treatments and cosmetic procedures.",
+    description:
+      "Experience the best dentistry in Bhubaneswar at Sarangi Dentistry. We offer advanced dental treatments and cosmetic procedures.",
     url: "https://sarangidentistry.com",
     siteName: "Sarangi Dentistry",
     images: [
@@ -32,43 +40,44 @@ export const metadata: Metadata = {
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Dentist",
-  "name": "Sarangi Dentistry",
-  "image": "https://sarangidentistry.com/assets/seat_1.jpg",
+  name: "Sarangi Dentistry",
+  image: "https://sarangidentistry.com/assets/seat_1.jpg",
   "@id": "https://sarangidentistry.com",
-  "url": "https://sarangidentistry.com",
-  "telephone": "+91-9999999999",
-  "address": {
+  url: "https://sarangidentistry.com",
+  telephone: "+91-9938942846",
+  address: {
     "@type": "PostalAddress",
-    "streetAddress": "Bhubaneswar",
-    "addressLocality": "Bhubaneswar",
-    "addressRegion": "Odisha",
-    "postalCode": "751001",
-    "addressCountry": "IN"
+    streetAddress: "Bhubaneswar",
+    addressLocality: "Bhubaneswar",
+    addressRegion: "Odisha",
+    postalCode: "751001",
+    addressCountry: "IN",
   },
-  "geo": {
+  geo: {
     "@type": "GeoCoordinates",
-    "latitude": 20.296059,
-    "longitude": 85.824539
+    latitude: 20.296059,
+    longitude: 85.824539,
   },
-  "openingHoursSpecification": {
+  openingHoursSpecification: {
     "@type": "OpeningHoursSpecification",
-    "dayOfWeek": [
+    dayOfWeek: [
       "Monday",
       "Tuesday",
       "Wednesday",
       "Thursday",
       "Friday",
-      "Saturday"
+      "Saturday",
     ],
-    "opens": "09:00",
-    "closes": "20:00"
+    opens: "09:00",
+    closes: "20:00",
   },
-  "description": "Experience the best dentistry in Bhubaneswar at Sarangi Dentistry. Dr. Sarangi offers advanced treatments, cosmetic dentistry, and personalized care for radiant smiles.",
-  "aggregateRating": {
+  description:
+    "Experience the best dentistry in Bhubaneswar at Sarangi Dentistry. Dr. Sarangi offers advanced treatments, cosmetic dentistry, and personalized care for radiant smiles.",
+  aggregateRating: {
     "@type": "AggregateRating",
-    "ratingValue": "4.9",
-    "reviewCount": "150"
-  }
+    ratingValue: "4.9",
+    reviewCount: "150",
+  },
 };
 
 /**

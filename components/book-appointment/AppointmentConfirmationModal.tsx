@@ -104,7 +104,6 @@ export default function AppointmentConfirmationModal({
   const formattedDate = formatDate(appointment.appointmentDate);
   const refDate = formatRefDate();
 
-
   const DOS = [
     "Arrive at the clinic by 10:00 AM or earlier to secure a better queue position.",
     "Carry a valid government-issued photo ID (Aadhar, PAN, Passport, etc.).",
@@ -147,7 +146,14 @@ export default function AppointmentConfirmationModal({
       container.style.width = "794px";
       container.style.background = "#fff";
       container.style.zIndex = "-1";
-      container.innerHTML = buildPrintHtml(appointment, patientFirstName, formattedDate, refDate, DOS, DONTS);
+      container.innerHTML = buildPrintHtml(
+        appointment,
+        patientFirstName,
+        formattedDate,
+        refDate,
+        DOS,
+        DONTS,
+      );
 
       // Force a synchronous reflow so computed styles are settled
       // before html2canvas reads them
@@ -165,7 +171,11 @@ export default function AppointmentConfirmationModal({
         });
 
         const imgData = canvas.toDataURL("image/png");
-        const pdf = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
+        const pdf = new jsPDF({
+          orientation: "portrait",
+          unit: "mm",
+          format: "a4",
+        });
         const pdfW = pdf.internal.pageSize.getWidth();
         const pdfH = pdf.internal.pageSize.getHeight();
         // 12 mm margin on all four sides
@@ -180,7 +190,9 @@ export default function AppointmentConfirmationModal({
           const s = usableH / scaledH;
           pdf.addImage(imgData, "PNG", margin, margin, usableW * s, usableH);
         }
-        pdf.save(`Sarangi-Appointment-${appointment.id.slice(0, 8).toUpperCase()}.pdf`);
+        pdf.save(
+          `Sarangi-Appointment-${appointment.id.slice(0, 8).toUpperCase()}.pdf`,
+        );
       } finally {
         document.body.removeChild(container);
       }
@@ -211,302 +223,454 @@ export default function AppointmentConfirmationModal({
       >
         {/* Inner centering wrapper — not a click target */}
         <div className="flex min-h-full items-start justify-center px-3 py-6 sm:px-4 sm:py-10 md:py-14">
-        {/* Document card */}
-        <motion.div
-          key="card"
-          initial={{ opacity: 0, scale: 0.96, y: 24 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.96, y: 16 }}
-          transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-          className="relative w-full max-w-3xl overflow-hidden rounded-[28px] bg-white shadow-[0_40px_100px_rgba(0,0,0,0.28)] ring-1 ring-black/8 sm:rounded-[32px]"
-        >
-
-          {/* ── Clinic letterhead ──────────────────── */}
-          <div className="relative overflow-hidden bg-[#1e3d32] px-6 py-7 sm:px-10 sm:py-9">
-            {/* Decorative blobs */}
-            <div className="pointer-events-none absolute -right-12 -top-12 h-48 w-48 rounded-full bg-white/5 blur-3xl" />
-            <div className="pointer-events-none absolute -bottom-8 left-8 h-32 w-32 rounded-full bg-emerald-400/10 blur-2xl" />
-
-            <div className="relative flex items-start justify-between gap-4">
-              {/* Left: clinic identity */}
-              <div>
-                <div className="mb-0.5 text-[10px] font-bold uppercase tracking-[0.28em] text-emerald-400/80 sm:text-[11px]">
-                  Official Appointment Notice
-                </div>
-                <h1 className="text-[1.55rem] font-black tracking-[-0.04em] text-white sm:text-[1.9rem]">
-                  Sarangi Dentistry
-                </h1>
-                <p className="mt-1.5 text-xs leading-5 text-white/55 sm:text-[13px]">
-                  Multi-Specialty Dental Clinic &nbsp;·&nbsp; Bhubaneswar, Odisha
-                </p>
-              </div>
-
-              {/* Right: Reference box */}
-              <div className="shrink-0 text-right">
-                <div className="text-[9px] font-bold uppercase tracking-[0.22em] text-white/45 sm:text-[10px]">
-                  Ref No.
-                </div>
-                <div className="mt-0.5 font-mono text-xs font-semibold text-white/80 sm:text-sm">
-                  {appointment.id.slice(0, 12).toUpperCase()}
-                </div>
-                <div className="mt-2 text-[9px] text-white/40 sm:text-[10px]">
-                  Issued: {refDate}
-                </div>
-              </div>
-            </div>
-
-            {/* Divider strip */}
-            <div className="relative mt-6 flex items-center gap-3">
-              <div className="h-px flex-1 bg-white/12" />
-              <div className="flex h-7 w-7 items-center justify-center rounded-full bg-emerald-500/25">
-                <svg className="h-3.5 w-3.5 text-emerald-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <div className="h-px flex-1 bg-white/12" />
-            </div>
-
-            <p className="relative mt-4 text-sm font-medium leading-6 text-white/70 sm:text-[15px]">
-              Your appointment request has been received and is pending confirmation.
-            </p>
-          </div>
-
-          {/* ── Body ───────────────────────────────── */}
-          <div className="divide-y divide-[#e8f0ec] px-6 sm:px-10">
-
-            {/* Salutation */}
-            <div className="py-7 sm:py-8">
-              <p className="text-[15px] leading-7 text-[#334d42] sm:text-base">
-                Dear{" "}
-                <span className="font-bold text-[#1e3d32]">{patientFirstName}</span>,
-              </p>
-              <p className="mt-3 text-[14px] leading-7 text-[#4a6558] sm:text-[15px]">
-                We are pleased to confirm that your appointment request at{" "}
-                <span className="font-semibold text-[#1e3d32]">Sarangi Dentistry</span>{" "}
-                has been successfully registered for the date indicated below. Our
-                clinical team will reach out to you for final confirmation.
-              </p>
-            </div>
-
-            {/* Appointment details card */}
-            <div className="py-7 sm:py-8">
-              <div className="text-[10px] font-bold uppercase tracking-[0.24em] text-[#6a8a7b] sm:text-[11px]">
-                Appointment Details
-              </div>
-              <div className="mt-4 overflow-hidden rounded-2xl border border-[#d8ebe3] bg-[#f4faf7]">
-                <div className="grid divide-y divide-[#daeae2] sm:grid-cols-2 sm:divide-x sm:divide-y-0">
-                  <DetailRow label="Patient Name" value={appointment.name} accent />
-                  <DetailRow label="Contact Number" value={appointment.phone} />
-                </div>
-                <div className="border-t border-[#daeae2]">
-                  <DetailRow label="Requested Appointment Date" value={formattedDate} accent highlight />
-                </div>
-                <div className="border-t border-[#daeae2]">
-                  <DetailRow label="Reason for Visit" value={appointment.reason} />
-                </div>
-              </div>
-
-              {/* First-come first-served notice */}
-              <div className="mt-5 flex gap-3 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-4">
-                <svg className="mt-0.5 h-5 w-5 shrink-0 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" />
-                </svg>
-                <p className="text-[13px] leading-6 text-amber-800 sm:text-[14px]">
-                  <span className="font-bold">Important:</span> Our clinic operates on a{" "}
-                  <span className="font-bold">First Come, First Served</span> basis. We
-                  strongly advise you to arrive by{" "}
-                  <span className="font-bold">10:00 AM</span> to secure an early position
-                  and reduce waiting time. Please confirm your appointment at the reception
-                  desk upon arrival.
-                </p>
-              </div>
-
-              <p className="mt-4 text-[13px] leading-6 text-[#4a6558] sm:text-[14px]">
-                Our team will contact you on{" "}
-                <span className="font-bold text-[#1e3d32]">{appointment.phone}</span> to
-                confirm the final visit timing. Please ensure your phone is reachable.
-              </p>
-            </div>
-
-            {/* Do's and Don'ts */}
-            <div className="py-7 sm:py-8">
-              <div className="text-[10px] font-bold uppercase tracking-[0.24em] text-[#6a8a7b] sm:text-[11px]">
-                Visit Guidelines — Do&rsquo;s &amp; Don&rsquo;ts
-              </div>
-
-              <div className="mt-5 grid gap-5 sm:grid-cols-2">
-                {/* DO's */}
-                <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-5">
-                  <div className="mb-4 flex items-center gap-2">
-                    <div className="flex h-7 w-7 items-center justify-center rounded-full bg-emerald-100">
-                      <svg className="h-4 w-4 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                      </svg>
-                    </div>
-                    <span className="text-[11px] font-black uppercase tracking-[0.2em] text-emerald-700">
-                      Please Do
-                    </span>
-                  </div>
-                  <ul className="space-y-2.5">
-                    {DOS.map((item) => (
-                      <li key={item} className="flex items-start gap-2.5 text-[12.5px] leading-5 text-emerald-900 sm:text-[13px]">
-                        <CheckIcon />
-                        <span>{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                {/* DON'Ts */}
-                <div className="rounded-2xl border border-rose-200 bg-rose-50 p-5">
-                  <div className="mb-4 flex items-center gap-2">
-                    <div className="flex h-7 w-7 items-center justify-center rounded-full bg-rose-100">
-                      <svg className="h-4 w-4 text-rose-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                      </svg>
-                    </div>
-                    <span className="text-[11px] font-black uppercase tracking-[0.2em] text-rose-700">
-                      Please Don&rsquo;t
-                    </span>
-                  </div>
-                  <ul className="space-y-2.5">
-                    {DONTS.map((item) => (
-                      <li key={item} className="flex items-start gap-2.5 text-[12.5px] leading-5 text-rose-900 sm:text-[13px]">
-                        <CrossIcon />
-                        <span>{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            </div>
-
-            {/* Clinic info */}
-            <div className="py-7 sm:py-8">
-              <div className="text-[10px] font-bold uppercase tracking-[0.24em] text-[#6a8a7b] sm:text-[11px]">
-                Clinic Information
-              </div>
-              <div className="mt-4 grid gap-3 sm:grid-cols-3">
-                <InfoTile
-                  icon={
-                    <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                  }
-                  label="Clinic Hours"
-                  value={
-                    <>
-                      <span>Mon – Sat: 10:00 AM – 8:00 PM</span>
-                      <span>Sunday: 10:00 AM – 2:00 PM</span>
-                    </>
-                  }
-                />
-                <InfoTile
-                  icon={
-                    <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                    </svg>
-                  }
-                  label="Contact"
-                  value={<span>+91 9938942846</span>}
-                />
-                <InfoTile
-                  icon={
-                    <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a2 2 0 01-2.828 0l-4.243-4.243a8 8 0 1111.314 0z" />
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                    </svg>
-                  }
-                  label="Location"
-                  value={
-                    <>
-                      <span>7RGM+H8G Stalwart Complex,</span>
-                      <span>Bhouma Nagar, Bhubaneswar</span>
-                    </>
-                  }
-                />
-              </div>
-            </div>
-
-            {/* Closing note */}
-            <div className="py-7 sm:py-8">
-              <p className="text-[13px] italic leading-7 text-[#4a6558] sm:text-[14px]">
-                We look forward to welcoming you to Sarangi Dentistry. If you have
-                any questions or need to reschedule, please do not hesitate to call
-                us directly. We are committed to making your visit as comfortable and
-                seamless as possible.
-              </p>
-              <p className="mt-5 text-[13px] leading-6 text-[#4a6558] sm:text-[14px]">
-                Warm regards,
-                <br />
-                <span className="mt-1 block font-bold text-[#1e3d32]">
-                  The Sarangi Dentistry Clinical Team
-                </span>
-              </p>
-
-              {/* Reference ID footer */}
-              <div className="mt-6 flex items-center gap-3">
-                <div className="h-px flex-1 bg-[#d8ebe3]" />
-                <span className="font-mono text-[10px] text-[#8aad9a]">
-                  APPOINTMENT REF: {appointment.id.toUpperCase()}
-                </span>
-                <div className="h-px flex-1 bg-[#d8ebe3]" />
-              </div>
-            </div>
-          </div>
-
-          {/* ── Footer action ──────────────────────── */}
-          <div className="sticky bottom-0 flex flex-col items-center gap-3 border-t border-[#e0ede6] bg-white/95 px-6 py-5 backdrop-blur-sm sm:flex-row sm:justify-between sm:px-10">
-            <p className="text-center text-[11px] leading-5 text-[#7a9a8a] sm:text-left sm:text-xs">
-              This is not a final confirmation. Our team will call you to confirm.
-            </p>
-            <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
-              <button
-                onClick={handleDownload}
-                disabled={isDownloading}
-                className="inline-flex min-h-[44px] w-full items-center justify-center gap-2 rounded-[16px] border border-[#d8ebe3] bg-white px-6 py-3 text-[12px] font-bold uppercase tracking-[0.2em] text-[#1e3d32] shadow-[0_4px_12px_rgba(30,61,50,0.08)] transition-all duration-300 hover:-translate-y-0.5 hover:border-[#1e3d32]/30 disabled:pointer-events-none disabled:opacity-60 sm:w-auto"
-              >
-                {isDownloading ? (
-                  <>
-                    <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" />
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-                    </svg>
-                    Generating...
-                  </>
-                ) : (
-                  <>
-                    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                    </svg>
-                    Download PDF
-                  </>
-                )}
-              </button>
-              <button
-                onClick={onClose}
-                className="inline-flex min-h-[44px] w-full items-center justify-center gap-2 rounded-[16px] bg-[#1e3d32] px-8 py-3 text-[12px] font-bold uppercase tracking-[0.2em] text-white shadow-[0_8px_24px_rgba(30,61,50,0.22)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#274f40] sm:w-auto"
-              >
-                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                </svg>
-                Understood — Close
-              </button>
-            </div>
-          </div>
-
-          {/* Close ✕ button */}
-          <button
-            onClick={onClose}
-            className="absolute right-4 top-4 flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-white/70 transition-all duration-200 hover:bg-white/20 hover:text-white sm:right-6 sm:top-6"
-            aria-label="Close"
+          {/* Document card */}
+          <motion.div
+            key="card"
+            initial={{ opacity: 0, scale: 0.96, y: 24 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.96, y: 16 }}
+            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+            className="relative w-full max-w-3xl overflow-hidden rounded-[28px] bg-white shadow-[0_40px_100px_rgba(0,0,0,0.28)] ring-1 ring-black/8 sm:rounded-[32px]"
           >
-            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
-        </motion.div>
-        </div>{/* end inner centering wrapper */}
+            {/* ── Clinic letterhead ──────────────────── */}
+            <div className="relative overflow-hidden bg-[#1e3d32] px-6 py-7 sm:px-10 sm:py-9">
+              {/* Decorative blobs */}
+              <div className="pointer-events-none absolute -right-12 -top-12 h-48 w-48 rounded-full bg-white/5 blur-3xl" />
+              <div className="pointer-events-none absolute -bottom-8 left-8 h-32 w-32 rounded-full bg-emerald-400/10 blur-2xl" />
+
+              <div className="relative flex items-start justify-between gap-4">
+                {/* Left: clinic identity */}
+                <div>
+                  <div className="mb-0.5 text-[10px] font-bold uppercase tracking-[0.28em] text-emerald-400/80 sm:text-[11px]">
+                    Official Appointment Notice
+                  </div>
+                  <h1 className="text-[1.55rem] font-black tracking-[-0.04em] text-white sm:text-[1.9rem]">
+                    Sarangi Dentistry
+                  </h1>
+                  <p className="mt-1.5 text-xs leading-5 text-white/55 sm:text-[13px]">
+                    Multi-Specialty Dental Clinic &nbsp;·&nbsp; Bhubaneswar,
+                    Odisha
+                  </p>
+                </div>
+
+                {/* Right: Reference box */}
+                <div className="shrink-0 text-right">
+                  <div className="text-[9px] font-bold uppercase tracking-[0.22em] text-white/45 sm:text-[10px]">
+                    Ref No.
+                  </div>
+                  <div className="mt-0.5 font-mono text-xs font-semibold text-white/80 sm:text-sm">
+                    {appointment.id.slice(0, 12).toUpperCase()}
+                  </div>
+                  <div className="mt-2 text-[9px] text-white/40 sm:text-[10px]">
+                    Issued: {refDate}
+                  </div>
+                </div>
+              </div>
+
+              {/* Divider strip */}
+              <div className="relative mt-6 flex items-center gap-3">
+                <div className="h-px flex-1 bg-white/12" />
+                <div className="flex h-7 w-7 items-center justify-center rounded-full bg-emerald-500/25">
+                  <svg
+                    className="h-3.5 w-3.5 text-emerald-300"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={2.5}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                  </svg>
+                </div>
+                <div className="h-px flex-1 bg-white/12" />
+              </div>
+
+              <p className="relative mt-4 text-sm font-medium leading-6 text-white/70 sm:text-[15px]">
+                Your appointment request has been received and is pending
+                confirmation.
+              </p>
+            </div>
+
+            {/* ── Body ───────────────────────────────── */}
+            <div className="divide-y divide-[#e8f0ec] px-6 sm:px-10">
+              {/* Salutation */}
+              <div className="py-7 sm:py-8">
+                <p className="text-[15px] leading-7 text-[#334d42] sm:text-base">
+                  Dear{" "}
+                  <span className="font-bold text-[#1e3d32]">
+                    {patientFirstName}
+                  </span>
+                  ,
+                </p>
+                <p className="mt-3 text-[14px] leading-7 text-[#4a6558] sm:text-[15px]">
+                  We are pleased to confirm that your appointment request at{" "}
+                  <span className="font-semibold text-[#1e3d32]">
+                    Sarangi Dentistry
+                  </span>{" "}
+                  has been successfully registered for the date indicated below.
+                  Our clinical team will reach out to you for final
+                  confirmation.
+                </p>
+              </div>
+
+              {/* Appointment details card */}
+              <div className="py-7 sm:py-8">
+                <div className="text-[10px] font-bold uppercase tracking-[0.24em] text-[#6a8a7b] sm:text-[11px]">
+                  Appointment Details
+                </div>
+                <div className="mt-4 overflow-hidden rounded-2xl border border-[#d8ebe3] bg-[#f4faf7]">
+                  <div className="grid divide-y divide-[#daeae2] sm:grid-cols-2 sm:divide-x sm:divide-y-0">
+                    <DetailRow
+                      label="Patient Name"
+                      value={appointment.name}
+                      accent
+                    />
+                    <DetailRow
+                      label="Contact Number"
+                      value={appointment.phone}
+                    />
+                  </div>
+                  <div className="border-t border-[#daeae2]">
+                    <DetailRow
+                      label="Requested Appointment Date"
+                      value={formattedDate}
+                      accent
+                      highlight
+                    />
+                  </div>
+                  <div className="border-t border-[#daeae2]">
+                    <DetailRow
+                      label="Reason for Visit"
+                      value={appointment.reason}
+                    />
+                  </div>
+                </div>
+
+                {/* First-come first-served notice */}
+                <div className="mt-5 flex gap-3 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-4">
+                  <svg
+                    className="mt-0.5 h-5 w-5 shrink-0 text-amber-500"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"
+                    />
+                  </svg>
+                  <p className="text-[13px] leading-6 text-amber-800 sm:text-[14px]">
+                    <span className="font-bold">Important:</span> Our clinic
+                    operates on a{" "}
+                    <span className="font-bold">First Come, First Served</span>{" "}
+                    basis. We strongly advise you to arrive by{" "}
+                    <span className="font-bold">10:00 AM</span> to secure an
+                    early position and reduce waiting time. Please confirm your
+                    appointment at the reception desk upon arrival.
+                  </p>
+                </div>
+
+                <p className="mt-4 text-[13px] leading-6 text-[#4a6558] sm:text-[14px]">
+                  Our team will contact you on{" "}
+                  <span className="font-bold text-[#1e3d32]">
+                    {appointment.phone}
+                  </span>{" "}
+                  to confirm the final visit timing. Please ensure your phone is
+                  reachable.
+                </p>
+              </div>
+
+              {/* Do's and Don'ts */}
+              <div className="py-7 sm:py-8">
+                <div className="text-[10px] font-bold uppercase tracking-[0.24em] text-[#6a8a7b] sm:text-[11px]">
+                  Visit Guidelines — Do&rsquo;s &amp; Don&rsquo;ts
+                </div>
+
+                <div className="mt-5 grid gap-5 sm:grid-cols-2">
+                  {/* DO's */}
+                  <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-5">
+                    <div className="mb-4 flex items-center gap-2">
+                      <div className="flex h-7 w-7 items-center justify-center rounded-full bg-emerald-100">
+                        <svg
+                          className="h-4 w-4 text-emerald-600"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          strokeWidth={2.5}
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M5 13l4 4L19 7"
+                          />
+                        </svg>
+                      </div>
+                      <span className="text-[11px] font-black uppercase tracking-[0.2em] text-emerald-700">
+                        Please Do
+                      </span>
+                    </div>
+                    <ul className="space-y-2.5">
+                      {DOS.map((item) => (
+                        <li
+                          key={item}
+                          className="flex items-start gap-2.5 text-[12.5px] leading-5 text-emerald-900 sm:text-[13px]"
+                        >
+                          <CheckIcon />
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  {/* DON'Ts */}
+                  <div className="rounded-2xl border border-rose-200 bg-rose-50 p-5">
+                    <div className="mb-4 flex items-center gap-2">
+                      <div className="flex h-7 w-7 items-center justify-center rounded-full bg-rose-100">
+                        <svg
+                          className="h-4 w-4 text-rose-600"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          strokeWidth={2.5}
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M6 18L18 6M6 6l12 12"
+                          />
+                        </svg>
+                      </div>
+                      <span className="text-[11px] font-black uppercase tracking-[0.2em] text-rose-700">
+                        Please Don&rsquo;t
+                      </span>
+                    </div>
+                    <ul className="space-y-2.5">
+                      {DONTS.map((item) => (
+                        <li
+                          key={item}
+                          className="flex items-start gap-2.5 text-[12.5px] leading-5 text-rose-900 sm:text-[13px]"
+                        >
+                          <CrossIcon />
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              {/* Clinic info */}
+              <div className="py-7 sm:py-8">
+                <div className="text-[10px] font-bold uppercase tracking-[0.24em] text-[#6a8a7b] sm:text-[11px]">
+                  Clinic Information
+                </div>
+                <div className="mt-4 grid gap-3 sm:grid-cols-3">
+                  <InfoTile
+                    icon={
+                      <svg
+                        className="h-5 w-5"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        strokeWidth={2}
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                        />
+                      </svg>
+                    }
+                    label="Clinic Hours"
+                    value={
+                      <>
+                        <span>Mon – Sat: 10:00 AM – 8:00 PM</span>
+                        <span>Sunday: 10:00 AM – 2:00 PM</span>
+                      </>
+                    }
+                  />
+                  <InfoTile
+                    icon={
+                      <svg
+                        className="h-5 w-5"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        strokeWidth={2}
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+                        />
+                      </svg>
+                    }
+                    label="Contact"
+                    value={<span>+91 9938942846</span>}
+                  />
+                  <InfoTile
+                    icon={
+                      <svg
+                        className="h-5 w-5"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        strokeWidth={2}
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M17.657 16.657L13.414 20.9a2 2 0 01-2.828 0l-4.243-4.243a8 8 0 1111.314 0z"
+                        />
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                        />
+                      </svg>
+                    }
+                    label="Location"
+                    value={
+                      <>
+                        <span>7RGM+H8G Stalwart Complex,</span>
+                        <span>Bhouma Nagar, Bhubaneswar</span>
+                      </>
+                    }
+                  />
+                </div>
+              </div>
+
+              {/* Closing note */}
+              <div className="py-7 sm:py-8">
+                <p className="text-[13px] italic leading-7 text-[#4a6558] sm:text-[14px]">
+                  We look forward to welcoming you to Sarangi Dentistry. If you
+                  have any questions or need to reschedule, please do not
+                  hesitate to call us directly. We are committed to making your
+                  visit as comfortable and seamless as possible.
+                </p>
+                <p className="mt-5 text-[13px] leading-6 text-[#4a6558] sm:text-[14px]">
+                  Warm regards,
+                  <br />
+                  <span className="mt-1 block font-bold text-[#1e3d32]">
+                    The Sarangi Dentistry Clinical Team
+                  </span>
+                </p>
+
+                {/* Reference ID footer */}
+                <div className="mt-6 flex items-center gap-3">
+                  <div className="h-px flex-1 bg-[#d8ebe3]" />
+                  <span className="font-mono text-[10px] text-[#8aad9a]">
+                    APPOINTMENT REF: {appointment.id.toUpperCase()}
+                  </span>
+                  <div className="h-px flex-1 bg-[#d8ebe3]" />
+                </div>
+              </div>
+            </div>
+
+            {/* ── Footer action ──────────────────────── */}
+            <div className="sticky bottom-0 flex flex-col items-center gap-3 border-t border-[#e0ede6] bg-white/95 px-6 py-5 backdrop-blur-sm sm:flex-row sm:justify-between sm:px-10">
+              <p className="text-center text-[11px] leading-5 text-[#7a9a8a] sm:text-left sm:text-xs">
+                This is not a final confirmation. Our team will call you to
+                confirm.
+              </p>
+              <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
+                <button
+                  onClick={handleDownload}
+                  disabled={isDownloading}
+                  className="inline-flex min-h-[44px] w-full items-center justify-center gap-2 rounded-[16px] border border-[#d8ebe3] bg-white px-6 py-3 text-[12px] font-bold uppercase tracking-[0.2em] text-[#1e3d32] shadow-[0_4px_12px_rgba(30,61,50,0.08)] transition-all duration-300 hover:-translate-y-0.5 hover:border-[#1e3d32]/30 disabled:pointer-events-none disabled:opacity-60 sm:w-auto"
+                >
+                  {isDownloading ? (
+                    <>
+                      <svg
+                        className="h-4 w-4 animate-spin"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                      >
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="3"
+                        />
+                        <path
+                          className="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+                        />
+                      </svg>
+                      Generating...
+                    </>
+                  ) : (
+                    <>
+                      <svg
+                        className="h-4 w-4"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        strokeWidth={2.5}
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+                        />
+                      </svg>
+                      Download PDF
+                    </>
+                  )}
+                </button>
+                <button
+                  onClick={onClose}
+                  className="inline-flex min-h-[44px] w-full items-center justify-center gap-2 rounded-[16px] bg-[#1e3d32] px-8 py-3 text-[12px] font-bold uppercase tracking-[0.2em] text-white shadow-[0_8px_24px_rgba(30,61,50,0.22)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#274f40] sm:w-auto"
+                >
+                  <svg
+                    className="h-4 w-4"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={2.5}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M5 13l4 4L19 7"
+                    />
+                  </svg>
+                  Understood — Close
+                </button>
+              </div>
+            </div>
+
+            {/* Close ✕ button */}
+            <button
+              onClick={onClose}
+              className="absolute right-4 top-4 flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-white/70 transition-all duration-200 hover:bg-white/20 hover:text-white sm:right-6 sm:top-6"
+              aria-label="Close"
+            >
+              <svg
+                className="h-4 w-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2.5}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+          </motion.div>
+        </div>
+        {/* end inner centering wrapper */}
       </motion.div>
     </AnimatePresence>
   );
@@ -522,8 +686,8 @@ function buildPrintHtml(
   dos: string[],
   donts: string[],
 ): string {
-  const dosHtml = dos.map(d => `<li>&#10003;&nbsp; ${d}</li>`).join("");
-  const dontsHtml = donts.map(d => `<li>&#10007;&nbsp; ${d}</li>`).join("");
+  const dosHtml = dos.map((d) => `<li>&#10003;&nbsp; ${d}</li>`).join("");
+  const dontsHtml = donts.map((d) => `<li>&#10007;&nbsp; ${d}</li>`).join("");
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -575,7 +739,7 @@ function buildPrintHtml(
   </div>
   <div class="ref">
     <div class="label">Ref No.</div>
-    <div class="refnum">${appointment.id.slice(0,12).toUpperCase()}</div>
+    <div class="refnum">${appointment.id.slice(0, 12).toUpperCase()}</div>
     <div class="issued">Issued: ${refDate}</div>
   </div>
 </div>

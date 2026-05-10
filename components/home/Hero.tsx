@@ -54,7 +54,7 @@ function AnimatedHeading({ text }: { text: string }) {
   const words = useMemo(() => text.split(" "), [text]);
 
   const headingClassName =
-    "mx-auto max-w-[12ch] pb-[0.08em] text-center text-5xl font-bold leading-[0.99] tracking-normal text-secondary sm:max-w-[11ch] sm:leading-[0.99] md:max-w-[12ch] md:text-7xl md:leading-[0.99] lg:max-w-[14ch] lg:leading-[0.99]";
+    "mx-auto max-w-[12ch] pb-[0.08em] text-center text-[clamp(2.75rem,7vw,3.75rem)] font-bold leading-[1.02] tracking-normal text-secondary sm:max-w-[11ch] sm:leading-[0.99] md:max-w-[14ch] md:text-6xl md:leading-[0.99] lg:max-w-[14ch] lg:text-7xl lg:leading-[0.99]";
 
   if (prefersReducedMotion) {
     return (
@@ -184,7 +184,7 @@ export default function Hero() {
       <div className="relative mx-auto grid min-h-svh max-w-7xl grid-cols-1 gap-10 px-4 pb-12 pt-28 sm:min-h-[92svh] sm:px-6 sm:pb-14 sm:pt-32 md:gap-12 md:px-10 md:pb-16 md:pt-32 lg:grid-cols-12 lg:items-start lg:gap-12 lg:px-16 lg:pb-16 lg:pt-28">
         <motion.div
           style={{ y: textY }}
-          className="order-2 min-w-0 lg:order-1 lg:col-span-7 lg:pt-10"
+          className="order-2 min-w-0 md:order-1 lg:col-span-7 lg:pt-10"
         >
           <div className="max-w-4xl lg:min-h-160">
             <AnimatePresence mode="wait" initial={false}>
@@ -254,7 +254,7 @@ export default function Hero() {
 
         <motion.div
           style={{ y: imageY, rotate: imageRotate }}
-          className="order-1 min-w-0 lg:order-2 lg:col-span-5 lg:pt-10"
+          className="order-1 min-w-0 md:order-2 lg:col-span-5 lg:pt-10"
         >
           <div className="relative mx-auto w-full max-w-155">
             <div className="absolute -right-5 -top-5 hidden h-28 w-28 rounded-full bg-[#dff5e8] blur-2xl md:block" />

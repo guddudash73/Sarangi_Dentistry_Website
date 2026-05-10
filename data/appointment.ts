@@ -1,4 +1,3 @@
-// website/data/appointment.ts
 import type {
   PublicAppointmentResponse,
   PublicCreateAppointmentInput,
@@ -53,6 +52,12 @@ function isAppointmentResponse(
 
   const validDob = item.dob === undefined || typeof item.dob === "string";
   const validAge = item.age === undefined || typeof item.age === "number";
+  const validGender =
+    item.gender === undefined ||
+    item.gender === "MALE" ||
+    item.gender === "FEMALE" ||
+    item.gender === "OTHER" ||
+    item.gender === "UNKNOWN";
 
   return (
     typeof item.id === "string" &&
@@ -64,6 +69,7 @@ function isAppointmentResponse(
     typeof item.address === "string" &&
     validDob &&
     validAge &&
+    validGender &&
     typeof item.status === "string" &&
     typeof item.createdAt === "number" &&
     typeof item.updatedAt === "number" &&
@@ -80,6 +86,7 @@ function normalizeAppointmentInput(
     appointmentDate: input.appointmentDate.trim(),
     reason: input.reason.trim(),
     address: input.address.trim(),
+    gender: input.gender,
     ...(input.dob ? { dob: input.dob.trim() } : {}),
     ...(typeof input.age === "number" ? { age: input.age } : {}),
   };

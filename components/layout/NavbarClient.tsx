@@ -68,7 +68,7 @@ export default function NavbarClient({ procedures }: NavbarClientProps) {
 
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth >= 768) {
+      if (window.innerWidth >= 1024) {
         setIsOpen(false);
         setIsMobileProcedureOpen(false);
       }
@@ -109,7 +109,7 @@ export default function NavbarClient({ procedures }: NavbarClientProps) {
             </Link>
           </div>
 
-          <div className="hidden flex-1 items-center justify-center space-x-1 md:flex">
+          <div className="hidden flex-1 items-center justify-center space-x-1 lg:flex">
             {navItems.map((item) => {
               const active = isItemActive(pathname, item.path);
 
@@ -215,7 +215,7 @@ export default function NavbarClient({ procedures }: NavbarClientProps) {
           <div className="flex shrink-0 items-center justify-end gap-3">
             <Link
               href="/book-appointment"
-              className={`cursor-grow group relative hidden shrink-0 items-center justify-center overflow-hidden bg-primary font-mono font-bold text-white shadow-lg shadow-[#03966a]/20 transition-all duration-300 hover:-translate-y-0.5 md:flex ${
+              className={`cursor-grow group relative hidden shrink-0 items-center justify-center overflow-hidden bg-primary font-mono font-bold text-white shadow-lg shadow-[#03966a]/20 transition-all duration-300 hover:-translate-y-0.5 lg:flex ${
                 isScrolled
                   ? "h-10 w-10 rounded-full md:h-11 md:w-11"
                   : "whitespace-nowrap rounded-full px-6 py-2.5"
@@ -253,7 +253,7 @@ export default function NavbarClient({ procedures }: NavbarClientProps) {
 
             <button
               onClick={() => setIsOpen((prev) => !prev)}
-              className={`relative flex h-11 w-11 items-center justify-center transition-all duration-300 md:hidden ${
+              className={`relative flex h-11 w-11 items-center justify-center transition-all duration-300 lg:hidden ${
                 isOpen
                   ? " text-[#17332b]"
                   : isScrolled
@@ -301,7 +301,7 @@ export default function NavbarClient({ procedures }: NavbarClientProps) {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.3 }}
-              className="fixed inset-0 z-40 bg-secondary/20 backdrop-blur-sm md:hidden"
+              className="fixed inset-0 z-40 bg-secondary/20 backdrop-blur-sm lg:hidden"
               onClick={() => setIsOpen(false)}
             />
 
@@ -310,7 +310,7 @@ export default function NavbarClient({ procedures }: NavbarClientProps) {
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ type: "spring", damping: 25, stiffness: 200 }}
-              className="fixed inset-y-0 right-0 z-50 flex h-dvh w-[90%] max-w-sm flex-col bg-white/95 shadow-[-24px_0_80px_rgba(20,40,34,0.08)] backdrop-blur-3xl md:hidden"
+              className="fixed inset-y-0 right-0 z-50 flex h-dvh w-[90%] max-w-sm flex-col bg-white/95 shadow-[-24px_0_80px_rgba(20,40,34,0.08)] backdrop-blur-3xl lg:hidden"
             >
               <div className="flex h-full flex-col overflow-y-auto px-6 pb-8 pt-6">
                 <div className="mb-8 flex items-center justify-between">
