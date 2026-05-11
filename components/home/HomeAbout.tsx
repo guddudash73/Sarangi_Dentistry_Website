@@ -8,8 +8,8 @@ import {
   useTransform,
   useReducedMotion,
 } from "framer-motion";
-import Link from "next/link";
 import SectionReveal from "@/components/ui/SectionReveal";
+import Image from "next/image";
 
 function DotFigure({ animated = true }: { animated?: boolean }) {
   const dots = [
@@ -151,7 +151,7 @@ export default function HomeAbout() {
                   style={{ y: mainImageY }}
                   className="aspect-[4/4.35] sm:aspect-4/3 lg:aspect-[4/3.95]"
                 >
-                  <img
+                  <Image width={1200} height={1200} 
                     src="/assets/about-img.png"
                     alt="Dr. Soumendra Sarangi"
                     loading="lazy"
@@ -176,7 +176,7 @@ export default function HomeAbout() {
                 }}
                 className="absolute -top-4 -left-3 hidden h-28 w-28 overflow-hidden rounded-3xl border-4 border-white bg-white shadow-[0_18px_34px_rgba(20,40,34,0.12)] md:block lg:h-32 lg:w-32"
               >
-                <img
+                <Image width={1200} height={1200} 
                   src="/assets/DSC_0005-Copy-scaled.jpg"
                   alt="Dental care"
                   loading="lazy"

@@ -10,6 +10,7 @@ import {
 } from "framer-motion";
 import type { ProcedureItem } from "@/types/procedure";
 import PageBackground from "@/components/ui/PageBackground";
+import Image from "next/image";
 
 type ProceduresPageClientProps = {
   procedures: ProcedureItem[];
@@ -127,7 +128,7 @@ export default function ProceduresPageClient({
                     <div className="relative overflow-hidden">
                       <div className="absolute inset-0 z-10 bg-linear-to-t from-[#11241c]/55 via-transparent to-transparent opacity-70" />
 
-                      <img
+                      <Image width={1200} height={1200} 
                         src={getProcedureCardImage(procedure)}
                         alt={procedure.title}
                         loading={index < 3 ? "eager" : "lazy"}

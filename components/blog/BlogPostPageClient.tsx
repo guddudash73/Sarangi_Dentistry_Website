@@ -6,6 +6,7 @@ import { motion, useReducedMotion, type Transition } from "framer-motion";
 import type { BlogPost } from "@/types/blog";
 import PageBackground from "@/components/ui/PageBackground";
 import Button from "@/components/ui/Button";
+import Image from "next/image";
 
 type BlogPostPageClientProps = {
   blog: BlogPost;
@@ -123,8 +124,7 @@ export default function BlogPostPageClient({
             transition={{ duration: 0.85, delay: 0.28, ease: EASE }}
             className="mx-auto mt-12 max-w-6xl overflow-hidden rounded-[34px] border border-white/80 bg-white/60 p-3 shadow-[0_30px_80px_rgba(20,40,34,0.10)] backdrop-blur"
           >
-            <img
-              src={getBlogHeroImage(blog)}
+            <Image width={1200} height={1200}               src={getBlogHeroImage(blog)}
               alt={blog.title}
               loading="eager"
               decoding="async"
@@ -187,8 +187,7 @@ export default function BlogPostPageClient({
                   <article className="group">
                     <Link href={`/blog/${item.id}`} className="block">
                       <div className="overflow-hidden rounded-[28px] border border-[#dcebe3] bg-white/85 shadow-[0_16px_36px_rgba(20,40,34,0.05)] transition-all duration-500 group-hover:-translate-y-1 group-hover:shadow-[0_22px_48px_rgba(20,40,34,0.08)]">
-                        <img
-                          src={getBlogCardImage(item)}
+                        <Image width={1200} height={1200}                           src={getBlogCardImage(item)}
                           alt={item.title}
                           loading="lazy"
                           decoding="async"

@@ -10,6 +10,7 @@ import {
   type Variants,
 } from "framer-motion";
 import type { CertificationItem } from "@/types/certification";
+import Image from "next/image";
 
 type CertificationShowcaseProps = {
   items: CertificationItem[];
@@ -110,7 +111,7 @@ export default function CertificationShowcase({
             className="group relative flex flex-col overflow-hidden rounded-[32px] bg-white text-left shadow-[0_8px_30px_rgba(0,0,0,0.04)] transition-all duration-500 hover:shadow-[0_20px_40px_rgba(54,161,143,0.10)]"
           >
             <div className="relative overflow-hidden bg-[#f4faf7]">
-              <img
+              <Image width={1200} height={1200} 
                 src={getCardImage(cert)}
                 alt={cert.title}
                 loading={index < 6 ? "eager" : "lazy"}
@@ -216,7 +217,7 @@ export default function CertificationShowcase({
 
               <div className="grid max-h-[92vh] overflow-y-auto lg:grid-cols-[minmax(0,1fr)_360px]">
                 <div className="flex items-center justify-center bg-[#f4faf7] p-4">
-                  <img
+                  <Image width={1200} height={1200} 
                     src={getModalImage(activeItem)}
                     alt={activeItem.title}
                     loading="eager"

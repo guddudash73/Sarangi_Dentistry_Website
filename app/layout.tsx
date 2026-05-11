@@ -53,8 +53,12 @@ const footlightMtPro = localFont({
   display: "swap",
 });
 
+const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://sarangidentistry.in';
+const isStage = baseUrl.includes('stage');
+
 export const metadata: Metadata = {
-  metadataBase: new URL('https://sarangidentistry.com'),
+  metadataBase: new URL(baseUrl),
+  robots: isStage ? { index: false, follow: false } : undefined,
   title: {
     default: 'Sarangi Dentistry | Best Dentistry in Bhubaneswar',
     template: '%s | Sarangi Dentistry',

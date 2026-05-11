@@ -10,6 +10,7 @@ import {
   type Variants,
 } from "framer-motion";
 import type { GalleryImage } from "@/types/gallery";
+import Image from "next/image";
 
 type ExpandableGalleryProps = {
   items: GalleryImage[];
@@ -28,7 +29,7 @@ function getModalImage(item: GalleryImage): string {
 function preloadImage(src: string | undefined) {
   if (!src || typeof window === "undefined") return;
 
-  const image = new Image();
+  const image = new window.Image();
   image.decoding = "async";
   image.src = src;
 }
@@ -163,7 +164,7 @@ export default function ExpandableGallery({ items }: ExpandableGalleryProps) {
               className={`group relative overflow-hidden rounded-[30px] border border-[#dcebe3] bg-white text-left shadow-[0_18px_40px_rgba(20,40,34,0.06)] transition-all duration-300 hover:border-[#c8ddd2] hover:shadow-[0_22px_44px_rgba(20,40,34,0.08)] ${layoutClass}`}
             >
               <div className="absolute inset-0">
-                <img
+                <Image width={1200} height={1200}
                   src={getGridImage(item)}
                   alt={item.alt}
                   loading={index < 3 ? "eager" : "lazy"}
@@ -252,7 +253,7 @@ export default function ExpandableGallery({ items }: ExpandableGalleryProps) {
 
                 <div className="grid grid-cols-1 lg:grid-cols-12">
                   <div className="relative bg-[#10231d] lg:col-span-8">
-                    <img
+                    <Image width={1200} height={1200}
                       key={activeItem.id}
                       src={getModalImage(activeItem)}
                       alt={activeItem.alt}

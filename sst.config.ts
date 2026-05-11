@@ -1,4 +1,5 @@
 // sst.config.ts
+// eslint-disable-next-line @typescript-eslint/triple-slash-reference
 /// <reference path="./.sst/platform/config.d.ts" />
 
 function resolveStage(inputStage?: string) {
@@ -23,9 +24,7 @@ function getDomainForStage(stage: string): string | undefined {
 }
 
 export default $config({
-  app(input: any) {
-    const stage = resolveStage(input?.stage);
-
+  app() {
     return {
       name: "sarangi-website",
       home: "aws",

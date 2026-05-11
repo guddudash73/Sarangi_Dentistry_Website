@@ -2,7 +2,6 @@
 
 import Button from "@/components/ui/Button";
 import { motion, useScroll, useTransform } from "framer-motion";
-import Link from "next/link";
 import { useRef } from "react";
 import SectionReveal from "@/components/ui/SectionReveal";
 

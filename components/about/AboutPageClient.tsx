@@ -1,8 +1,7 @@
 "use client";
 
 import Button from "@/components/ui/Button";
-import { useEffect, useRef } from "react";
-import Link from "next/link";
+import { useRef } from "react";
 import {
   motion,
   useReducedMotion,
@@ -10,6 +9,7 @@ import {
   useTransform,
 } from "framer-motion";
 import PageBackground from "@/components/ui/PageBackground";
+import Image from "next/image";
 
 const WHY_US_ITEMS = [
   {
@@ -86,12 +86,6 @@ export default function AboutPageClient() {
     [0, prefersReducedMotion ? -12 : -42],
   );
 
-  const aboutY = useTransform(
-    scrollYProgress,
-    [0, 0.2, 0.48, 0.68],
-    ["100%", "88%", "34%", "0%"],
-  );
-
   const aboutScale = useTransform(
     scrollYProgress,
     [0, 0.18, 1],
@@ -102,12 +96,6 @@ export default function AboutPageClient() {
     scrollYProgress,
     [0, 0.48, 0.68],
     [80, 40, 0],
-  );
-
-  const aboutInset = useTransform(
-    scrollYProgress,
-    [0, 0.18, 0.48, 0.68],
-    ["3.5%", "3%", "1.2%", "0%"],
   );
 
   const scrollHintY = useTransform(
@@ -122,12 +110,6 @@ export default function AboutPageClient() {
     [0, prefersReducedMotion ? 0 : -18],
   );
 
-  const floatYTwo = useTransform(
-    scrollYProgress,
-    [0, 1],
-    [0, prefersReducedMotion ? 0 : 22],
-  );
-
   return (
     <main className="min-h-screen overflow-x-clip bg-background text-secondary">
       <section ref={sceneRef} style={{ position: "relative" }} className="relative w-full">
@@ -138,7 +120,7 @@ export default function AboutPageClient() {
               style={{ scale: heroScale }}
               className="absolute inset-0"
             >
-              <img
+              <Image width={1200} height={1200} 
                 src="/assets/Dental-Health-Checkup.jpg"
                 alt="Sarangi Dentistry Clinic"
                 className="h-full w-full object-cover"
@@ -273,7 +255,7 @@ export default function AboutPageClient() {
                   >
                     <div className="rounded-[30px] border border-[#dcebe3] bg-[linear-gradient(180deg,rgba(255,255,255,0.95),rgba(244,250,246,1))] p-4 shadow-[0_26px_60px_rgba(20,40,34,0.08)] sm:p-5">
                       <div className="overflow-hidden rounded-3xl">
-                        <img
+                        <Image width={1200} height={1200} 
                           src="/assets/about-img.png"
                           alt="Sarangi Dentistry clinic team"
                           className="aspect-[4/2.65] w-full object-cover object-center"

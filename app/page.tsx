@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     title: "Best Dentistry in Bhubaneswar | Sarangi Dentistry",
     description:
       "Experience the best dentistry in Bhubaneswar at Sarangi Dentistry. We offer advanced dental treatments and cosmetic procedures.",
-    url: "https://sarangidentistry.com",
+    url: "/",
     siteName: "Sarangi Dentistry",
     images: [
       {
@@ -37,17 +37,19 @@ export const metadata: Metadata = {
   },
 };
 
+const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://sarangidentistry.in";
+
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Dentist",
   name: "Sarangi Dentistry",
-  image: "https://sarangidentistry.com/assets/seat_1.jpg",
-  "@id": "https://sarangidentistry.com",
-  url: "https://sarangidentistry.com",
+  image: `${baseUrl}/assets/seat_1.jpg`,
+  "@id": baseUrl,
+  url: baseUrl,
   telephone: "+91-9938942846",
   address: {
     "@type": "PostalAddress",
-    streetAddress: "Bhubaneswar",
+    streetAddress: "7RGM+H8G Stalwart Complex, Bhouma Nagar",
     addressLocality: "Bhubaneswar",
     addressRegion: "Odisha",
     postalCode: "751001",
@@ -73,11 +75,6 @@ const jsonLd = {
   },
   description:
     "Experience the best dentistry in Bhubaneswar at Sarangi Dentistry. Dr. Sarangi offers advanced treatments, cosmetic dentistry, and personalized care for radiant smiles.",
-  aggregateRating: {
-    "@type": "AggregateRating",
-    ratingValue: "4.9",
-    reviewCount: "150",
-  },
 };
 
 /**

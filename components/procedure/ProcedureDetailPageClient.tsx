@@ -7,6 +7,7 @@ import Link from "next/link";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import type { ProcedureItem } from "@/types/procedure";
 import PageBackground from "@/components/ui/PageBackground";
+import Image from "next/image";
 
 type ProcedureDetailPageClientProps = {
   procedure: ProcedureItem;
@@ -202,7 +203,7 @@ export default function ProcedureDetailPageClient({
             >
               <div className="relative overflow-hidden rounded-[34px] border border-white/80 bg-white/60 p-3 shadow-[0_30px_80px_rgba(20,40,34,0.10)] backdrop-blur">
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(3,150,106,0.11),transparent_36%)]" />
-                <img
+                <Image width={1200} height={1200} 
                   src={getProcedureHeroImage(procedure)}
                   alt={procedure.title}
                   loading="eager"
@@ -423,7 +424,7 @@ export default function ProcedureDetailPageClient({
                   <article className="group">
                     <Link href={item.path} className="block">
                       <div className="overflow-hidden rounded-[28px] border border-[#dcebe3] bg-white/85 shadow-[0_16px_36px_rgba(20,40,34,0.05)] transition-all duration-500 group-hover:-translate-y-1 group-hover:shadow-[0_22px_48px_rgba(20,40,34,0.08)]">
-                        <img
+                        <Image width={1200} height={1200} 
                           src={getProcedureCardImage(item)}
                           alt={item.title}
                           loading="lazy"

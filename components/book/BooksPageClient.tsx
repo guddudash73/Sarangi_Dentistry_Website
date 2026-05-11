@@ -5,6 +5,7 @@ import Link from "next/link";
 import { motion, useReducedMotion, type Transition } from "framer-motion";
 import type { Book } from "@/types/book";
 import PageBackground from "@/components/ui/PageBackground";
+import Image from "next/image";
 
 type BooksPageClientProps = {
   books: Book[];
@@ -96,7 +97,7 @@ export default function BooksPageClient({ books }: BooksPageClientProps) {
                         <div className="absolute inset-y-1 right-0 w-4 translate-x-full rounded-r-md border-y border-r border-[#dcebe3] bg-[linear-gradient(to_right,#f9fdfb,#e6f0eb)] shadow-inner transition-transform duration-500 group-hover:w-5 group-hover:translate-x-full" />
 
                         <div className="relative aspect-[3/4] overflow-hidden rounded-l-[4px] rounded-r-sm border-l-4 border-black/20 bg-[#f4faf7] shadow-sm transition-transform duration-500 group-hover:scale-[1.02]">
-                          <img
+                          <Image width={1200} height={1200} 
                             src={getBookCardImage(book)}
                             alt={`${book.title} cover`}
                             loading={index < 3 ? "eager" : "lazy"}

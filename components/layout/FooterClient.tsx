@@ -5,6 +5,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import type { ProcedureItem } from "@/types/procedure";
 import type { ContactInfo } from "@/types/contact";
+import Image from "next/image";
 
 type QuickLink = {
   name: string;
@@ -51,7 +52,7 @@ export default function FooterClient({
           transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
           className="absolute -right-24 bottom-10 h-80 w-80 opacity-[0.06] blur-[0.5px] sm:h-96 sm:w-96 md:-right-10 md:bottom-0 md:h-[450px] md:w-[450px]"
         >
-          <img
+          <Image width={1200} height={1200} 
             src="/assets/sd_teeth.png"
             alt=""
             className="h-full w-full object-contain"
@@ -107,7 +108,7 @@ export default function FooterClient({
               href="/"
               className="mb-8 inline-block transition-transform duration-300 hover:scale-[1.02]"
             >
-              <img
+              <Image width={1200} height={1200} 
                 src="/assets/sarangi-logo.png"
                 alt="Sarangi Dentistry Logo"
                 className="h-16 w-auto object-contain md:h-20"

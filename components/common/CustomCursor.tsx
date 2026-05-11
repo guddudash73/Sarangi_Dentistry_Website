@@ -22,13 +22,13 @@ export default function CustomCursor() {
       return;
     }
 
-    let mouse = {
+    const mouse = {
       x: window.innerWidth / 2,
       y: window.innerHeight / 2,
     };
 
-    let pos = { ...mouse };
-    let blurPos = { ...mouse };
+    const pos = { ...mouse };
+    const blurPos = { ...mouse };
 
     let isHidden = false;
     let currentState: "default" | "invert" = "default";

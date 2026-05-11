@@ -10,6 +10,7 @@ import {
 } from "framer-motion";
 import type { BlogPost } from "@/types/blog";
 import PageBackground from "@/components/ui/PageBackground";
+import Image from "next/image";
 
 type BlogPageClientProps = {
   blogs: BlogPost[];
@@ -131,7 +132,7 @@ export default function BlogPageClient({
                       href={featuredBlog.path}
                       className="relative block overflow-hidden lg:col-span-7"
                     >
-                      <img
+                      <Image width={1200} height={1200} 
                         src={getFeaturedBlogImage(featuredBlog)}
                         alt={featuredBlog.title}
                         loading="eager"
@@ -215,7 +216,7 @@ export default function BlogPageClient({
                     >
                       <Link href={blog.path} className="block">
                         <div className="relative overflow-hidden">
-                          <img
+                          <Image width={1200} height={1200} 
                             src={getBlogCardImage(blog)}
                             alt={blog.title}
                             loading={index < 3 ? "eager" : "lazy"}

@@ -9,7 +9,6 @@ import {
   useTransform,
   type Transition,
 } from "framer-motion";
-import Link from "next/link";
 import Image from "next/image";
 import PageBackground from "@/components/ui/PageBackground";
 import Button from "@/components/ui/Button";
@@ -145,8 +144,6 @@ export default function Hero() {
     [0, 1],
     [0, prefersReducedMotion ? 0 : -1.2],
   );
-
-  const bgOpacity = useTransform(scrollYProgress, [0, 0.9], [1, 0.82]);
 
   useEffect(() => {
     HERO_PAIRS.forEach((item) => {

@@ -40,7 +40,7 @@ function isValidPublicPath(
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = "https://sarangidentistry.com";
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://sarangidentistry.in";
 
   const [blogs, books, procedures] = await Promise.all([
     getAllBlogs().catch(() => []),

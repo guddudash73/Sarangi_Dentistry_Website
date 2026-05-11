@@ -41,11 +41,26 @@ export async function generateMetadata({ params }: BlogPostPageProps) {
     };
   }
 
+  const image = blog.fullUrl || blog.cardUrl || blog.image || "/assets/seat_1.jpg";
+
   return {
     title: `${blog.title} | Sarangi Dentistry`,
     description: blog.excerpt,
     alternates: {
       canonical: blog.path,
+    },
+    openGraph: {
+      title: `${blog.title} | Sarangi Dentistry`,
+      description: blog.excerpt,
+      url: blog.path,
+      type: "article",
+      images: [{ url: image, width: 1200, height: 630 }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${blog.title} | Sarangi Dentistry`,
+      description: blog.excerpt,
+      images: [image],
     },
   };
 }
@@ -66,28 +81,30 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
   const relatedBlogs = await getRelatedBlogs(blog.id, 2);
 
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://sarangidentistry.in";
+
   const articleSchema = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
-    "headline": blog.title,
-    "image": [
-      blog.fullUrl || blog.cardUrl || blog.image
+    headline: blog.title,
+    image: [blog.fullUrl || blog.cardUrl || blog.image],
+    datePublished: blog.date || new Date().toISOString(),
+    author: [
+      {
+        "@type": "Person",
+        name: blog.author || "Dr. Sarangi",
+        url: `${baseUrl}/about`,
+      },
     ],
-    "datePublished": blog.date || new Date().toISOString(),
-    "author": [{
-      "@type": "Person",
-      "name": blog.author || "Dr. Sarangi",
-      "url": "https://sarangidentistry.com/about"
-    }],
-    "publisher": {
+    publisher: {
       "@type": "Organization",
-      "name": "Sarangi Dentistry",
-      "logo": {
+      name: "Sarangi Dentistry",
+      logo: {
         "@type": "ImageObject",
-        "url": "https://sarangidentistry.com/favicon.ico"
-      }
+        url: `${baseUrl}/favicon.ico`,
+      },
     },
-    "description": blog.excerpt
+    description: blog.excerpt,
   };
 
   return (

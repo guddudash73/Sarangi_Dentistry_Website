@@ -4,6 +4,7 @@
 import { motion } from "framer-motion";
 import { useMemo, useState } from "react";
 import type { Photo } from "@/types/photography";
+import Image from "next/image";
 
 type Props = {
   photos: Photo[];
@@ -184,8 +185,7 @@ export default function PhotographyPageClient({ photos }: Props) {
                 onClick={() => setSelectedPhoto(photo)}
               >
                 <div className="relative overflow-hidden">
-                  <img
-                    src={getPhotoCardImage(photo)}
+                  <Image width={1200} height={1200}                     src={getPhotoCardImage(photo)}
                     alt={photo.alt ?? photo.title}
                     loading={index < 4 ? "eager" : "lazy"}
                     decoding="async"
@@ -238,8 +238,7 @@ export default function PhotographyPageClient({ photos }: Props) {
             </button>
 
             <div className="flex flex-1 items-center justify-center bg-[#f4faf7] p-2">
-              <img
-                src={getPhotoFullImage(selectedPhoto)}
+              <Image width={1200} height={1200}                 src={getPhotoFullImage(selectedPhoto)}
                 alt={selectedPhoto.alt ?? selectedPhoto.title}
                 loading="eager"
                 decoding="async"

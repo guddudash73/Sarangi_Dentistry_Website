@@ -4,6 +4,7 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import type { Book } from "@/types/book";
+import Image from "next/image";
 
 type Props = {
   book: Book;
@@ -97,8 +98,7 @@ export default function BookPageClient({ book }: Props) {
               <div className="relative h-[480px] w-[320px] sm:h-[580px] sm:w-[400px]">
                 <div className="absolute inset-0 translate-x-4 translate-y-4 rounded-xl bg-secondary/10 blur-xl" />
                 <div className="relative h-full w-full overflow-hidden rounded-l-md rounded-r-3xl border-l-8 border-[#1f3b33]/80 bg-white shadow-2xl">
-                  <img
-                    src={getBookHeroImage(book)}
+                  <Image width={1200} height={1200}                     src={getBookHeroImage(book)}
                     alt={`${book.title} cover`}
                     loading="eager"
                     decoding="async"

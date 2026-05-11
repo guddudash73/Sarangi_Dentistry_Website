@@ -51,6 +51,18 @@ export async function generateMetadata({ params }: ProcedureDetailPageProps) {
     alternates: {
       canonical: procedure.path,
     },
+    openGraph: {
+      title: `${procedure.title} | Sarangi Dentistry`,
+      description: procedure.shortText,
+      url: procedure.path,
+      images: procedure.image ? [{ url: procedure.image, width: 1200, height: 630 }] : [{ url: "/assets/seat_1.jpg", width: 1200, height: 630 }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${procedure.title} | Sarangi Dentistry`,
+      description: procedure.shortText,
+      images: procedure.image ? [procedure.image] : ["/assets/seat_1.jpg"],
+    },
   };
 }
 
@@ -75,7 +87,7 @@ export default async function ProcedureDetailPage({
   const faqSchema = procedure.faqs && procedure.faqs.length > 0 ? {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    "mainEntity": procedure.faqs.map((faq: any) => ({
+    "mainEntity": procedure.faqs.map((faq: { question: string; answer: string }) => ({
       "@type": "Question",
       "name": faq.question,
       "acceptedAnswer": {

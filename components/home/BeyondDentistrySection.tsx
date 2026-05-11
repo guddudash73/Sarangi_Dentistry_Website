@@ -6,6 +6,7 @@ import Link from "next/link";
 import type { Book } from "@/types/book";
 import type { Photo } from "@/types/photography";
 import SectionReveal from "@/components/ui/SectionReveal";
+import Image from "next/image";
 
 type Props = {
   pinnedBook: Book;
@@ -129,8 +130,7 @@ export default function BeyondDentistrySection({
               <div className="mt-auto flex flex-col items-start gap-8 sm:flex-row sm:items-end">
                 {/* Book cover thumbnail */}
                 <div className="relative h-44 w-28 shrink-0 overflow-hidden rounded-md shadow-lg transition-transform duration-500 group-hover:scale-105 group-hover:-rotate-2">
-                  <img
-                    src={pinnedBook.coverImage}
+                  <Image width={1200} height={1200}                     src={pinnedBook.coverImage}
                     alt={`${pinnedBook.title} cover`}
                     className="h-full w-full object-cover"
                   />
@@ -156,8 +156,7 @@ export default function BeyondDentistrySection({
           >
             {/* Background image from data */}
             <div className="absolute inset-0 z-0 transition-transform duration-700 group-hover:scale-105">
-              <img
-                src={featuredPhoto.src}
+              <Image width={1200} height={1200}                 src={featuredPhoto.src}
                 alt={featuredPhoto.title}
                 className="h-full w-full object-cover opacity-80"
               />

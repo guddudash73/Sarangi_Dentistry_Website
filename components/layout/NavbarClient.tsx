@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import type { ProcedureItem } from "@/types/procedure";
+import Image from "next/image";
 
 type NavItem = {
   name: string;
@@ -49,10 +50,13 @@ export default function NavbarClient({ procedures }: NavbarClientProps) {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  useEffect(() => {
+  const [prevPathname, setPrevPathname] = useState(pathname);
+
+  if (pathname !== prevPathname) {
+    setPrevPathname(pathname);
     setIsOpen(false);
     setIsMobileProcedureOpen(false);
-  }, [pathname]);
+  }
 
   useEffect(() => {
     if (isOpen) {
@@ -101,7 +105,7 @@ export default function NavbarClient({ procedures }: NavbarClientProps) {
               href="/"
               className="cursor-grow flex items-center transition-opacity duration-300 hover:opacity-90"
             >
-              <img
+              <Image width={1200} height={1200} 
                 src="/assets/sarangi-logo.png"
                 alt="Sarangi Dentistry Logo"
                 className="h-10 w-auto object-contain md:h-12"
@@ -319,7 +323,7 @@ export default function NavbarClient({ procedures }: NavbarClientProps) {
                     onClick={() => setIsOpen(false)}
                     className="flex items-center"
                   >
-                    <img
+                    <Image width={1200} height={1200} 
                       src="/assets/sarangi-logo.png"
                       alt="Sarangi Dentistry Logo"
                       className="h-10 w-auto object-contain"

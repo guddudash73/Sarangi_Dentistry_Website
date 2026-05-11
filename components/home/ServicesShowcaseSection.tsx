@@ -1,8 +1,10 @@
 "use client";
+import Image from "next/image";
 
 import AnimatedCounter from "@/components/ui/AnimatedCounter";
 import { useRef, useState } from "react";
 import {
+
   AnimatePresence,
   motion,
   useInView,
@@ -152,7 +154,7 @@ export default function ServicesShowcaseSection() {
               style={{ y: logoY }}
               className="pointer-events-none absolute -left-20 top-0 hidden h-130 w-105 opacity-[0.13] blur-[0.2px] md:block"
             >
-              <img
+              <Image width={1200} height={1200} 
                 src="/assets/sd_teeth.png"
                 alt=""
                 className="h-full w-full object-contain"
@@ -163,7 +165,7 @@ export default function ServicesShowcaseSection() {
               style={{ y: logoY }}
               className="pointer-events-none absolute left-1/2 top-8 h-80 w-60 -translate-x-1/2 opacity-[0.10] md:hidden"
             >
-              <img
+              <Image width={1200} height={1200} 
                 src="/assets/sd_teeth.png"
                 alt=""
                 className="h-full w-full object-contain"
@@ -260,7 +262,7 @@ export default function ServicesShowcaseSection() {
                 ease: "easeInOut",
               }}
             >
-              <img
+              <Image width={1200} height={1200} 
                 src="/assets/teeth.png"
                 alt="Dental services visual"
                 className="h-full w-full object-cover opacity-85"
@@ -314,7 +316,7 @@ export default function ServicesShowcaseSection() {
                       onDragEnd={isTop ? handleDragEnd : undefined}
                     >
                       <div className="absolute inset-0 z-0">
-                        <img
+                        <Image width={1200} height={1200} 
                           src={service.bgImage}
                           alt=""
                           className="h-full w-full object-cover opacity-[0.16]"

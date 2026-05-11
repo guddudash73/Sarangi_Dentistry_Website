@@ -1,12 +1,15 @@
 import { MetadataRoute } from "next";
 
 export default function robots(): MetadataRoute.Robots {
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://sarangidentistry.in';
+  const isStage = baseUrl.includes('stage');
+
   return {
     rules: {
       userAgent: "*",
-      allow: "/",
-      disallow: ["/api/"],
+      allow: isStage ? undefined : "/",
+      disallow: isStage ? "/" : ["/api/"],
     },
-    sitemap: "https://sarangidentistry.com/sitemap.xml",
+    sitemap: `${baseUrl}/sitemap.xml`,
   };
 }
