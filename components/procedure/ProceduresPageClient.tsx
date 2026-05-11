@@ -56,7 +56,7 @@ export default function ProceduresPageClient({
 
   return (
     <main className="min-h-screen overflow-x-clip bg-background text-secondary">
-      <section className="relative max-h-[60vh] pt-20 md:pt-28">
+      <section className="relative pt-20 md:pt-28">
         <PageBackground />
 
         <div className="relative mx-auto max-w-7xl px-5 pb-16 pt-8 sm:px-6 md:px-10 md:pb-20 lg:px-16 lg:pb-24">
