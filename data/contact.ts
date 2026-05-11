@@ -1,32 +1,159 @@
-import type { ContactInfo } from "@/types/contact";
+// website/data/contact.ts
+import type { ContactInfo, ContactHour } from "@/types/contact";
 
-/**
- * Backend-ready contact data layer.
- * Replace this later with API / CMS / database data.
- */
-export async function getContactInfo(): Promise<ContactInfo> {
+const DCM_CMS_API_BASE_URL =
+  process.env.DCM_CMS_API_BASE_URL?.trim() || "http://localhost:4000/api";
+
+const CMS_PUBLIC_API_KEY = process.env.CMS_PUBLIC_API_KEY?.trim();
+
+function getCmsHeaders(): HeadersInit {
+  if (!CMS_PUBLIC_API_KEY) {
+    throw new Error("CMS_PUBLIC_API_KEY is not set");
+  }
+
   return {
-    heading: "Let’s make your next dental visit feel effortless",
-    subheading:
-      "Reach out for appointments, treatment queries, or directions. We’ve designed this page to feel as calm, refined, and reassuring as the clinic experience itself.",
-    addressLines: [
-      "7RGM+H8G Stalwart Complex, Unit 4",
-      "Bhouma Nagar, Bhubaneswar",
-      "Odisha 751001",
-    ],
-    phone: "9938942846",
-    email: "info@sarangidentistry.com",
-    mapEmbedUrl:
-      "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3742.6620585141246!2d85.8341604!3d20.2728441!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a19a779165bc6f1%3A0xe5eb6c5a363d6b04!2sSarangi%20Dentistry!5e0!3m2!1sen!2sin!4v1709489620000!5m2!1sen!2sin",
-    mapTitle: "Sarangi Dentistry Location",
-    hours: [
-      { label: "Mon - Sat", value: "10:00 AM - 8:00 PM" },
-      { label: "Sunday", value: "By prior appointment" },
-    ],
-    quickHighlights: [
-      "Consultations & appointments",
-      "Treatment guidance",
-      "Directions & location help",
-    ],
+    Accept: "application/json",
+    "x-website-key": CMS_PUBLIC_API_KEY,
   };
+}
+
+function buildBaseCandidates(): string[] {
+  const normalized = DCM_CMS_API_BASE_URL.replace(/\/+$/, "");
+
+  const candidates = [normalized];
+
+  if (normalized.endsWith("/api")) {
+    candidates.push(normalized.slice(0, -4));
+  } else {
+    candidates.push(`${normalized}/api`);
+  }
+
+  return [...new Set(candidates)];
+}
+
+function isContactHour(value: unknown): value is ContactHour {
+  if (typeof value !== "object" || value === null) return false;
+
+  const item = value as Partial<Record<keyof ContactHour, unknown>>;
+
+  return (
+    typeof item.label === "string" &&
+    item.label.trim().length > 0 &&
+    typeof item.value === "string" &&
+    item.value.trim().length > 0
+  );
+}
+
+function isStringArray(value: unknown): value is string[] {
+  return (
+    Array.isArray(value) &&
+    value.every((item) => typeof item === "string" && item.trim().length > 0)
+  );
+}
+
+function isOptionalString(value: unknown): value is string | undefined {
+  return value === undefined || typeof value === "string";
+}
+
+function isContactInfo(value: unknown): value is ContactInfo {
+  if (typeof value !== "object" || value === null) return false;
+
+  const item = value as Partial<Record<keyof ContactInfo, unknown>>;
+
+  return (
+    typeof item.noticeEnabled === "boolean" &&
+    isOptionalString(item.noticeMessage) &&
+    isStringArray(item.addressLines) &&
+    typeof item.phone === "string" &&
+    item.phone.trim().length > 0 &&
+    typeof item.email === "string" &&
+    item.email.trim().length > 0 &&
+    typeof item.mapEmbedUrl === "string" &&
+    item.mapEmbedUrl.trim().length > 0 &&
+    typeof item.mapTitle === "string" &&
+    item.mapTitle.trim().length > 0 &&
+    Array.isArray(item.hours) &&
+    item.hours.every(isContactHour) &&
+    isStringArray(item.quickHighlights)
+  );
+}
+
+function normalizeContactInfo(item: ContactInfo): ContactInfo {
+  const noticeMessage = item.noticeMessage?.trim();
+
+  return {
+    noticeEnabled: item.noticeEnabled === true,
+    ...(noticeMessage ? { noticeMessage } : {}),
+
+    addressLines: item.addressLines.map((line) => line.trim()).filter(Boolean),
+    phone: item.phone.trim(),
+    email: item.email.trim(),
+    mapEmbedUrl: item.mapEmbedUrl.trim(),
+    mapTitle: item.mapTitle.trim(),
+    hours: item.hours.map((hour) => ({
+      label: hour.label.trim(),
+      value: hour.value.trim(),
+    })),
+    quickHighlights: item.quickHighlights
+      .map((highlight) => highlight.trim())
+      .filter(Boolean),
+  };
+}
+
+async function cmsFetchFromBase<T>(baseUrl: string, path: string): Promise<T> {
+  const res = await fetch(`${baseUrl}${path}`, {
+    method: "GET",
+    headers: getCmsHeaders(),
+    cache: "no-store",
+    next: { revalidate: 0 },
+  });
+
+  if (!res.ok) {
+    const body = await res.text().catch(() => "");
+
+    throw new Error(
+      `CMS contact fetch failed: ${res.status} ${res.statusText}${
+        body ? ` - ${body}` : ""
+      }`,
+    );
+  }
+
+  return (await res.json()) as T;
+}
+
+async function cmsFetch<T>(path: string): Promise<T> {
+  const candidates = buildBaseCandidates();
+  let lastError: unknown = null;
+
+  for (const baseUrl of candidates) {
+    try {
+      return await cmsFetchFromBase<T>(baseUrl, path);
+    } catch (error) {
+      lastError = error;
+
+      const message = error instanceof Error ? error.message : String(error);
+
+      const is404 =
+        message.includes("CMS contact fetch failed: 404") ||
+        message.includes("Cannot GET");
+
+      if (!is404) {
+        throw error;
+      }
+    }
+  }
+
+  throw lastError instanceof Error
+    ? lastError
+    : new Error("CMS contact fetch failed.");
+}
+
+export async function getContactInfo(): Promise<ContactInfo> {
+  const response = await cmsFetch<ContactInfo>("/public/cms/contact");
+
+  if (!isContactInfo(response)) {
+    throw new Error("CMS contact response shape is invalid.");
+  }
+
+  return normalizeContactInfo(response);
 }

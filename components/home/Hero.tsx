@@ -9,7 +9,9 @@ import {
   useTransform,
   type Transition,
 } from "framer-motion";
-import Link from "next/link";
+import Image from "next/image";
+import PageBackground from "@/components/ui/PageBackground";
+import Button from "@/components/ui/Button";
 
 type HeroPair = {
   head: string;
@@ -20,9 +22,9 @@ type HeroPair = {
 
 const HERO_PAIRS: HeroPair[] = [
   {
-    head: "Radiant Smiles are Our Specialty",
+    head: "Best Dentistry in Bhubaneswar",
     subhead:
-      "Sophisticated dental procedures and advanced treatments carefully tailored to enhance your smile, delivering natural-looking, long-lasting results that boost both confidence and overall oral health.",
+      "Welcome to the best dentistry in Bhubaneswar. Sophisticated dental procedures and advanced treatments carefully tailored to enhance your smile, delivering natural-looking, long-lasting results.",
     image: "/assets/seat_1.jpg",
     chip: "Premium Dental Care",
   },
@@ -51,14 +53,19 @@ function AnimatedHeading({ text }: { text: string }) {
   const words = useMemo(() => text.split(" "), [text]);
 
   const headingClassName =
-    "mx-auto max-w-[12ch] pb-[0.08em] text-center text-5xl font-bold leading-[0.99] tracking-normal text-[#24443a] sm:max-w-[11ch] sm:leading-[0.99] md:max-w-[12ch] md:text-7xl md:leading-[0.99] lg:max-w-[14ch] lg:leading-[0.99]";
+    "mx-auto max-w-[12ch] pb-[0.08em] text-center text-[clamp(2.75rem,7vw,3.75rem)] font-bold leading-[1.02] tracking-normal text-secondary sm:max-w-[11ch] sm:leading-[0.99] md:max-w-[14ch] md:text-6xl md:leading-[0.99] lg:max-w-[14ch] lg:text-7xl lg:leading-[0.99]";
 
   if (prefersReducedMotion) {
-    return <h1 className={headingClassName}>{text}</h1>;
+    return (
+      <h1 data-cursor="invert" className={headingClassName}>
+        {text}
+      </h1>
+    );
   }
 
   return (
     <motion.h1
+      data-cursor="invert"
       initial="hidden"
       animate="visible"
       exit="exit"
@@ -138,16 +145,14 @@ export default function Hero() {
     [0, prefersReducedMotion ? 0 : -1.2],
   );
 
-  const bgOpacity = useTransform(scrollYProgress, [0, 0.9], [1, 0.82]);
-
   useEffect(() => {
     HERO_PAIRS.forEach((item) => {
-      const img = new Image();
+      const img = new window.Image();
       img.src = item.image;
       img.decoding = "async";
     });
 
-    const bg = new Image();
+    const bg = new window.Image();
     bg.src = "/assets/sketch_it_sarangi.png";
   }, []);
 
@@ -166,30 +171,17 @@ export default function Hero() {
   return (
     <section
       ref={sectionRef}
-      className="relative min-h-screen isolate overflow-hidden border-b border-[#dbe9e1] bg-[#f8fffa]"
+      style={{ position: "relative" }}
+      className="relative min-h-screen isolate overflow-hidden"
     >
-      <motion.div
-        style={{ opacity: bgOpacity }}
-        className="pointer-events-none absolute inset-0"
-      >
-        <div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{
-            backgroundImage: "url('/assets/sketch_it_sarangi.png')",
-            backgroundSize: "cover",
-            backgroundPosition: "center center",
-          }}
-        />
-
-        <div className="absolute inset-0 bg-[rgba(236,247,241,0.62)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_22%,rgba(3,150,106,0.10),transparent_28%),radial-gradient(circle_at_80%_30%,rgba(3,150,106,0.07),transparent_26%),radial-gradient(circle_at_50%_75%,rgba(36,68,58,0.04),transparent_30%)]" />
-        <div className="absolute inset-0 bg-linear-to-b from-[rgba(255,255,255,0.18)] via-[rgba(248,255,250,0.10)] to-[rgba(248,255,250,0.26)]" />
+      <motion.div className="pointer-events-none absolute inset-0">
+        <PageBackground withSketch />
       </motion.div>
 
       <div className="relative mx-auto grid min-h-svh max-w-7xl grid-cols-1 gap-10 px-4 pb-12 pt-28 sm:min-h-[92svh] sm:px-6 sm:pb-14 sm:pt-32 md:gap-12 md:px-10 md:pb-16 md:pt-32 lg:grid-cols-12 lg:items-start lg:gap-12 lg:px-16 lg:pb-16 lg:pt-28">
         <motion.div
           style={{ y: textY }}
-          className="order-2 min-w-0 lg:order-1 lg:col-span-7 lg:pt-10"
+          className="order-2 min-w-0 md:order-1 lg:col-span-7 lg:pt-10"
         >
           <div className="max-w-4xl lg:min-h-160">
             <AnimatePresence mode="wait" initial={false}>
@@ -212,42 +204,43 @@ export default function Hero() {
               >
                 <AnimatedHeading text={activeSlide.head} />
 
-                <p className="mx-auto mt-4 max-w-3xl text-[0.98rem] font-light leading-7 text-center text-[#000000] sm:mt-5 sm:text-[1.02rem] sm:leading-8 md:text-[clamp(1rem,1.7vw,1.25rem)]">
+                <p className="mx-auto mt-4 max-w-3xl text-[0.98rem] font-light leading-7 text-center text-foreground sm:mt-5 sm:text-[1.02rem] sm:leading-8 md:text-[clamp(1rem,1.7vw,1.25rem)]">
                   {activeSlide.subhead}
                 </p>
               </motion.div>
             </AnimatePresence>
 
             <div className="mt-8 flex w-full flex-col items-center justify-center gap-4 sm:flex-row sm:items-center sm:justify-center">
-              <Link
-                href="/contact"
-                className="hidden min-h-14 items-center justify-center rounded-[22px] bg-[#3ea16f] px-8 py-4 text-sm font-bold uppercase tracking-[0.22em] text-white shadow-[0_16px_40px_rgba(62,161,111,0.24)] transition-all duration-300 hover:-translate-y-1 hover:bg-[#2f8e60] md:inline-flex sm:tracking-[0.24em]"
+              <Button
+                href="/book-appointment"
+                className="hidden md:inline-flex"
               >
                 Book Appointment
-              </Link>
+              </Button>
 
-              <Link
+              <Button
                 href="/gallery"
-                className="hidden min-h-14 items-center justify-center rounded-[22px] border border-[#cfe0d7] bg-white/82 px-8 py-4 text-sm font-bold uppercase tracking-[0.22em] text-[#314d44] shadow-[0_10px_24px_rgba(20,40,34,0.05)] transition-all duration-300 hover:-translate-y-1 md:inline-flex sm:tracking-[0.24em]"
+                variant="outline"
+                className="hidden md:inline-flex"
               >
                 Explore Clinic
-              </Link>
+              </Button>
             </div>
 
             <div className="mt-10 hidden md:grid grid-cols-1 gap-4 sm:grid-cols-3">
               {[
                 { value: "36+", label: "Years Experience" },
+                { value: "", label: "Same Day Treatment Availability" },
                 { value: "15k+", label: "Happy Smiles" },
-                { value: "1:1", label: "Personalized Care" },
               ].map((item) => (
                 <div
                   key={item.label}
                   className="rounded-3xl border border-[#d9e8e0] bg-white/78 p-5 shadow-[0_18px_40px_rgba(20,40,34,0.06)] backdrop-blur"
                 >
-                  <div className="text-[2.15rem] font-black tracking-[-0.04em] text-[#24443a] sm:text-4xl">
+                  <div className="text-[2.15rem] font-black tracking-[-0.04em] text-secondary sm:text-4xl">
                     {item.value}
                   </div>
-                  <div className="mt-2 text-[11px] font-bold uppercase tracking-[0.18em] text-[#6d877d] sm:text-xs sm:tracking-[0.2em]">
+                  <div className="mt-2 text-[11px] font-bold uppercase tracking-[0.18em] text-secondary-light sm:text-xs sm:tracking-[0.2em]">
                     {item.label}
                   </div>
                 </div>
@@ -258,7 +251,7 @@ export default function Hero() {
 
         <motion.div
           style={{ y: imageY, rotate: imageRotate }}
-          className="order-1 min-w-0 lg:order-2 lg:col-span-5 lg:pt-10"
+          className="order-1 min-w-0 md:order-2 lg:col-span-5 lg:pt-10"
         >
           <div className="relative mx-auto w-full max-w-155">
             <div className="absolute -right-5 -top-5 hidden h-28 w-28 rounded-full bg-[#dff5e8] blur-2xl md:block" />
@@ -267,10 +260,8 @@ export default function Hero() {
               <div className="relative overflow-hidden rounded-[26px] border border-white/80 bg-white shadow-[0_30px_80px_rgba(20,40,34,0.14)] transform-gpu backface-hidden will-change-transform sm:rounded-[30px] md:rounded-[34px]">
                 <div className="relative aspect-[4/2.65] overflow-hidden rounded-[26px] backface-hidden sm:rounded-[30px] md:rounded-[34px] lg:aspect-[4/4.8]">
                   <AnimatePresence mode="wait" initial={false}>
-                    <motion.img
+                    <motion.div
                       key={activeSlide.image}
-                      src={activeSlide.image}
-                      alt={activeSlide.head}
                       initial={{ opacity: 0, scale: 1.05, rotate: 1 }}
                       animate={{
                         opacity: 1,
@@ -283,16 +274,23 @@ export default function Hero() {
                         scale: 1.03,
                         transition: { duration: 0.28, ease: EXIT_EASE },
                       }}
-                      className="absolute inset-0 h-full w-full rounded-[26px] object-cover transform-gpu backface-hidden sm:rounded-[30px] md:rounded-[34px]"
-                      loading={index === 0 ? "eager" : "lazy"}
-                      draggable="false"
-                    />
+                      className="absolute inset-0 h-full w-full rounded-[26px] overflow-hidden transform-gpu backface-hidden sm:rounded-[30px] md:rounded-[34px]"
+                    >
+                      <Image
+                        src={activeSlide.image}
+                        alt={activeSlide.head}
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 1024px) 100vw, 50vw"
+                        priority={index === 0}
+                      />
+                    </motion.div>
                   </AnimatePresence>
 
                   <div className="absolute inset-0 rounded-[26px] bg-linear-to-t from-[#0c1b15]/42 via-transparent to-white/10 sm:rounded-[30px] md:rounded-[34px]" />
 
                   <div className="absolute left-4 top-4 max-w-[calc(100%-2rem)] rounded-2xl border border-white/20 bg-black/15 px-4 py-3 text-white backdrop-blur-md sm:left-5 sm:top-5">
-                    <div className="text-[10px] font-bold uppercase tracking-[0.22em] text-white/80">
+                    <div className="text-[10px] font-bold uppercase tracking-[0.22em] text-secondary">
                       Sarangi Dentistry
                     </div>
                     <div className="mt-1 text-sm font-medium">

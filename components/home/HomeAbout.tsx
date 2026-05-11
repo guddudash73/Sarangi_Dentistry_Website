@@ -1,5 +1,6 @@
 "use client";
 
+import Button from "@/components/ui/Button";
 import { useRef } from "react";
 import {
   motion,
@@ -7,8 +8,8 @@ import {
   useTransform,
   useReducedMotion,
 } from "framer-motion";
-import Link from "next/link";
 import SectionReveal from "@/components/ui/SectionReveal";
+import Image from "next/image";
 
 function DotFigure({ animated = true }: { animated?: boolean }) {
   const dots = [
@@ -123,12 +124,16 @@ export default function HomeAbout() {
   return (
     <section
       ref={sectionRef}
+      style={{ position: "relative" }}
       className="relative overflow-hidden py-16 sm:py-20 lg:py-24"
     >
+      {/* ✅ NEW HERO-LIKE BACKGROUND */}
       <div className="pointer-events-none absolute inset-0">
-        <div className="absolute right-0 top-0 h-full w-1/3 bg-linear-to-l from-[#eaf7f0] to-transparent opacity-70" />
-        <div className="absolute -left-24 bottom-0 h-56 w-56 rounded-full bg-[#bfe6d0]/40 blur-3xl" />
-        <div className="absolute left-[18%] top-[18%] h-24 w-24 rounded-full bg-[#d7f0e2]/50 blur-3xl" />
+        {/* <div className="absolute inset-0 bg-[rgba(236,247,241,0.7)]" /> */}
+
+        {/* <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_22%,rgba(100,203,186,0),transparent_32%),radial-gradient(circle_at_80%_30%,rgba(100,203,186,0.3),transparent_30%),radial-gradient(circle_at_50%_75%,rgba(36,68,58,0.06),transparent_34%)]" /> */}
+
+        {/* <div className="absolute inset-0 bg-linear-to-b from-[rgba(255,255,255,0.25)] via-[rgba(248,255,250,0.12)] to-[rgba(248,255,250,0.35)]" /> */}
       </div>
 
       <div className="relative mx-auto grid max-w-7xl grid-cols-1 items-center gap-12 px-5 sm:px-8 lg:grid-cols-12 lg:gap-12 lg:px-10">
@@ -137,8 +142,8 @@ export default function HomeAbout() {
           className="lg:col-span-6"
         >
           <div className="relative mx-auto max-w-135">
-            <div className="absolute -left-8 top-10 hidden h-32 w-32 rounded-full bg-[#d8efe2]/60 blur-3xl md:block" />
-            <div className="absolute -right-10 bottom-6 hidden h-36 w-36 rounded-full bg-[#d6efe0]/55 blur-3xl md:block" />
+            <div className="absolute -left-8 top-10 hidden h-32 w-32 rounded-full bg-white/85 blur-3xl md:block" />
+            <div className="absolute -right-10 bottom-6 hidden h-36 w-36 rounded-full bg-white/85 blur-3xl md:block" />
 
             <div className="relative isolate overflow-visible">
               <div className="relative overflow-hidden rounded-4xl shadow-[0_24px_64px_rgba(20,40,34,0.12)] ring-1 ring-white/70">
@@ -146,7 +151,7 @@ export default function HomeAbout() {
                   style={{ y: mainImageY }}
                   className="aspect-[4/4.35] sm:aspect-4/3 lg:aspect-[4/3.95]"
                 >
-                  <img
+                  <Image width={1200} height={1200} 
                     src="/assets/about-img.png"
                     alt="Dr. Soumendra Sarangi"
                     loading="lazy"
@@ -171,7 +176,7 @@ export default function HomeAbout() {
                 }}
                 className="absolute -top-4 -left-3 hidden h-28 w-28 overflow-hidden rounded-3xl border-4 border-white bg-white shadow-[0_18px_34px_rgba(20,40,34,0.12)] md:block lg:h-32 lg:w-32"
               >
-                <img
+                <Image width={1200} height={1200} 
                   src="/assets/DSC_0005-Copy-scaled.jpg"
                   alt="Dental care"
                   loading="lazy"
@@ -194,10 +199,10 @@ export default function HomeAbout() {
                 }}
                 className="absolute -bottom-5 -right-1 rounded-[26px] border border-[#dcebe3] bg-white/30 px-5 py-4 shadow-[0_18px_38px_rgba(20,40,34,0.12)] backdrop-blur md:-right-2.5 lg:-right-4 lg:px-5 lg:py-4"
               >
-                <div className="text-4xl font-black tracking-[-0.04em] text-[#03966a] lg:text-5xl">
-                  36<span className="text-[#9bb6aa]">+</span>
+                <div className="text-4xl font-black tracking-[-0.04em] lg:text-5xl ">
+                  36<span>+</span>
                 </div>
-                <p className="mt-2 max-w-42.5 text-[11px] font-bold uppercase tracking-[0.22em] leading-5 text-[#9bb6aa]">
+                <p className="mt-2 max-w-42.5 text-[11px] font-bold uppercase tracking-[0.22em] leading-5">
                   Years Experience Overall
                 </p>
               </motion.div>
@@ -210,7 +215,6 @@ export default function HomeAbout() {
                   ease: "easeInOut",
                   delay: 0.4,
                 }}
-                className="absolute left-[18%] top-[30%] hidden h-4 w-4 rounded-full bg-[#5fa38a] shadow-[0_0_0_8px_rgba(95,163,138,0.12)] md:block"
               />
             </div>
           </div>
@@ -232,16 +236,24 @@ export default function HomeAbout() {
           </motion.div>
 
           <SectionReveal>
-            <div className="mb-4 inline-flex items-center gap-3 rounded-full border border-[#d6e8de] bg-white/75 px-4 py-2 text-[11px] font-bold uppercase tracking-[0.24em] text-[#2f6b58] backdrop-blur">
-              <span className="h-2 w-2 rounded-full bg-[#03966a]" />
-              About
+            <div className="mb-6 flex items-center gap-4">
+              <div className="flex items-center">
+                <div className="h-1.5 w-1.5 rounded-full bg-primary" />
+                <div className="h-[1px] w-8 bg-primary/40 -ml-0.5" />
+              </div>
+              <span className="text-[10px] font-bold uppercase tracking-[0.24em] text-primary sm:text-[11px]">
+                About
+              </span>
             </div>
 
-            <h2 className="text-[clamp(2.5rem,4.5vw,4.3rem)] font-bold leading-[0.95] tracking-[-0.04em] text-[#24443a]">
+            <h2
+              data-cursor="invert"
+              className="text-[clamp(2.5rem,4.5vw,4.3rem)] font-bold leading-[0.95] tracking-[-0.04em] text-secondary"
+            >
               Dr. Soumendra Sarangi
             </h2>
 
-            <div className="mt-5 space-y-5 text-[1rem] leading-8 text-[#4d6a61] sm:text-[1.02rem]">
+            <div className="mt-5 space-y-5 text-[1rem] leading-8 text-secondary-light sm:text-[1.02rem]">
               <p>
                 After his graduation from Dental Wing of S.C.B Medical College,
                 Cuttack in year 1988, Dr. Sarangi completed his internship from
@@ -257,10 +269,7 @@ export default function HomeAbout() {
             </div>
 
             <div className="mt-8">
-              <Link
-                href="/about"
-                className="inline-flex items-center gap-3 rounded-[22px] bg-[#03966a] px-8 py-4 text-sm font-bold uppercase tracking-[0.22em] text-white shadow-[0_16px_36px_rgba(3,150,106,0.24)] transition-all duration-300 hover:-translate-y-1 hover:bg-[#027e59]"
-              >
+              <Button href="/about">
                 Know More
                 <svg
                   className="h-5 w-5 transition-transform duration-300"
@@ -275,7 +284,7 @@ export default function HomeAbout() {
                     d="M17 8l4 4m0 0l-4 4m4-4H3"
                   />
                 </svg>
-              </Link>
+              </Button>
             </div>
           </SectionReveal>
         </motion.div>

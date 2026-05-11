@@ -1,6 +1,9 @@
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import BlogPostPageClient from "@/components/blog/BlogPostPageClient";
 import { getAllBlogs, getBlogById, getRelatedBlogs } from "@/data/blogs";
+
+export const dynamic = "force-dynamic";
+export const dynamicParams = true;
 
 type BlogPostPageProps = {
   params: Promise<{
@@ -8,12 +11,28 @@ type BlogPostPageProps = {
   }>;
 };
 
-export async function generateStaticParams() {
-  const blogs = await getAllBlogs();
+function getSlugFromBlogPath(path: string, fallbackId: string): string {
+  const cleanPath = path.trim().replace(/\/+$/, "");
 
-  return blogs.map((blog) => ({
-    id: blog.id,
-  }));
+  if (cleanPath.startsWith("/blog/")) {
+    const slug = cleanPath.replace(/^\/blog\//, "").trim();
+    if (slug) return slug;
+  }
+
+  return fallbackId;
+}
+
+export async function generateStaticParams() {
+  try {
+    const blogs = await getAllBlogs();
+
+    return blogs.map((blog) => ({
+      id: getSlugFromBlogPath(blog.path, blog.id),
+    }));
+  } catch {
+    console.warn("Failed to fetch blogs during build. Proceeding with empty static paths.");
+    return [];
+  }
 }
 
 export async function generateMetadata({ params }: BlogPostPageProps) {
@@ -27,9 +46,27 @@ export async function generateMetadata({ params }: BlogPostPageProps) {
     };
   }
 
+  const image = blog.fullUrl || blog.cardUrl || blog.image || "/assets/seat_1.jpg";
+
   return {
     title: `${blog.title} | Sarangi Dentistry`,
     description: blog.excerpt,
+    alternates: {
+      canonical: blog.path,
+    },
+    openGraph: {
+      title: `${blog.title} | Sarangi Dentistry`,
+      description: blog.excerpt,
+      url: blog.path,
+      type: "article",
+      images: [{ url: image, width: 1200, height: 630 }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${blog.title} | Sarangi Dentistry`,
+      description: blog.excerpt,
+      images: [image],
+    },
   };
 }
 
@@ -41,7 +78,47 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     notFound();
   }
 
+  const canonicalSlug = getSlugFromBlogPath(blog.path, blog.id);
+
+  if (id !== canonicalSlug) {
+    redirect(blog.path);
+  }
+
   const relatedBlogs = await getRelatedBlogs(blog.id, 2);
 
-  return <BlogPostPageClient blog={blog} relatedBlogs={relatedBlogs} />;
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://sarangidentistry.in";
+
+  const articleSchema = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: blog.title,
+    image: [blog.fullUrl || blog.cardUrl || blog.image],
+    datePublished: blog.date || new Date().toISOString(),
+    author: [
+      {
+        "@type": "Person",
+        name: blog.author || "Dr. Sarangi",
+        url: `${baseUrl}/about`,
+      },
+    ],
+    publisher: {
+      "@type": "Organization",
+      name: "Sarangi Dentistry",
+      logo: {
+        "@type": "ImageObject",
+        url: `${baseUrl}/favicon.ico`,
+      },
+    },
+    description: blog.excerpt,
+  };
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+      />
+      <BlogPostPageClient blog={blog} relatedBlogs={relatedBlogs} />
+    </>
+  );
 }

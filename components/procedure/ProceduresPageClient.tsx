@@ -1,3 +1,4 @@
+// components/procedure/ProceduresPageClient.tsx
 "use client";
 
 import Link from "next/link";
@@ -8,12 +9,23 @@ import {
   type Variants,
 } from "framer-motion";
 import type { ProcedureItem } from "@/types/procedure";
+import PageBackground from "@/components/ui/PageBackground";
+import Image from "next/image";
 
 type ProceduresPageClientProps = {
   procedures: ProcedureItem[];
 };
 
 const EASE: Transition["ease"] = [0.22, 1, 0.36, 1];
+
+function getProcedureCardImage(procedure: ProcedureItem): string {
+  return (
+    procedure.cardUrl ??
+    procedure.thumbnailUrl ??
+    procedure.fullUrl ??
+    procedure.image
+  );
+}
 
 export default function ProceduresPageClient({
   procedures,
@@ -43,34 +55,37 @@ export default function ProceduresPageClient({
   };
 
   return (
-    <main className="min-h-screen overflow-x-clip bg-[#f6fbf8] text-[#24443a]">
-      <section className="relative max-h-[60vh] overflow-hidden border-b border-[#dcebe3] bg-[linear-gradient(180deg,rgba(247,252,249,1),rgba(240,248,243,0.98))]">
-        <div className="pointer-events-none absolute inset-0">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.9),rgba(255,255,255,0.5)_30%,transparent_68%)]" />
+    <main className="min-h-screen overflow-x-clip bg-background text-secondary">
+      <section className="relative max-h-[60vh] pt-20 md:pt-28">
+        <PageBackground />
 
-          <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(3,150,106,0.06)_1px,transparent_1px),linear-gradient(to_bottom,rgba(3,150,106,0.06)_1px,transparent_1px)] bg-size-[38px_38px] sm:bg-size-[44px_44px]" />
-
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,transparent_58%,rgba(246,251,248,0.88)_100%)]" />
-
-          <div className="absolute left-[8%] top-[18%] h-40 w-40 rounded-full border border-[#03966a]/10 bg-white/20" />
-          <div className="absolute left-[12%] top-[22%] h-16 w-16 rounded-full border border-[#03966a]/12 bg-[#03966a]/3" />
-
-          <div className="absolute right-[18%] top-[20%] h-52 w-52 rounded-full border border-[#03966a]/10 bg-white/20" />
-          <div className="absolute right-[20%] top-[38%] h-20 w-20 rounded-full border border-[#03966a]/12 bg-[#03966a]/3" />
-        </div>
-
-        <div className="relative mx-auto max-w-7xl px-5 pb-16 pt-38 sm:px-6 md:px-10 md:pb-20 lg:px-16 lg:pb-24">
+        <div className="relative mx-auto max-w-7xl px-5 pb-16 pt-8 sm:px-6 md:px-10 md:pb-20 lg:px-16 lg:pb-24">
           <motion.div
             initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.65, ease: EASE }}
-            className="mx-auto max-w-5xl text-center"
+            className="flex flex-col gap-8 items-center"
           >
-            <h1 className="text-[clamp(3rem,6vw,6.25rem)] font-bold leading-[0.9] tracking-normal text-[#21493d]">
-              Our Dental Procedures
-            </h1>
+            <div className="">
+              <div className="mb-6 flex items-center gap-4">
+                <div className="flex items-center">
+                  <div className="h-1.5 w-1.5 rounded-full bg-primary" />
+                  <div className="h-[1px] w-8 bg-primary/40 -ml-0.5" />
+                </div>
+                <span className="text-[10px] font-bold uppercase tracking-[0.24em] text-primary sm:text-[11px]">
+                  Sarangi Dentistry Procedures
+                </span>
+              </div>
 
-            <p className="mx-auto mt-6 max-w-4xl text-[1rem] leading-7 text-[#4a635a] sm:text-[1.05rem] sm:leading-8 md:text-[1.1rem]">
+              <h1
+                data-cursor="invert"
+                className="max-w-4xl text-[clamp(3rem,6vw,6.25rem)] font-bold leading-[0.9] tracking-normal text-secondary text-center"
+              >
+                Where Expertise Meets Seamless Care Process
+              </h1>
+            </div>
+
+            <p className="mx-auto mt-6 max-w-5xl text-center text-[1rem] leading-7 text-primary-hover sm:text-[1.05rem] sm:leading-8 md:text-[1.1rem]">
               Explore our specialized treatments designed to restore oral
               health, improve function, and enhance smile aesthetics with
               thoughtful care and modern dental expertise.
@@ -81,85 +96,117 @@ export default function ProceduresPageClient({
 
       <section className="relative px-5 pb-24 pt-14 sm:px-6 md:px-10 md:pb-32 md:pt-18 lg:px-16">
         <div className="mx-auto max-w-7xl">
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true, amount: 0.08 }}
-            className="grid grid-cols-1 gap-7 md:grid-cols-2 xl:grid-cols-3"
-          >
-            {procedures.map((procedure, index) => (
-              <motion.article
-                key={procedure.id}
-                variants={itemVariants}
-                whileHover={prefersReducedMotion ? undefined : { y: -6 }}
-                className="group relative overflow-hidden rounded-[30px] border border-[#dcebe3] bg-[linear-gradient(180deg,rgba(255,255,255,0.96),rgba(244,250,246,0.98))] shadow-[0_18px_40px_rgba(20,40,34,0.05)] transition-all duration-500 hover:border-[#cfe3d8] hover:shadow-[0_24px_54px_rgba(20,40,34,0.08)]"
+          {procedures.length === 0 ? (
+            <div className="rounded-[30px] border border-[#dcebe3] bg-white/80 px-6 py-14 text-center shadow-[0_18px_40px_rgba(20,40,34,0.06)] backdrop-blur">
+              <h2
+                data-cursor="invert"
+                className="text-2xl font-bold tracking-[-0.03em] text-secondary"
               >
-                <div className="relative overflow-hidden">
-                  <div className="absolute inset-0 z-10 bg-linear-to-t from-[#11241c]/55 via-transparent to-transparent opacity-70" />
-                  <img
-                    src={procedure.image}
-                    alt={procedure.title}
-                    className="aspect-[4/2.85] w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.06]"
-                  />
+                Procedures coming soon
+              </h2>
+              <p className="mx-auto mt-3 max-w-xl text-sm leading-6 text-secondary-light">
+                Procedure pages will appear here once they are published from
+                the Sarangi Dentistry CMS.
+              </p>
+            </div>
+          ) : (
+            <motion.div
+              variants={containerVariants}
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true, amount: 0.08 }}
+              className="grid grid-cols-1 gap-7 md:grid-cols-2 xl:grid-cols-3"
+            >
+              {procedures.map((procedure, index) => (
+                <motion.article
+                  key={procedure.id}
+                  variants={itemVariants}
+                  whileHover={prefersReducedMotion ? undefined : { y: -6 }}
+                  className="group relative overflow-hidden rounded-[30px] border border-[#dcebe3] bg-[linear-gradient(180deg,rgba(255,255,255,0.96),rgba(244,250,246,0.98))] shadow-[0_18px_40px_rgba(20,40,34,0.05)] transition-all duration-500 hover:border-[#cfe3d8] hover:shadow-[0_24px_54px_rgba(20,40,34,0.08)]"
+                >
+                  <Link href={procedure.path} className="block">
+                    <div className="relative overflow-hidden">
+                      <div className="absolute inset-0 z-10 bg-linear-to-t from-[#11241c]/55 via-transparent to-transparent opacity-70" />
 
-                  <div className="absolute left-4 top-4 z-20 inline-flex items-center rounded-full border border-white/30 bg-white/15 px-3 py-2 text-[10px] font-bold uppercase tracking-[0.22em] text-white backdrop-blur">
-                    Procedure
-                  </div>
-                </div>
+                      <Image width={1200} height={1200} 
+                        src={getProcedureCardImage(procedure)}
+                        alt={procedure.title}
+                        loading={index < 3 ? "eager" : "lazy"}
+                        decoding="async"
+                        fetchPriority={index < 2 ? "high" : "auto"}
+                        className="aspect-[4/2.85] w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.05]"
+                      />
 
-                <div className="p-6 sm:p-7">
-                  <div className="mb-4 flex items-center justify-between gap-3">
-                    <span className="inline-flex items-center rounded-full bg-[#edf8f2] px-3 py-2 text-[10px] font-bold uppercase tracking-[0.22em] text-[#2f6e5b]">
-                      Dental Care
-                    </span>
-                    <span className="text-sm font-semibold tracking-[-0.02em] text-[#03966a]">
-                      {(index + 1).toString().padStart(2, "0")}
-                    </span>
-                  </div>
+                      <div className="absolute left-4 top-4 z-20 inline-flex items-center rounded-full border border-white/30 bg-white/15 px-3 py-2 text-[10px] font-bold uppercase tracking-[0.22em] text-white backdrop-blur">
+                        Procedure
+                      </div>
 
-                  <h2 className="text-[1.45rem] font-bold leading-tight tracking-[-0.03em] text-[#24443a] transition-colors duration-300 group-hover:text-[#03966a]">
-                    {procedure.title}
-                  </h2>
-
-                  <p className="mt-4 line-clamp-4 text-[0.98rem] leading-7 text-[#4a635a]">
-                    {procedure.shortText}
-                  </p>
-
-                  <div className="mt-6">
-                    <Link
-                      href={procedure.path}
-                      className="inline-flex items-center gap-2 rounded-full border border-[#cfe3d8] bg-white px-5 py-3 text-sm font-bold uppercase tracking-[0.18em] text-[#2f5548] shadow-[0_8px_18px_rgba(20,40,34,0.04)] transition-all duration-300 hover:-translate-y-0.5 hover:border-[#b8d7c7] hover:text-[#03966a]"
-                    >
-                      Know More
-                      <svg
-                        className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
+                      <div className="absolute right-4 top-4 z-20 flex h-11 w-11 items-center justify-center rounded-full border border-white/25 bg-white/15 text-white backdrop-blur transition-transform duration-300 group-hover:scale-105">
+                        <svg
+                          className="h-5 w-5"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
                           strokeWidth={2}
-                          d="M13 7l5 5m0 0l-5 5m5-5H6"
-                        />
-                      </svg>
-                    </Link>
-                  </div>
-                </div>
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M7 17L17 7M17 7H9M17 7v8"
+                          />
+                        </svg>
+                      </div>
+                    </div>
 
-                <motion.div
-                  aria-hidden="true"
-                  initial={{ scaleX: 0 }}
-                  whileInView={{ scaleX: 1 }}
-                  viewport={{ once: true, amount: 0.3 }}
-                  transition={{ duration: 0.7, delay: index * 0.06 }}
-                  className="origin-left h-0.5 w-full bg-linear-to-r from-[#03966a] via-[#7fc6a8] to-transparent"
-                />
-              </motion.article>
-            ))}
-          </motion.div>
+                    <div className="p-6 sm:p-7">
+                      <div className="mb-4 flex items-center justify-between gap-3">
+                        <span className="inline-flex items-center rounded-full border border-[#d8e8df] bg-white/75 px-3 py-2 text-[10px] font-bold uppercase tracking-[0.2em] text-primary-hover shadow-[0_8px_18px_rgba(20,40,34,0.04)]">
+                          Dental Care
+                        </span>
+
+                        <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-secondary-light">
+                          {String(index + 1).padStart(2, "0")}
+                        </span>
+                      </div>
+
+                      <h2
+                        data-cursor="invert"
+                        className="text-[1.55rem] font-bold leading-[1.02] tracking-[-0.04em] text-secondary sm:text-[1.75rem]"
+                      >
+                        {procedure.title}
+                      </h2>
+
+                      <p className="mt-4 line-clamp-3 text-[0.96rem] leading-7 text-secondary-light">
+                        {procedure.shortText}
+                      </p>
+
+                      <div className="mt-6 flex items-center justify-between gap-4 border-t border-[#dcebe3] pt-5">
+                        <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-primary-hover">
+                          View procedure
+                        </span>
+
+                        <span className="flex h-10 w-10 items-center justify-center rounded-full border border-[#cfe3d8] bg-white text-primary-hover shadow-[0_8px_18px_rgba(20,40,34,0.04)] transition-all duration-300 group-hover:-translate-y-0.5 group-hover:border-primary-hover">
+                          <svg
+                            className="h-4 w-4"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            strokeWidth={2}
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M7 17L17 7M17 7H9M17 7v8"
+                            />
+                          </svg>
+                        </span>
+                      </div>
+                    </div>
+                  </Link>
+                </motion.article>
+              ))}
+            </motion.div>
+          )}
         </div>
       </section>
     </main>

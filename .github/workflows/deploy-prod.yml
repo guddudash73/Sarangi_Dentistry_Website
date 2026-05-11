@@ -1,0 +1,89 @@
+name: Deploy Website (prod)
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: {}
+
+permissions:
+  id-token: write
+  contents: read
+
+concurrency:
+  group: website-deploy-prod
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    env:
+      AWS_REGION: ap-south-1
+      SST_STAGE: prod
+      SST_PASSPHRASE: ${{ secrets.SST_PASSPHRASE }}
+
+      AWS_ROLE_ARN_PROD: ${{ secrets.WEBSITE_AWS_ROLE_ARN_PROD }}
+
+      WEBSITE_CERT_ARN: ${{ secrets.WEBSITE_CERT_ARN }}
+      WEBSITE_DOMAIN_STAGE: web.stage.sarangidentistry.in
+      WEBSITE_DOMAIN_PROD: sarangidentistry.in
+
+      DCM_CMS_API_BASE_URL: ${{ secrets.DCM_CMS_API_BASE_URL_PROD }}
+      CMS_PUBLIC_API_KEY: ${{ secrets.CMS_PUBLIC_API_KEY_PROD }}
+      NEXT_PUBLIC_SITE_URL: https://sarangidentistry.in
+
+      NODE_OPTIONS: --max-old-space-size=8192
+      SST_TELEMETRY_DISABLED: "1"
+      NEXT_TELEMETRY_DISABLED: "1"
+      HUSKY: "0"
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+
+      - name: Install npm
+        run: npm install -g npm@11.6.2
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Preflight checks
+        run: |
+          set -euxo pipefail
+
+          test -n "${SST_PASSPHRASE}"
+          test -n "${AWS_ROLE_ARN_PROD}"
+
+          test -n "${WEBSITE_CERT_ARN}"
+          test -n "${WEBSITE_DOMAIN_PROD}"
+
+          test -n "${DCM_CMS_API_BASE_URL}"
+          test -n "${CMS_PUBLIC_API_KEY}"
+          test -n "${NEXT_PUBLIC_SITE_URL}"
+
+          npx sst version >/dev/null
+
+          npm run typecheck
+          npm run lint
+          npm run build
+
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ env.AWS_ROLE_ARN_PROD }}
+          aws-region: ${{ env.AWS_REGION }}
+          role-session-name: website-prod-${{ github.run_id }}
+
+      - name: Deploy prod
+        run: |
+          set -euxo pipefail
+          npx sst deploy --stage "$SST_STAGE"
+
+      - name: Dump SST logs on failure
+        if: failure()
+        run: |
+          tail -n 400 .sst/log/sst.log || true
+          tail -n 400 .sst/log/pulumi.log || true

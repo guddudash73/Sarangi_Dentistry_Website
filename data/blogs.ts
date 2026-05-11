@@ -1,211 +1,254 @@
-import type { BlogPost } from "@/types/blog";
+import type { BlogPost, BlogsResponse } from "@/types/blog";
 
-/**
- * Backend-ready blog data layer.
- * For now this returns static data.
- * Later replace these with DB/API calls without changing the page UI.
- */
-const BLOGS: BlogPost[] = [
-  {
-    id: "5-ways-to-mend-a-broken-tooth-and-restore-your-confident-smile",
-    title: "5 Ways to Mend a Broken Tooth and Restore Your Confident Smile",
-    date: "Recent",
-    author: "Sarangi Dentistry",
-    category: "Restorative Dentistry",
-    image: "/assets/dental-check-up-fleet-hampshire.jpg",
-    excerpt:
-      "New-age restorative dentistry can repair broken teeth while bringing back comfort, aesthetics, and confidence in your smile.",
-    readTime: "6 min read",
-    featured: true,
-    content: [
-      {
-        type: "paragraph",
-        text: "Broken or cracked teeth can affect more than your appearance. They may create sensitivity, pain while chewing, and a real loss of confidence in your smile. The good news is that modern restorative dentistry offers several precise solutions depending on the severity and type of damage.",
-      },
-      {
-        type: "heading",
-        text: "Understanding cracked or broken teeth",
-      },
-      {
-        type: "list",
-        items: [
-          "Craze lines are tiny surface-level enamel cracks that are usually cosmetic.",
-          "A fractured cusp often affects the chewing surface and may not always cause severe pain.",
-          "A cracked tooth can extend deeper and needs early treatment to prevent worsening.",
-          "A split tooth is more advanced and may not always be preserved intact.",
-          "Vertical root fractures often begin below the gum line and may go unnoticed initially.",
-        ],
-      },
-      {
-        type: "heading",
-        text: "Five effective ways to restore the tooth",
-      },
-      {
-        type: "paragraph",
-        text: "Composite bonding is often ideal for smaller chips and visible surface repairs. It is fast, conservative, and can be shaped to blend naturally with your teeth.",
-      },
-      {
-        type: "paragraph",
-        text: "Veneers are a more refined option when front teeth need aesthetic enhancement along with structural improvement. They create a balanced, polished result for visible smile zones.",
-      },
-      {
-        type: "paragraph",
-        text: "Crowns are one of the most dependable solutions for teeth that are weakened, heavily filled, or structurally compromised. They protect the tooth while restoring shape and strength.",
-      },
-      {
-        type: "paragraph",
-        text: "When a crack reaches the pulp, root canal treatment may be necessary to remove infection, preserve the natural tooth, and prepare it for final restoration with a crown.",
-      },
-      {
-        type: "paragraph",
-        text: "In severe situations where the tooth cannot be preserved safely, extraction followed by implant or bridge planning may be the most stable long-term solution.",
-      },
-      {
-        type: "quote",
-        text: "Early diagnosis is often the difference between a simple repair and a much more complex treatment plan.",
-      },
-      {
-        type: "paragraph",
-        text: "The right treatment depends on the location of the tooth, the depth of the crack, the amount of remaining tooth structure, and your long-term oral health goals.",
-      },
-    ],
-  },
-  {
-    id: "what-is-a-crossbite",
-    title: "What is a Crossbite? Symptoms and Treatments",
-    date: "Recent",
-    author: "Sarangi Dentistry",
-    category: "Orthodontics",
-    image: "/assets/dental-care-professional-stockcake.webp",
-    excerpt:
-      "A crossbite is a common bite misalignment that can affect chewing, comfort, wear patterns, and overall dental function.",
-    readTime: "5 min read",
-    featured: false,
-    content: [
-      {
-        type: "paragraph",
-        text: "A crossbite happens when one or more upper teeth sit inside the lower teeth when the mouth closes. This differs from a healthy bite relationship, where the upper teeth slightly overlap the lower teeth.",
-      },
-      {
-        type: "heading",
-        text: "Common signs of a crossbite",
-      },
-      {
-        type: "list",
-        items: [
-          "Misaligned bite pattern",
-          "Uneven wear on certain teeth",
-          "Difficulty chewing or biting comfortably",
-          "Jaw pain or muscular tension",
-          "Speech issues in some cases",
-        ],
-      },
-      {
-        type: "heading",
-        text: "How crossbite is treated",
-      },
-      {
-        type: "paragraph",
-        text: "Traditional braces remain one of the most effective methods for correcting bite discrepancies and gradually guiding the teeth into healthier positions.",
-      },
-      {
-        type: "paragraph",
-        text: "Palatal expanders are often used in younger patients to widen the upper jaw and improve upper-lower jaw relationships during growth.",
-      },
-      {
-        type: "paragraph",
-        text: "Clear aligners and removable appliances may be suitable in selected cases where gentle, progressive tooth movement is appropriate.",
-      },
-      {
-        type: "paragraph",
-        text: "In more severe skeletal cases, orthodontic treatment may need to be combined with jaw surgery to properly address the structural relationship of the jaws.",
-      },
-      {
-        type: "paragraph",
-        text: "For mild adult cases, bonding or crowns can sometimes help reshape biting surfaces, but they usually do not correct the underlying alignment issue.",
-      },
-      {
-        type: "quote",
-        text: "The earlier a crossbite is evaluated, the easier it is to guide treatment in a healthier direction.",
-      },
-    ],
-  },
-  {
-    id: "the-ultimate-guide-to-daily-oral-hygiene-5-essential-practices",
-    title: "The Ultimate Guide to Daily Oral Hygiene: 5 Essential Practices",
-    date: "Recent",
-    author: "Sarangi Dentistry",
-    category: "Oral Health",
-    image: "/assets/3-Qualities-To-Look-For.jpg",
-    excerpt:
-      "Daily oral hygiene is about more than clean teeth. It is the foundation of long-term protection against decay, gum disease, and bad breath.",
-    readTime: "7 min read",
-    featured: false,
-    content: [
-      {
-        type: "paragraph",
-        text: "A healthy smile is closely linked with overall wellness. Daily habits play a major role in protecting teeth, supporting gum health, and preventing avoidable dental problems over time.",
-      },
-      {
-        type: "heading",
-        text: "Five essential oral hygiene practices",
-      },
-      {
-        type: "paragraph",
-        text: "Brush with care and precision, not just habit. Effective brushing removes plaque, food debris, and bacteria from the teeth and gum line.",
-      },
-      {
-        type: "paragraph",
-        text: "Floss every day. A toothbrush cannot fully reach the narrow spaces between teeth, which is where plaque and food particles often remain.",
-      },
-      {
-        type: "paragraph",
-        text: "Use a mouthwash when appropriate. Antimicrobial or fluoride rinses can add another level of protection depending on your needs.",
-      },
-      {
-        type: "paragraph",
-        text: "Eat foods that support oral health. Crunchy vegetables, dairy products, and less sugary beverage choices can make a meaningful difference.",
-      },
-      {
-        type: "paragraph",
-        text: "Stay hydrated throughout the day. Saliva is essential for neutralizing acids, washing away particles, and protecting enamel naturally.",
-      },
-      {
-        type: "heading",
-        text: "Smile-friendly daily choices",
-      },
-      {
-        type: "list",
-        items: [
-          "Choose water over sugary drinks whenever possible.",
-          "Include calcium-rich foods regularly.",
-          "Reduce frequent snacking on sticky sweets.",
-          "Keep routine dental checkups as part of prevention.",
-        ],
-      },
-      {
-        type: "quote",
-        text: "Consistency matters more than intensity when it comes to oral hygiene.",
-      },
-    ],
-  },
-];
+const DCM_CMS_API_BASE_URL =
+  process.env.DCM_CMS_API_BASE_URL?.trim() || "http://localhost:4000/api";
+
+const CMS_PUBLIC_API_KEY = process.env.CMS_PUBLIC_API_KEY?.trim();
+
+const UUID_LIKE_RE =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+type MaybeWrappedBlogsResponse =
+  | BlogPost[]
+  | BlogsResponse
+  | {
+      items?: BlogPost[];
+    };
+
+function getCmsHeaders(): HeadersInit {
+  if (!CMS_PUBLIC_API_KEY) {
+    throw new Error("CMS_PUBLIC_API_KEY is not set");
+  }
+
+  return {
+    Accept: "application/json",
+    "x-website-key": CMS_PUBLIC_API_KEY,
+  };
+}
+
+function buildBaseCandidates() {
+  const normalized = DCM_CMS_API_BASE_URL.replace(/\/+$/, "");
+
+  const candidates = [normalized];
+
+  if (normalized.endsWith("/api")) {
+    candidates.push(normalized.slice(0, -4));
+  } else {
+    candidates.push(`${normalized}/api`);
+  }
+
+  return [...new Set(candidates)];
+}
+
+function normalizeOptionalUrl(value: string | undefined): string | undefined {
+  const trimmed = value?.trim();
+  return trimmed ? trimmed : undefined;
+}
+
+function normalizeSlug(value: string | undefined): string {
+  return (value ?? "")
+    .trim()
+    .toLowerCase()
+    .replace(/^\/+|\/+$/g, "");
+}
+
+function extractBlogSlugFromPath(pathOrSlug: string | undefined): string {
+  const trimmed = decodeURIComponent(pathOrSlug ?? "").trim();
+
+  if (!trimmed) return "";
+
+  const withoutQuery = trimmed.split("?")[0]?.split("#")[0] ?? trimmed;
+  const withoutTrailingSlash = withoutQuery.replace(/\/+$/, "");
+
+  if (withoutTrailingSlash.startsWith("/blog/")) {
+    return withoutTrailingSlash.replace(/^\/blog\//, "").trim();
+  }
+
+  return withoutTrailingSlash.replace(/^\/+/, "").trim();
+}
+
+function buildBlogPath(item: BlogPost): string {
+  const slugFromField = normalizeSlug(item.slug);
+  const slugFromPath = extractBlogSlugFromPath(item.path);
+
+  const canonicalSlug =
+    slugFromField ||
+    (slugFromPath && !UUID_LIKE_RE.test(slugFromPath) ? slugFromPath : "") ||
+    item.id.trim();
+
+  return `/blog/${encodeURIComponent(canonicalSlug)}`;
+}
+
+function isBlogPost(value: unknown): value is BlogPost {
+  if (!value || typeof value !== "object") return false;
+
+  const candidate = value as Partial<BlogPost>;
+
+  return (
+    typeof candidate.id === "string" &&
+    typeof candidate.title === "string" &&
+    typeof candidate.image === "string" &&
+    typeof candidate.excerpt === "string"
+  );
+}
+
+function normalizeBlogPost(item: BlogPost): BlogPost {
+  const id = item.id.trim();
+  const slug = normalizeSlug(item.slug) || extractBlogSlugFromPath(item.path);
+
+  return {
+    ...item,
+    id,
+    title: item.title.trim(),
+    slug: slug || undefined,
+    path: buildBlogPath(item),
+
+    date: item.date?.trim() || "Recent",
+    author: item.author?.trim() || "Sarangi Dentistry",
+    category: item.category?.trim() || "Dental Care",
+
+    image: item.image.trim(),
+    thumbnailUrl: normalizeOptionalUrl(item.thumbnailUrl),
+    cardUrl: normalizeOptionalUrl(item.cardUrl),
+    fullUrl: normalizeOptionalUrl(item.fullUrl),
+
+    width: item.width,
+    height: item.height,
+
+    excerpt: item.excerpt.trim(),
+    readTime: item.readTime?.trim() || "5 min",
+    featured: item.featured,
+    bodyHtml: item.bodyHtml || "",
+  };
+}
+
+function normalizeBlogsResponse(
+  response: MaybeWrappedBlogsResponse,
+): BlogPost[] {
+  const items = Array.isArray(response) ? response : response.items;
+
+  if (!Array.isArray(items)) {
+    return [];
+  }
+
+  return items.filter(isBlogPost).map(normalizeBlogPost);
+}
+
+function extractBlogIdentifier(pathOrSlug: string): string {
+  return extractBlogSlugFromPath(pathOrSlug);
+}
+
+async function cmsFetchFromBase<T>(baseUrl: string, path: string): Promise<T> {
+  const res = await fetch(`${baseUrl}${path}`, {
+    method: "GET",
+    headers: getCmsHeaders(),
+    cache: "no-store",
+    next: { revalidate: 0 },
+  });
+
+  if (!res.ok) {
+    const body = await res.text().catch(() => "");
+    throw new Error(
+      `CMS blog fetch failed: ${res.status} ${res.statusText}${
+        body ? ` - ${body}` : ""
+      }`,
+    );
+  }
+
+  return (await res.json()) as T;
+}
+
+async function cmsFetch<T>(path: string): Promise<T> {
+  const candidates = buildBaseCandidates();
+  let lastError: unknown = null;
+
+  for (const baseUrl of candidates) {
+    try {
+      return await cmsFetchFromBase<T>(baseUrl, path);
+    } catch (error) {
+      lastError = error;
+
+      const message = error instanceof Error ? error.message : String(error);
+
+      const is404 =
+        message.includes("CMS blog fetch failed: 404") ||
+        message.includes("Cannot GET");
+
+      if (!is404) {
+        throw error;
+      }
+    }
+  }
+
+  throw lastError instanceof Error
+    ? lastError
+    : new Error("CMS blog fetch failed.");
+}
 
 export async function getAllBlogs(): Promise<BlogPost[]> {
-  return BLOGS;
+  const response =
+    await cmsFetch<MaybeWrappedBlogsResponse>("/public/cms/blogs");
+  return normalizeBlogsResponse(response);
 }
 
 export async function getFeaturedBlog(): Promise<BlogPost | undefined> {
-  return BLOGS.find((blog) => blog.featured) ?? BLOGS[0];
+  try {
+    const item = await cmsFetch<BlogPost | null>("/public/cms/blogs/featured");
+
+    if (item && isBlogPost(item)) {
+      return normalizeBlogPost(item);
+    }
+  } catch {
+    // Fall back to list-based featured selection.
+  }
+
+  const items = await getAllBlogs();
+  return items.find((item) => item.featured) ?? items[0];
 }
 
-export async function getBlogById(id: string): Promise<BlogPost | undefined> {
-  return BLOGS.find((blog) => blog.id === id);
+/**
+ * Kept as getBlogById so existing imports do not break.
+ * It now accepts either UUID or SEO slug.
+ */
+export async function getBlogById(
+  idOrSlug: string,
+): Promise<BlogPost | undefined> {
+  const normalizedIdentifier = extractBlogIdentifier(idOrSlug);
+
+  if (!normalizedIdentifier) {
+    return undefined;
+  }
+
+  try {
+    const item = await cmsFetch<BlogPost>(
+      `/public/cms/blogs/${encodeURIComponent(normalizedIdentifier)}`,
+    );
+
+    return isBlogPost(item) ? normalizeBlogPost(item) : undefined;
+  } catch {
+    return undefined;
+  }
+}
+
+export async function getBlogByPath(
+  path: string,
+): Promise<BlogPost | undefined> {
+  const identifier = extractBlogIdentifier(path);
+
+  if (!identifier) {
+    return undefined;
+  }
+
+  return getBlogById(identifier);
 }
 
 export async function getRelatedBlogs(
   currentId: string,
   limit = 2,
 ): Promise<BlogPost[]> {
-  return BLOGS.filter((blog) => blog.id !== currentId).slice(0, limit);
+  const items = await getAllBlogs();
+
+  return items
+    .filter((item) => item.id !== currentId)
+    .slice(0, Math.max(0, limit));
 }

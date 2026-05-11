@@ -22,13 +22,13 @@ export default function CustomCursor() {
       return;
     }
 
-    let mouse = {
+    const mouse = {
       x: window.innerWidth / 2,
       y: window.innerHeight / 2,
     };
 
-    let pos = { ...mouse };
-    let blurPos = { ...mouse };
+    const pos = { ...mouse };
+    const blurPos = { ...mouse };
 
     let isHidden = false;
     let currentState: "default" | "invert" = "default";
@@ -131,6 +131,16 @@ export default function CustomCursor() {
     };
 
     const detectState = () => {
+      // Prevent cursor inversion when hovering over the header section
+      const header = document.querySelector("nav");
+      if (header) {
+        const headerRect = header.getBoundingClientRect();
+        if (mouse.y <= headerRect.bottom) {
+          animateState("default");
+          return;
+        }
+      }
+
       const invertTargets = document.querySelectorAll('[data-cursor="invert"]');
       let isInvert = false;
 

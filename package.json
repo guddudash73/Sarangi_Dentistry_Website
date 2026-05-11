@@ -3,18 +3,27 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --webpack",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "deploy:stage": "sst deploy --stage stage",
+    "deploy:prod": "sst deploy --stage prod",
+    "remove:stage": "sst remove --stage stage"
+  },
+  "overrides": {
+    "hono": "^4.12.16",
+    "@modelcontextprotocol/sdk": "^1.25.2"
   },
   "dependencies": {
     "framer-motion": "^12.38.0",
     "gsap": "^3.14.2",
+    "html2canvas": "^1.4.1",
+    "jspdf": "^4.2.1",
     "lenis": "^1.3.21",
     "next": "16.2.3",
     "react": "19.2.4",
-    "react-countup": "^6.5.3",
     "react-dom": "19.2.4"
   },
   "devDependencies": {
@@ -24,6 +33,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.2.3",
+    "sst": "3.19.3",
     "tailwindcss": "^4",
     "typescript": "^5"
   }

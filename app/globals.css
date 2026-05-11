@@ -1,15 +1,34 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f5f9eb;
-  --foreground: #131c20;
-  --selection-bg: #022431;
-  --selection-text: #f5f9eb;
+  /* Base */
+  --background: #ffffff;
+  --foreground: #28284c;
+
+  /* Brand Colors */
+  --primary: #36a18f;
+  --primary-hover: #288b79;
+
+  --secondary: #28284c;
+  --secondary-light: #363666;
+
+  /* Effects */
+  --accent-soft: #64cbba;
+  --accent-soft-rgb: 100, 203, 186;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+
+  --color-secondary: var(--secondary);
+  --color-secondary-light: var(--secondary-light);
+
+  --color-accent-soft: var(--accent-soft);
+
   --font-sans: var(--font-footlight-mt-pro);
   --font-mono: var(--font-footlight-mt-pro);
 }
@@ -57,7 +76,6 @@ select {
 }
 
 a {
-  color: inherit;
   text-decoration: none;
 }
 

@@ -3,6 +3,7 @@
 import { motion, useReducedMotion, type Transition } from "framer-motion";
 import type { GalleryImage } from "@/types/gallery";
 import ExpandableGallery from "@/components/gallery/ExpandableGallery";
+import PageBackground from "@/components/ui/PageBackground";
 
 type GalleryPageClientProps = {
   items: GalleryImage[];
@@ -14,44 +15,43 @@ export default function GalleryPageClient({ items }: GalleryPageClientProps) {
   const prefersReducedMotion = useReducedMotion();
 
   return (
-    <main className="min-h-screen overflow-x-clip bg-[#f6fbf8]  text-[#24443a]">
-      <section className="relative overflow-hidden border-b border-[#dcebe3] bg-[linear-gradient(180deg,rgba(249,253,251,1),rgba(239,248,243,0.96))]">
-        <div className="pointer-events-none absolute inset-0">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_22%,rgba(3,150,106,0.10),transparent_24%),radial-gradient(circle_at_80%_26%,rgba(36,68,58,0.05),transparent_24%),linear-gradient(to_bottom,rgba(255,255,255,0.32),rgba(255,255,255,0.08))]" />
-          <div
-            className="absolute inset-0 opacity-[0.04]"
-            style={{
-              backgroundImage: "url('/assets/sketch_it_sarangi.png')",
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-              backgroundRepeat: "no-repeat",
-            }}
-          />
-        </div>
+    <main className="min-h-screen overflow-x-clip bg-background  text-secondary">
+      <section className="relative pt-20 md:pt-28">
+        <PageBackground />
 
-        <div className="relative mx-auto max-w-7xl px-5 pb-16 pt-24 sm:px-6 md:px-10 md:pb-20 lg:px-16 lg:pb-24">
+        <div className="relative mx-auto max-w-7xl px-5 pb-16 pt-8 sm:px-6 md:px-10 md:pb-20 lg:px-16 lg:pb-24">
           <motion.div
             initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 22 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.65, ease: EASE }}
-            className="grid items-end gap-8 lg:grid-cols-12"
+            className="flex flex-col items-center gap-8"
           >
-            <div className="lg:col-span-7">
-              <div className="mb-5 inline-flex items-center gap-3 rounded-full border border-[#d8e8df] bg-white/82 px-5 py-3 text-[10px] font-bold uppercase tracking-[0.24em] text-[#2d6b58] shadow-[0_10px_24px_rgba(20,40,34,0.05)] backdrop-blur sm:text-[11px]">
-                <span className="h-2.5 w-2.5 rounded-full bg-[#03966a]" />
-                Sarangi Dentistry Gallery
+            <div className="">
+              <div className="mb-6 flex items-center gap-4">
+                <div className="flex items-center">
+                  <div className="h-1.5 w-1.5 rounded-full bg-primary" />
+                  <div className="h-[1px] w-8 bg-primary/40 -ml-0.5" />
+                </div>
+                <span className="text-[10px] font-bold uppercase tracking-[0.24em] text-primary sm:text-[11px]">
+                  Sarangi Dentistry Gallery
+                </span>
               </div>
 
-              <h1 className="max-w-[11ch] text-[clamp(3rem,6vw,6.2rem)] font-bold leading-[0.9] tracking-[-0.06em] text-[#21493d]">
-                Moments, spaces, and the care experience
+              <h1
+                data-cursor="invert"
+                className="max-w-4xl text-center text-[clamp(3rem,6vw,6.2rem)] font-bold leading-[0.9] tracking-[-0.06em] text-secondary"
+              >
+                A visual journey of restored confidence and healthy smiles
               </h1>
             </div>
 
-            <div className="lg:col-span-5 lg:pb-3">
-              <p className="max-w-xl text-[1rem] leading-7 text-[#4a635a] sm:text-[1.05rem] sm:leading-8">
-                Explore our clinic through a more immersive visual experience.
-                Tap any image to expand it and move through the gallery with a
-                more dramatic, refined presentation.
+            <div className="">
+              <p className="max-w-5xl text-[1rem] leading-7 text-primary-hover sm:text-[1.05rem] sm:leading-8 text-center">
+                Explore meaningful transformations where dental expertise meets
+                patient-focused care to rebuild confidence and create lasting.A
+                collection of patient success stories demonstrating how expert
+                dental care can dramatically improve both smile aesthetics and
+                function.
               </p>
             </div>
           </motion.div>
