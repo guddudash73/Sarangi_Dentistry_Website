@@ -27,11 +27,16 @@ function getSlugFromProcedurePath(path: string, fallbackId: string): string {
 }
 
 export async function generateStaticParams() {
-  const procedures = await getAllProcedures();
+  try {
+    const procedures = await getAllProcedures();
 
-  return procedures.map((item) => ({
-    slug: getSlugFromProcedurePath(item.path, item.id),
-  }));
+    return procedures.map((item) => ({
+      slug: getSlugFromProcedurePath(item.path, item.id),
+    }));
+  } catch {
+    console.warn("Failed to fetch procedures during build. Proceeding with empty static paths.");
+    return [];
+  }
 }
 
 export async function generateMetadata({ params }: ProcedureDetailPageProps) {

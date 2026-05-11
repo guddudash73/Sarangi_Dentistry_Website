@@ -23,11 +23,16 @@ function getSlugFromBookPath(path: string, fallbackId: string): string {
 }
 
 export async function generateStaticParams() {
-  const books = await getAllBooks();
+  try {
+    const books = await getAllBooks();
 
-  return books.map((book) => ({
-    id: getSlugFromBookPath(book.path, book.id),
-  }));
+    return books.map((book) => ({
+      id: getSlugFromBookPath(book.path, book.id),
+    }));
+  } catch {
+    console.warn("Failed to fetch books during build. Proceeding with empty static paths.");
+    return [];
+  }
 }
 
 export async function generateMetadata({ params }: BookDetailPageProps) {

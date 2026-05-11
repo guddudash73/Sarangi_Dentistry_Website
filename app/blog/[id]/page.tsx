@@ -23,11 +23,16 @@ function getSlugFromBlogPath(path: string, fallbackId: string): string {
 }
 
 export async function generateStaticParams() {
-  const blogs = await getAllBlogs();
+  try {
+    const blogs = await getAllBlogs();
 
-  return blogs.map((blog) => ({
-    id: getSlugFromBlogPath(blog.path, blog.id),
-  }));
+    return blogs.map((blog) => ({
+      id: getSlugFromBlogPath(blog.path, blog.id),
+    }));
+  } catch {
+    console.warn("Failed to fetch blogs during build. Proceeding with empty static paths.");
+    return [];
+  }
 }
 
 export async function generateMetadata({ params }: BlogPostPageProps) {
