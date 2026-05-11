@@ -23,6 +23,19 @@ function getDomainForStage(stage: string): string | undefined {
   return undefined;
 }
 
+function getRedirectDomainsForStage(
+  stage: string,
+  domain?: string,
+): string[] | undefined {
+  if (stage !== "prod" || !domain) {
+    return undefined;
+  }
+
+  // Production-only canonical redirect:
+  // https://www.sarangidentistry.in -> https://sarangidentistry.in
+  return [`www.${domain}`];
+}
+
 export default $config({
   app() {
     return {
@@ -38,6 +51,8 @@ export default $config({
     const stage = resolveStage();
 
     const domain = getDomainForStage(stage);
+    const redirectDomains = getRedirectDomainsForStage(stage, domain);
+
     const certArn =
       stage === "prod" || stage === "stage"
         ? requireEnv("WEBSITE_CERT_ARN")
@@ -45,6 +60,7 @@ export default $config({
 
     const dcmCmsApiBaseUrl = requireEnv("DCM_CMS_API_BASE_URL");
     const cmsPublicApiKey = requireEnv("CMS_PUBLIC_API_KEY");
+
     const siteUrl =
       process.env.NEXT_PUBLIC_SITE_URL?.trim() ||
       (domain ? `https://${domain}` : "http://localhost:3000");
@@ -54,7 +70,11 @@ export default $config({
         ? new sst.aws.Router("WebsiteRouter", {
             domain: {
               name: domain,
+              redirects: redirectDomains,
               cert: certArn,
+
+              // Keep DNS manual because your Route 53 records are already being
+              // managed directly in the hosted zone.
               dns: false as const,
             },
           })
@@ -76,6 +96,7 @@ export default $config({
     return {
       stage,
       domain: domain ?? "",
+      redirectDomains: redirectDomains ?? [],
       siteUrl,
       routerUrl: router.url,
       routerDistributionId: router.distributionID,
