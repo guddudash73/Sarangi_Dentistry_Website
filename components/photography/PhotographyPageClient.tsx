@@ -179,7 +179,7 @@ export default function PhotographyPageClient({ photos }: Props) {
                 key={photo.id}
                 initial={{ opacity: 0, y: 24 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.1 }}
+                viewport={{ once: true, margin: "-64px" }}
                 transition={{ duration: 0.55, delay: index * 0.05 }}
                 className="group relative cursor-pointer break-inside-avoid overflow-hidden rounded-[28px] border border-[#dcebe3] bg-white shadow-[0_12px_30px_rgba(20,40,34,0.04)] transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_24px_50px_rgba(20,40,34,0.1)]"
                 onClick={() => setSelectedPhoto(photo)}
