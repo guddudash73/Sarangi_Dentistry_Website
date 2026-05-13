@@ -153,7 +153,11 @@ export default function BlogPostPageClient({
                 [&_ol>li]:list-decimal [&_ol>li]:marker:text-primary
                 [&_a]:font-medium [&_a]:text-primary-hover [&_a]:underline-offset-4 hover:[&_a]:underline
                 [&_strong]:font-semibold [&_strong]:text-secondary
-                [&_em]:italic"
+                [&_em]:italic
+                [&_img]:max-w-full [&_img]:h-auto [&_img]:rounded-2xl [&_img]:my-8
+                [&_iframe]:max-w-full [&_iframe]:w-full [&_iframe]:aspect-video [&_iframe]:rounded-2xl [&_iframe]:my-8
+                [&_video]:max-w-full [&_video]:h-auto [&_video]:rounded-2xl [&_video]:my-8
+                break-words"
               dangerouslySetInnerHTML={{ __html: blog.bodyHtml }}
             />
           </FadeUp>
