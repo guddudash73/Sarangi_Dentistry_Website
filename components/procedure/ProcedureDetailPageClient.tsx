@@ -40,7 +40,7 @@ function FadeUp(props: {
     <motion.div
       initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 28 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.14 }}
+      viewport={{ once: true, margin: "-64px" }}
       transition={{ duration: 0.72, delay: props.delay ?? 0, ease: EASE }}
       className={props.className}
     >

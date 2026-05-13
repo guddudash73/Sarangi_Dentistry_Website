@@ -78,7 +78,7 @@ export default function BooksPageClient({ books }: BooksPageClientProps) {
                   key={book.id}
                   initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 24 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.16 }}
+                  viewport={{ once: true, margin: "-64px" }}
                   transition={{
                     duration: 0.65,
                     delay: index * 0.05,

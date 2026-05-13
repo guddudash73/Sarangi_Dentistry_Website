@@ -126,7 +126,7 @@ export default function ExpandableGallery({ items }: ExpandableGalleryProps) {
         variants={gridVariants}
         initial="hidden"
         whileInView="show"
-        viewport={{ once: true, amount: 0.08 }}
+        viewport={{ once: true, margin: "-64px" }}
         className="grid auto-rows-[240px] grid-cols-1 gap-5 md:grid-cols-12 md:auto-rows-[260px] xl:auto-rows-[290px]"
       >
         {items.map((item, index) => {

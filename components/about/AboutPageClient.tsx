@@ -183,7 +183,7 @@ export default function AboutPageClient() {
                   <motion.div
                     initial={{ opacity: 0, y: 28 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, amount: 0.25 }}
+                    viewport={{ once: true, margin: "-64px" }}
                     transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
                     className="lg:col-span-7"
                   >
@@ -245,7 +245,7 @@ export default function AboutPageClient() {
                   <motion.div
                     initial={{ opacity: 0, y: 34 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, amount: 0.2 }}
+                    viewport={{ once: true, margin: "-64px" }}
                     transition={{
                       duration: 0.8,
                       delay: 0.08,
@@ -268,7 +268,7 @@ export default function AboutPageClient() {
                             key={item.label}
                             initial={{ opacity: 0, y: 18 }}
                             whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true, amount: 0.4 }}
+                            viewport={{ once: true, margin: "-64px" }}
                             transition={{
                               duration: 0.45,
                               delay: 0.12 + index * 0.05,
@@ -305,7 +305,7 @@ export default function AboutPageClient() {
           <motion.section
             initial={{ opacity: 0, y: 36 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.15 }}
+            viewport={{ once: true, margin: "-64px" }}
             transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
           >
             <div className="mx-auto max-w-3xl text-center">
@@ -339,7 +339,7 @@ export default function AboutPageClient() {
                   key={item.title}
                   initial={{ opacity: 0, y: 26, scale: 0.98 }}
                   whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                  viewport={{ once: true, amount: 0.15 }}
+                  viewport={{ once: true, margin: "-64px" }}
                   transition={{
                     duration: 0.58,
                     delay: i * 0.07,
@@ -362,7 +362,7 @@ export default function AboutPageClient() {
           <motion.section
             initial={{ opacity: 0, y: 36 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.12 }}
+            viewport={{ once: true, margin: "-64px" }}
             transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
             className="grid gap-8 lg:grid-cols-2"
           >
@@ -416,7 +416,7 @@ export default function AboutPageClient() {
           <motion.section
             initial={{ opacity: 0, y: 36 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.14 }}
+            viewport={{ once: true, margin: "-64px" }}
             transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
           >
             <div className="mx-auto max-w-3xl text-center">
@@ -444,7 +444,7 @@ export default function AboutPageClient() {
                   key={value.num}
                   initial={{ opacity: 0, scale: 0.95, y: 20 }}
                   whileInView={{ opacity: 1, scale: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.15 }}
+                  viewport={{ once: true, margin: "-64px" }}
                   transition={{
                     duration: 0.52,
                     delay: i * 0.06,
@@ -469,7 +469,7 @@ export default function AboutPageClient() {
           <motion.section
             initial={{ opacity: 0, y: 36 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.14 }}
+            viewport={{ once: true, margin: "-64px" }}
             transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
             className="overflow-hidden rounded-[34px] border border-[#dce9e2] bg-[linear-gradient(135deg,rgba(255,255,255,0.95),rgba(239,248,243,0.94))] shadow-[0_30px_80px_rgba(20,40,34,0.07)]"
           >
@@ -520,7 +520,7 @@ export default function AboutPageClient() {
                       key={item}
                       initial={{ opacity: 0, y: 18 }}
                       whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true, amount: 0.4 }}
+                      viewport={{ once: true, margin: "-64px" }}
                       transition={{
                         duration: 0.48,
                         delay: index * 0.06,

@@ -114,7 +114,7 @@ export default function ProceduresPageClient({
               variants={containerVariants}
               initial="hidden"
               whileInView="show"
-              viewport={{ once: true, amount: 0.08 }}
+              viewport={{ once: true, margin: "-64px" }}
               className="grid grid-cols-1 gap-7 md:grid-cols-2 xl:grid-cols-3"
             >
               {procedures.map((procedure, index) => (

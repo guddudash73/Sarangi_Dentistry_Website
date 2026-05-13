@@ -123,7 +123,7 @@ export default function BlogPageClient({
                 <motion.article
                   initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 24 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.12 }}
+                  viewport={{ once: true, margin: "-64px" }}
                   transition={{ duration: 0.65, ease: EASE }}
                   className="group overflow-hidden rounded-[34px] border border-[#dcebe3] bg-white/86 shadow-[0_22px_56px_rgba(20,40,34,0.07)]"
                 >
@@ -204,7 +204,7 @@ export default function BlogPageClient({
                   variants={containerVariants}
                   initial="hidden"
                   whileInView="show"
-                  viewport={{ once: true, amount: 0.08 }}
+                  viewport={{ once: true, margin: "-64px" }}
                   className="mt-10 grid grid-cols-1 gap-7 md:grid-cols-2 xl:grid-cols-3"
                 >
                   {remainingBlogs.map((blog, index) => (
